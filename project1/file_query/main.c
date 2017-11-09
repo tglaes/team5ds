@@ -26,37 +26,37 @@
  */
 int main(int argc, char** argv) {
     
-    if(argc == 3){
-        if(strcmp(argv[1], "-s") == 0){
-            int port = 0;
-            if(port = atoi(argv[2]) != 0){
-                run_server(port);
+    if (argc == 3) {
+        if (strcmp(argv[1], "-s") == 0) {
+            int port = atoi(argv[2]);
+            if (port != 0) {
+                return run_server(port);
             } else {
                 printf("Der zweite Parameter ist kein gültiger Port");
-                return(-1);
+                return -1;
             }
         } else {
             printf("Die Anzahl der Argumente für einen Server ist falsch!");
-            return(-1);
-        }     
-    } else if(argc == 4){
-        if(strcmp(argv[1], "-c") == 0){
+            return -1;
+        }
+    } else if (argc == 4) {
+        if (strcmp(argv[1], "-c") == 0) {
             
             char* ip_adress = argv[2];
-            int port = 0;
-            if(port = atoi(argv[3]) != 0){
-                run_client(ip_adress, port);
+            int port = atoi(argv[3]);
+            if (port != 0) {
+                return run_client(ip_adress, port);
             } else {
                 printf("Der dritte Parameter ist kein gültiger Port!");
-                return(-1);
+                return -1;
             }
         } else {
             printf("Die Anzahl der Argumente für einen Clienten ist falsch!");
-            return(-1);
+            return -1;
         }
     } else {
         printf("Die Anzahl der Argumente ist nicht korrekt!");
-        return (-1);
+        return -1;
     }
-    return (0);
+    return 0;
 }

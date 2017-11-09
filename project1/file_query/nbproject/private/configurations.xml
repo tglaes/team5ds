@@ -13,8 +13,11 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
+        <gdb_signals>
+        </gdb_signals>
         <gdb_options>
           <DebugOptions>
+            <option name="symbol_file" value="${OUTPUT_PATH} -c 77.177.146.167 3000"/>
           </DebugOptions>
         </gdb_options>
         <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
@@ -26,14 +29,16 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH} -c 192.166.44.1 2048"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -s 2222</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c 77.177.146.167 2222</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c 192.168.1.9 3000</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -c 192.168.1.9 3000</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>
-          <variable name="test" value="-c 192.168.1.1 2222"/>
         </environment>
       </runprofile>
     </conf>
