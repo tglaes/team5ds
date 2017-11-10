@@ -42,18 +42,10 @@ int run_server(int port) {
         return -1;
     }
 
-    char* tmp = malloc(256);
-    unsigned n = 0;
-    
-    while (n < MAX_DATA_SIZE) {
-        if ((n = n + recv(sock2, tmp, MAX_DATA_SIZE, MSG_WAITALL)) < 0) {
-            perror("Server Error");
-            return -1;
-        }
-        strncat(data,tmp, 256);
-        printf("\n%d",n);
+    if (recv(sock2, data, MAX_DATA_SIZE, MSG_WAITALL) < 0) {
+        perror("Server Error");
+        return -1;
     }
-    
     printf(data);
     return 0;
 }
