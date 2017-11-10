@@ -1,5 +1,7 @@
-build/Debug/Cygwin-Windows/main.o: main.c server.h client.h
+build/Debug/Cygwin-Windows/main.o: main.c server.h client.h file.h
 
 server.h:
 
 client.h:
+
+file.h:

@@ -9,7 +9,9 @@
         <group>
             <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/main.c</file>
             <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/server.c</file>
+            <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/file.c</file>
             <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/client.c</file>
+            <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/file.h</file>
             <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/client.h</file>
             <file>file:/C:/Users/Tristan/Desktop/Verteilte%20Systeme/project1/file_query/server.h</file>
         </group>

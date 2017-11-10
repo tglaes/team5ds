@@ -17,6 +17,7 @@
 
 #include "server.h"
 #include "client.h"
+#include "file.h"
 
 /*
  * Die Main Funktion überprüft und wertet, die über die Kommandozeile eingegebenen Parameter, aus.
@@ -25,7 +26,7 @@
  * Im Fall "-c" wird ein Client gestartet, der versucht sich mit dem Server unter der angegebenen IP-Adresse und Port zu verbinden.
  */
 int main(int argc, char** argv) {
-    
+        
     if (argc == 3) {
         if (strcmp(argv[1], "-s") == 0) {
             int port = atoi(argv[2]);
