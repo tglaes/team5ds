@@ -19,6 +19,7 @@
 #include "client.h"
 #include "file.h"
 
+
 /*
  * Die Main Funktion überprüft und wertet, die über die Kommandozeile eingegebenen Parameter, aus.
  * Erwartet werden: "-s [Port]" oder "-c [IP-Adresse] [Port]"
@@ -33,11 +34,11 @@ int main(int argc, char** argv) {
             if (port != 0) {
                 return run_server(port);
             } else {
-                printf("Der zweite Parameter ist kein gültiger Port");
+                printf("The second argument is not a valid port!\n");
                 return -1;
             }
         } else {
-            printf("Die Anzahl der Argumente für einen Server ist falsch!");
+            printf("Unkown option %s!\n", argv[1]);
             return -1;
         }
     } else if (argc == 4) {
@@ -48,15 +49,15 @@ int main(int argc, char** argv) {
             if (port != 0) {
                 return run_client(ip_adress, port);
             } else {
-                printf("Der dritte Parameter ist kein gültiger Port!");
+                printf("The third argument is not a valid port!\n");
                 return -1;
             }
         } else {
-            printf("Die Anzahl der Argumente für einen Clienten ist falsch!");
+            printf("Unkown option %s!\n", argv[1]);
             return -1;
         }
     } else {
-        printf("Die Anzahl der Argumente ist nicht korrekt!");
+        printf("Die Anzahl der Argumente ist nicht korrekt!\n");
         return -1;
     }
     return 0;
