@@ -13,8 +13,6 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
-        <gdb_signals>
-        </gdb_signals>
         <gdb_options>
           <DebugOptions>
             <option name="symbol_file" value="${OUTPUT_PATH} -c 77.177.146.167 3000"/>
@@ -32,8 +30,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -s 2222</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c 77.177.146.167 2222</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c 192.168.1.9 3000</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -s 3000</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -c 192.168.1.9 3000</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -s 3000</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
