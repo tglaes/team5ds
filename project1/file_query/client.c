@@ -38,8 +38,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
     
-    printf(data);
-    send(sock, data, sizeof (data), 0);
+    send(sock, data, MAX_DATA_SIZE, 0);
     return 0;
 }
 
