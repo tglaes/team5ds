@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <winsock2.h>
 #include <winsock.h>
 #include "data.h"
 
@@ -38,32 +39,38 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
     
+    //printf(data);
     send(sock, data, MAX_DATA_SIZE, 0);
     return 0;
 }
-
+/*
+ * Data sieht nach der Eingabe des Users etwa so aus:
+ * test.txt\ntest2.txt\ntest3.txt\ntest4.txt\nfile.lib\n1000\n ...
+ * 
+ * 
+ */
 int get_data_from_user(char FAR* data) {
     
-    char* file_name = malloc(100);
-    char* number_of_bytes = malloc(4);
+    char* file_name = malloc(MAX_FILE_NAME_SIZE);
+    char* number_of_bytes = malloc(5);
     
     printf("Enter the first filename : ");
-    fgets(file_name, MAX_DATA_SIZE, stdin);
-    strncat(data, file_name, 100);
+    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter the second filename: ");
-    fgets(file_name, MAX_DATA_SIZE, stdin);
-    strncat(data, file_name, 100);
+    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter the third filename : ");
-    fgets(file_name, MAX_DATA_SIZE, stdin);
-    strncat(data, file_name, 100);
+    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter the forth filename : ");
-    fgets(file_name, MAX_DATA_SIZE, stdin);
-    strncat(data, file_name, 100);
+    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter the fith filename  : ");
-    fgets(file_name, MAX_DATA_SIZE, stdin);
-    strncat(data, file_name, 100);
+    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter a number of bytes  : ");
-    fgets(number_of_bytes, MAX_DATA_SIZE, stdin);
-    strncat(data, number_of_bytes, 100);
+    fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
+    strncat(data, number_of_bytes, 5);
     return 0;
 }

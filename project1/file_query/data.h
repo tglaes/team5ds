@@ -14,7 +14,8 @@
 #ifndef DATA_H
 #define DATA_H
 
-const static unsigned MAX_DATA_SIZE = 1024;
+const static unsigned MAX_DATA_SIZE = 2048;
+const static unsigned MAX_FILE_NAME_SIZE = 64;
 
 #endif /* DATA_H */
 

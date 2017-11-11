@@ -45,6 +45,12 @@
         <cTool>
           <standard>10</standard>
         </cTool>
+        <linkerTool>
+          <linkerDepDynSerchKind>0</linkerDepDynSerchKind>
+          <linkerLibItems>
+            <linkerLibFileItem>../../../../Downloads/WS2_32.LIB</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path="client.c" ex="false" tool="0" flavor2="0">
       </item>

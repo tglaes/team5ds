@@ -17,7 +17,7 @@
         </gdb_signals>
         <gdb_options>
           <DebugOptions>
-            <option name="symbol_file" value="${OUTPUT_PATH} -c 77.177.146.167 3000"/>
+            <option name="symbol_file" value="${OUTPUT_PATH} -c 3000"/>
           </DebugOptions>
         </gdb_options>
         <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
