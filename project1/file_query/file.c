@@ -16,13 +16,13 @@ int get_bytes_from_file(char* content, char* file, int n){
     FILE *file_pointer;
     file_pointer = fopen(file, "r");
     if(file_pointer == NULL){
+        content = "Datei nicht gefunden!";
         return -1;
     }
     
     for(int i=0; i<n; i++){
         content[i] = fgetc(file_pointer);
-    }
-    content[n] = '\0';
+    }  
     
-    return 0;
+    return 0; 
 }

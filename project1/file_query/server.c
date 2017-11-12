@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <winsock.h>
+#include <string.h>
 #include "file.h"
 #include "data.h"
 
-int get_data_from_client_package(char FAR* data, char* file_names[64], int* number_of_bytes);
+int get_data_from_client_package(char FAR* data, char file_names[][64], char** number_of_bytes);
 
 int run_server(int port) {
 
@@ -19,8 +20,9 @@ int run_server(int port) {
     struct sockaddr_in server;
     unsigned sock_len;
     char FAR* data = malloc(MAX_DATA_SIZE);
-    char* file_names[64];
-    int number_of_bytes;
+    char file_names[5][64];
+    char* number_of_bytes_string;
+    int number_of_bytes = 0;
 
     memset(&server, 0, sizeof (server));
     server.sin_family = AF_INET;
@@ -52,41 +54,39 @@ int run_server(int port) {
         return -1;
     }
     
-    get_data_from_client_package(data, file_names, &number_of_bytes);
-    /*
-    for(int i = 0; i < 5; i++){
-        printf("%s\n", file_names[i]);
+    get_data_from_client_package(data, file_names, &number_of_bytes_string);
+    
+    number_of_bytes = atoi(number_of_bytes_string);
+    if(number_of_bytes < 21){
+        number_of_bytes = 21;
     }
-    printf("%d\n", number_of_bytes);
-     */
+    
+    char bytes_from_file[5][number_of_bytes];
+    
+    for(int i = 0; i<5; i++){
+        get_bytes_from_file(bytes_from_file[i]  , file_names[i], number_of_bytes);
+    }
+    
+    for(int i=0; i < 5; i++){
+        printf(bytes_from_file[i]);
+    }
     
     //closesocket(sock);
     return 0;
 }
 
-// Hier wir das Datenpaket vom Clienten in die 5 Dateinamen und die Anzah der Bytes eingteilt.
+// Hier wir das Datenpaket vom Clienten in die 5 Dateinamen und die Anzahl der Bytes eingteilt.
 
-int get_data_from_client_package(char FAR* data, char* file_names[64], int* number_of_bytes) {
-    printf("got here");
-    int i = 0;
-    int k = 0;
-    for (i; i < 5 * MAX_FILE_NAME_SIZE; i++) {
-        if(data[i] == '\n'){
-            file_names[k][i] = '\0';
-            k++;
-        }
-        if(k == 5){
-            break;
-        }
-        file_names[k][i] = data[i];
-    }
-    char number_bytes[4];
+int get_data_from_client_package(char FAR* data, char file_names[][64], char** number_of_bytes) {
     
-    for(int l = i + 1; l < i + 5; l++){
-        number_bytes[l] = data[i];
-    }
+    //printf(data);
+    char delimiter[] = "\n";
     
-    *number_of_bytes = atoi(number_bytes);
-
+    strncpy(file_names[0], strtok(data, delimiter), 64);
+    strncpy(file_names[1], strtok(NULL, delimiter), 64);
+    strncpy(file_names[2], strtok(NULL, delimiter), 64);
+    strncpy(file_names[3], strtok(NULL, delimiter), 64);
+    strncpy(file_names[4], strtok(NULL, delimiter), 64);
+    *number_of_bytes = strtok(NULL, delimiter);
     return 0;
 }

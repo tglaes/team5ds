@@ -14,7 +14,7 @@
 #ifndef FILE_H
 #define FILE_H
 
-int get_bytes_from_file(char* content, char* file, int n);
+int get_bytes_from_file(char** content, char* file, int n);
 
 #endif
 
