@@ -1,15 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 /*
- * Schreibt die ersten n Bytes (Zeichen) aus file in content.
+ * Kopiert die ersten number_of_bytes Bytes aus den Dateien aus file_names in
+ * bytes_from_file. Falls die Datei nicht gefunden wird, wird "Datei nicht gefunden!"
+ * gespeichert.
+ * 
+ * NOCH NICHT GETESTET!!
  * 
  */
 int get_bytes_from_file(char** bytes_from_file, char file_names[][64], int number_of_bytes) {
