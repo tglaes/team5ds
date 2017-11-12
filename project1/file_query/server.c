@@ -61,14 +61,12 @@ int run_server(int port) {
         number_of_bytes = 21;
     }
     
-    char bytes_from_file[5][number_of_bytes];
+    char* bytes_from_file = malloc(5 * (number_of_bytes + 1));
     
-    for(int i = 0; i<5; i++){
-        get_bytes_from_file(bytes_from_file[i]  , file_names[i], number_of_bytes);
-    }
+    get_bytes_from_file(&bytes_from_file , file_names, number_of_bytes);
     
-    for(int i=0; i < 5; i++){
-        printf(bytes_from_file[i]);
+    for(int i=0; i < 5 * (number_of_bytes + 1); i++){
+        printf(bytes_from_file + i);
     }
     
     //closesocket(sock);
