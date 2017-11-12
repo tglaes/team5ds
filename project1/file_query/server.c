@@ -93,6 +93,9 @@ int run_server(int port) {
     
    // TODO: Schicke Client eine Antwort und Speicher freigeben.
    // TODO: Einen neuen Prozess für jede einkommende Verbindung erstellen. 
+    for(int i= 0; i < sizeof(bytes_from_file); i++){
+        printf("%c", bytes_from_file[i]);
+    }
     
     
     //closesocket(sock);
