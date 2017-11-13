@@ -6,6 +6,7 @@
 #include "file.h"
 #include "data.h"
 
+
 int get_data_from_client_package(char FAR* data, char file_names[][64], char** number_of_bytes);
 
 /*
@@ -98,7 +99,7 @@ int run_server(int port) {
     }
     
     
-    //closesocket(sock);
+    //shutdown(sock, 0);
     return 0;
 }
 

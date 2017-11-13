@@ -16,6 +16,7 @@
 
 const static unsigned MAX_DATA_SIZE = 2048;
 const static unsigned MAX_FILE_NAME_SIZE = 64;
+const static char* file_not_found = "Datei nicht gefunden!\n";
 
 #endif /* DATA_H */
 
