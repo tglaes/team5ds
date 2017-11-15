@@ -55,13 +55,11 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=../../../../Downloads/WS2_32.LIB
+LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/file_query.exe
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/file_query.exe: ../../../../Downloads/WS2_32.LIB
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/file_query.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}

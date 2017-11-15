@@ -87,7 +87,7 @@ int run_server(int port) {
     
     // Allokierte Speicher für die Bytes plus jeweils ein Nullbyte.
     char* bytes_from_file = malloc(5 * (number_of_bytes + 1));
-    
+
     // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
     get_bytes_from_file(&bytes_from_file , file_names, number_of_bytes);
     
@@ -99,7 +99,7 @@ int run_server(int port) {
     }
     
     
-    //shutdown(sock, 0);
+    //closesocket(sock);
     return 0;
 }
 
