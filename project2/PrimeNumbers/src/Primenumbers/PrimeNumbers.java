@@ -18,36 +18,36 @@ public class PrimeNumbers {
      
     
     private static int[] calcPrimes(int n) {
-        int[] prime_numbers = new int[n];
-        int sum_primes = 0;
-        for (int i = 2; sum_primes < n ; i++) {
-            boolean is_prime = true;
-            for (int j = 2; j < i && is_prime; j++) {
+        int[] primeNumbers = new int[n];
+        int sumPrimes = 0;
+        for (int i = 2; sumPrimes < n ; i++) {
+            boolean isPrime = true;
+            for (int j = 2; j < i && isPrime; j++) {
                 if ((i % j) == 0) {
-                    is_prime = false;
+                    isPrime = false;
                 }              
             }           
-            if (is_prime) {
-                sum_primes++;
-                prime_numbers[sum_primes-1] = i;
+            if (isPrime) {
+                sumPrimes++;
+                primeNumbers[sumPrimes-1] = i;
             }
         }
-        return prime_numbers;  
+        return primeNumbers;  
     }
     
     
-    private static void intArrayOutput(int[] prime_array){
+    private static void intArrayOutput(int[] primeArray){
         System.out.println("Primzahlenausgabe als Int-Array");
-        for (int i = 0; i < prime_array.length ; i++) {
-            System.out.println(i+1 +")\t" +prime_array[i]);
+        for (int i = 0; i < primeArray.length ; i++) {
+            System.out.println(i+1 +")\t" +primeArray[i]);
         }
         System.out.println("\n");
     }
     
-    private static String[] intToStringArray(int[] prime_array){
-        String[] stringArray = new String[prime_array.length];
-        for (int i = 0; i < prime_array.length ; i++) {
-            stringArray[i]= String.valueOf(prime_array[i]); 
+    private static String[] intToStringArray(int[] primeArray){
+        String[] stringArray = new String[primeArray.length];
+        for (int i = 0; i < primeArray.length ; i++) {
+            stringArray[i]= String.valueOf(primeArray[i]); 
         }
         return stringArray;
     }
