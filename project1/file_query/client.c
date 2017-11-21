@@ -10,7 +10,6 @@
 #include "data.h"
 #include "client.h"
 
-
 int run_client(char* ip_adress, int port) {
 
     // Variabeln für den Socket.
@@ -21,6 +20,16 @@ int run_client(char* ip_adress, int port) {
     // Variabel für das Datenpacket, dass an den Server geschickt wird.
     char* data = malloc(MAX_DATA_SIZE);
 
+    
+   // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
+    if (get_data_from_user(data) < 0) {
+        printf("Client Error while receiving user data from stdin!\n");   
+        free(data);
+        return -1;
+    }
+    
+    
+    
     /* 
      * Bereinigen des Speichers und setzten der Parameter
      * AF_INET -> IPv4
@@ -33,6 +42,7 @@ int run_client(char* ip_adress, int port) {
     //load and format  ipadress  exit if wrng format
     if (inet_aton(ip_adress, &ipaddr) == 0) {
         perror("Client Error wrong ip Adress format");
+        free(data);
         return -1;
     }
     //set memory of  sockaddr_in struct to null
@@ -45,6 +55,7 @@ int run_client(char* ip_adress, int port) {
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("Client Error");
+        free(data);
         return -1;
     }
 
@@ -52,22 +63,18 @@ int run_client(char* ip_adress, int port) {
     if (connect(sock, (struct sockaddr*) &client, sizeof (client)) < 0) {
         perror("Client Error");
         close(sock);
+        free(data);
         return -1;
     }
 
-    // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
-    if (get_data_from_user(data) < 0) {
-        printf("Client Error while receiving user data from stdin!\n");
-        return -1;
-    }
-
-    // Sendet die Daten an den Server.
-    send(sock, data, MAX_DATA_SIZE, MSG_NOSIGNAL);
     
-    send_data(sock,data);
+    // Sendet die Daten an den Server.
+    send_data(sock, data);
+    
 
 
     close(sock);
+    free(data);
     return 0;
 }
 
@@ -106,13 +113,42 @@ int get_data_from_user(char* data) {
     printf("Enter a number of bytes  : ");
     fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
     strncat(data, number_of_bytes, 5);
+    free(file_name);
+    free(number_of_bytes);
+    return 0;
+}
+// send data which must be a null terminatet string over  socket
+
+int send_data(int sock, char* data) {
+    // length of data +  null terminated byte which is a null terminated string
+    int length = strlen(data) + 1;
+    //change data size to networkbyte order
+    uint16_t data_size = htons(strlen(data) + 1);
+    //send first size of data message which is firs converted to char array
+    char size[sizeof data_size];
+    memcpy(size,&data_size,sizeof size);
+    
+    if (send_all(sock, size, sizeof size) < 0)
+        return -1;
+
+    //send the data message
+    if (send_all(sock, data, length) < 0)
+        return -1;
+    
     return 0;
 }
 
-int send_data(int sock, char* data) {
+int send_all(int sock, char *data, int length) {
+    int total_send = 0;
+    int actual_send;
 
+    while (total_send < length) {
+        actual_send = send(sock, data + total_send, length - total_send, MSG_NOSIGNAL);
+        if (actual_send < 0)
+            return actual_send;
 
+        total_send += actual_send;
+    }
 
-
-    return 0;
+    return total_send;
 }
