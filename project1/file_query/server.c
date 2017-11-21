@@ -5,6 +5,7 @@
 #include <string.h>
 #include "file.h"
 #include "data.h"
+#include "server.h"
 
 
 int get_data_from_client_package(char FAR* data, char file_names[][64], char** number_of_bytes);
@@ -73,33 +74,35 @@ int run_server(int port) {
         return -1;
     }
     
-    // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
-    get_data_from_client_package(data, file_names, &number_of_bytes_string);
+     printf(data);
     
-    /*
-     * Wenn die Anzahl der Bytes kleiner ist als die Anzahl der Bytes für
-     * "Datei nicht gefunden!", dann legen wir die Anzahl der Bytes auf 22.
-     */
-    number_of_bytes = atoi(number_of_bytes_string);
-    if(number_of_bytes < 21){
-        number_of_bytes = 21;
-    }
-    
-    // Allokierte Speicher für die Bytes plus jeweils ein Nullbyte.
-    char* bytes_from_file = malloc(5 * (number_of_bytes + 1));
-
-    // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
-    get_bytes_from_file(&bytes_from_file , file_names, number_of_bytes);
-    
-    
-   // TODO: Schicke Client eine Antwort und Speicher freigeben.
-   // TODO: Einen neuen Prozess für jede einkommende Verbindung erstellen. 
-    for(int i= 0; i < sizeof(bytes_from_file); i++){
-        printf("%c", bytes_from_file[i]);
-    }
-    
-    
-    //closesocket(sock);
+//    // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
+//    get_data_from_client_package(data, file_names, &number_of_bytes_string);
+//    
+//    /*
+//     * Wenn die Anzahl der Bytes kleiner ist als die Anzahl der Bytes für
+//     * "Datei nicht gefunden!", dann legen wir die Anzahl der Bytes auf 22.
+//     */
+//    number_of_bytes = atoi(number_of_bytes_string);
+//    if(number_of_bytes < 21){
+//        number_of_bytes = 21;
+//    }
+//    
+//    // Allokierte Speicher für die Bytes plus jeweils ein Nullbyte.
+//    char* bytes_from_file = malloc(5 * (number_of_bytes + 1));
+//
+//    // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
+//    get_bytes_from_file(&bytes_from_file , file_names, number_of_bytes);
+//    
+//    
+//   // TODO: Schicke Client eine Antwort und Speicher freigeben.
+//   // TODO: Einen neuen Prozess für jede einkommende Verbindung erstellen. 
+//    for(int i= 0; i < sizeof(bytes_from_file); i++){
+//        printf("%c", bytes_from_file[i]);
+//    }
+//    
+//    
+//    //closesocket(sock);
     return 0;
 }
 
@@ -117,7 +120,7 @@ int run_server(int port) {
  */
 int get_data_from_client_package(char FAR* data, char file_names[][64], char** number_of_bytes) {
     
-    //printf(data);
+    printf(data);
     char delimiter[] = "\n";
     // Splitte den data String und kopiere das Ergebnis in file_names.
     strncpy(file_names[0], strtok(data, delimiter), 64);

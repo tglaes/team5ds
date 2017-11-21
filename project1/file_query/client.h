@@ -14,7 +14,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+int get_data_from_user(char* data);
+int send_data(int sock, char* data);
+int send_all(int sock, char *data, int length);
 int run_client(char* ip_adress, int port);
-        
+      
 #endif
 
