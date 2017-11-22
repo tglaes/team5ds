@@ -14,7 +14,7 @@
 
 
 int get_data_from_client_package(char* data, char file_names[][64], char** number_of_bytes);
-int client_handler(int client_sock);
+int client_connectin_handler(int client_sock);
 
 /*
  * Startet einen Server, der mehrere Anfragen von Clienten gleichzeitig
@@ -82,7 +82,7 @@ int run_server(int port) {
         if (!pid) {//kindprozess     
             close(sock); // passiven sock benenden da nicht gebraucht im kind
             
-            if ( client_handler(client_sock) < 0 ) {//fuehre client handler aus 
+            if ( client_connectin_handler(client_sock) < 0 ) {//fuehre client handler aus 
                 perror("Server Error");
                 close(client_sock);
                 exit(1);
@@ -99,7 +99,7 @@ int run_server(int port) {
     return 0;
 }
 
-int client_handler(int client_sock) {
+int client_connectin_handler(int client_sock) {
     char* data = calloc( MAX_DATA_SIZE ,sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
     char number_of_bytes_string[MAX_BYTES_TO_READ / sizeof (char)];
