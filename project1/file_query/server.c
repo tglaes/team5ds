@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h> 
+#include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -13,6 +14,7 @@
 
 
 int get_data_from_client_package(char* data, char file_names[][64], char** number_of_bytes);
+int client_handler(int client_sock);
 
 /*
  * Startet einen Server, der mehrere Anfragen von Clienten gleichzeitig
@@ -23,15 +25,10 @@ int run_server(int port) {
 
 
     // Variabeln für den Socket.
-    int sock, new_sock, pid;
+    int sock, client_sock, pid;
     struct sockaddr_in server, client;
     socklen_t sock_len;
 
-    // Variabeln für den Datenaustausch und Datenverarbeitung.
-    char* data = malloc(MAX_DATA_SIZE);
-    char file_names[MAX_FILE_TO_ACCEPT][MAX_FILE_NAME_SIZE];
-    char* number_of_bytes_string;
-    int number_of_bytes = 0;
 
     /*
      *  Bereinigen des Speichers des Servers und setzten der Parameter:
@@ -49,7 +46,6 @@ int run_server(int port) {
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("Server Error");
-        free(data);
         return -1;
     }
 
@@ -57,7 +53,6 @@ int run_server(int port) {
     if (bind(sock, (struct sockaddr*) &server, sizeof (server)) < 0) {
         perror("Server Error");
         close(sock);
-        free(data);
         return -1;
     }
 
@@ -65,7 +60,6 @@ int run_server(int port) {
     if (listen(sock, 5) < 0) {
         perror("Server Error");
         close(sock);
-        free(data);
         return -1;
     }
 
@@ -73,29 +67,51 @@ int run_server(int port) {
     //schleife die 
     sock_len = sizeof (client);
     while (1) {
-        new_sock = accept(sock, (struct sockaddr*) &client, &sock_len);
-        if (new_sock < 0) {
-            //TODO check if error came because client abborted connection then 
-            // continue otherwise call perror and return -1
-            fprintf(stderr, "%s", "accepting error continue\n");
+        client_sock = accept(sock, (struct sockaddr*) &client, &sock_len);
+        if (client_sock < 0) { //fehler
+            fprintf(stderr, "%s", "error in accept but continue\n");
+            //rufe waitpid nicht blockierend auf umbenendete childprozesse aufzuraumen
+            // und somit zombi prozesse zu verhindern
+            while (waitpid(-1, NULL, WNOHANG) > 0);
             continue;
         }
-         
-       
+        
+        printf("New Connection from:: %s\n", inet_ntoa(client.sin_addr));//log ip adresse
 
+        pid = fork();
+        if (!pid) {//kindprozess     
+            close(sock); // passiven sock benenden da nicht gebraucht im kind
+            
+            if ( client_handler(client_sock) < 0 ) {//fuehre client handler aus 
+                perror("Server Error");
+                close(client_sock);
+                exit(1);
+            } else {
+                close(client_sock);
+                exit(0);
+            }
+        } else { //Vaterprozess 
+            close(client_sock); //aktiven client sock beenden da im eltern prozeccs nicht gebraucht
+            while (waitpid(-1, NULL, WNOHANG) > 0);
+        }
     }
 
+    return 0;
+}
 
+int client_handler(int client_sock) {
+    char* data = calloc( MAX_DATA_SIZE ,sizeof (char));
+    char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
+    char number_of_bytes_string[MAX_BYTES_TO_READ / sizeof (char)];
+    int number_of_bytes = 0;
+    
 
+    if (recv(client_sock, data, MAX_DATA_SIZE,MSG_NOSIGNAL | MSG_WAITALL) < 0){
+        perror("Server Error");
+        return -1;
+    }
 
-    //    // Empfängt ein Datenpacket des Clienten.
-    //    if (recv(new_sock, data, MAX_DATA_SIZE, MSG_WAITALL) < 0) {
-    //        perror("Server Error");
-    //        return -1;
-    //    }
-
-    //    printf(data);
-
+    
     //    // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
     //    get_data_from_client_package(data, file_names, &number_of_bytes_string);
     //    
@@ -122,8 +138,10 @@ int run_server(int port) {
     //    }
     //    
     //    
-    //    //closesocket(sock);
+
+    free(data);
     return 0;
+
 }
 
 /*
