@@ -20,16 +20,14 @@ int run_client(char* ip_adress, int port) {
     // Variabel für das Datenpacket, dass an den Server geschickt wird.
     char* data = malloc(MAX_DATA_SIZE);
 
-    
-   // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
+
+    // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
     if (get_data_from_user(data) < 0) {
-        printf("Client Error while receiving user data from stdin!\n");   
+        fprintf(stderr, "%s", "Client Error while receiving user data from stdin!\n");
         free(data);
         return -1;
     }
-    
-    
-    
+
     /* 
      * Bereinigen des Speichers und setzten der Parameter
      * AF_INET -> IPv4
@@ -39,9 +37,9 @@ int run_client(char* ip_adress, int port) {
      */
 
 
-    //load and format  ipadress  exit if wrng format
+    //formatiere ipadress in korrekte format  gebe fehler aus falls  format error
     if (inet_aton(ip_adress, &ipaddr) == 0) {
-        perror("Client Error wrong ip Adress format");
+        fprintf(stderr, "%s", "Client Error wrong ip Adress format!\n");
         free(data);
         return -1;
     }
@@ -67,10 +65,10 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
-    
+
+
     // Sendet die Daten an den Server.
     send_data(sock, data);
-    
 
 
     close(sock);
@@ -86,14 +84,15 @@ int run_client(char* ip_adress, int port) {
  * test.txt\ntest2.txt\ntest3.txt\ntest4.txt\nfile.lib\n1000\n ...
  * 
  *  muss verbesser werden falls man filenamen groesser MAX_FILE_NAME_SIZE eingibt 
- * wird beim nachsten fgets aufruft die ubrigen zeichen eingelsen statt ein neues
+ * wird beim nachsten fgets aufruft die ubrigen zeichen eingelsen statt ein neue 
+ * eingabe
  *  
  * 
  */
 int get_data_from_user(char* data) {
 
     char* file_name = malloc(MAX_FILE_NAME_SIZE);
-    char* number_of_bytes = malloc(5);
+    char* number_of_bytes = malloc(MAX_BYTES_TO_READ / sizeof (char));
 
     printf("Enter the first filename : ");
     fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
@@ -112,9 +111,11 @@ int get_data_from_user(char* data) {
     strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter a number of bytes  : ");
     fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, number_of_bytes, 5);
+    strncat(data, number_of_bytes, MAX_BYTES_TO_READ / sizeof (char));
+
     free(file_name);
     free(number_of_bytes);
+
     return 0;
 }
 // send data which must be a null terminatet string over  socket
@@ -123,18 +124,18 @@ int send_data(int sock, char* data) {
     // length of data +  null terminated byte which is a null terminated string
     int length = strlen(data) + 1;
     //change data size to networkbyte order
-    uint16_t data_size = htons(strlen(data) + 1);
+    uint16_t data_size = htons(length);
     //send first size of data message which is firs converted to char array
     char size[sizeof data_size];
-    memcpy(size,&data_size,sizeof size);
-    
+    memcpy(size, &data_size, sizeof size);
+
     if (send_all(sock, size, sizeof size) < 0)
         return -1;
 
     //send the data message
     if (send_all(sock, data, length) < 0)
         return -1;
-    
+
     return 0;
 }
 
