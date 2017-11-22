@@ -8,6 +8,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "data.h"
+#include "socket_helper.h"
 #include "client.h"
 
 int run_client(char* ip_adress, int port) {
@@ -19,12 +20,15 @@ int run_client(char* ip_adress, int port) {
     socklen_t addr_size;
     // Variabel für das Datenpacket, dass an den Server geschickt wird.
     char* data = malloc(MAX_DATA_SIZE);
+    // Variabel für das Datenpacket, dass vom  Server empfangen  wird.
+    char* answer_data = malloc(MAX_DATA_SIZE);
 
 
     // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
     if (get_data_from_user(data) < 0) {
         fprintf(stderr, "%s", "Client Error while receiving user data from stdin!\n");
         free(data);
+        free(answer_data);
         return -1;
     }
 
@@ -41,9 +45,10 @@ int run_client(char* ip_adress, int port) {
     if (inet_aton(ip_adress, &ipaddr) == 0) {
         fprintf(stderr, "%s", "Client Error wrong ip Adress format!\n");
         free(data);
+        free(answer_data);
         return -1;
     }
-    //set memory of  sockaddr_in struct to null
+    //fuelle speicher fur struct mit null auf
     memset(&client, 0, sizeof (client));
     client.sin_family = AF_INET;
     client.sin_addr = ipaddr;
@@ -54,6 +59,7 @@ int run_client(char* ip_adress, int port) {
     if (sock < 0) {
         perror("Client Error");
         free(data);
+        free(answer_data);
         return -1;
     }
 
@@ -62,17 +68,34 @@ int run_client(char* ip_adress, int port) {
         perror("Client Error");
         close(sock);
         free(data);
+        free(answer_data);
         return -1;
     }
 
 
 
-    // Sendet die Daten an den Server.
-    send_data(sock, data);
+    // Sendet die Daten an den Server return1 falls fehler
+    if (send_data(sock, data) < 0) {
+        perror("Client Error: daten senden fehlgeschlagen");
+        close(sock);
+        free(data);
+        free(answer_data);
+        return -1;
+    }
+
+    if (recv_data(sock, answer_data) < 0) {
+        perror("Server Error:fehler beim empfang der antwort");
+        free(data);
+        free(answer_data);
+        return -1;
+    }
+    
+    printf("Antwort %s",answer_data);
 
 
     close(sock);
     free(data);
+    free(answer_data);
     return 0;
 }
 
@@ -118,38 +141,5 @@ int get_data_from_user(char* data) {
 
     return 0;
 }
-// send data which must be a null terminatet string over  socket
 
-int send_data(int sock, char* data) {
-    // length of data +  null terminated byte which is a null terminated string
-    int length = strlen(data) + 1;
-    //change data size to networkbyte order
-    uint16_t data_size = htons(length);
-    //send first size of data message which is firs converted to char array
-    char size[sizeof data_size];
-    memcpy(size, &data_size, sizeof size);
 
-    if (send_all(sock, size, sizeof size) < 0)
-        return -1;
-
-    //send the data message
-    if (send_all(sock, data, length) < 0)
-        return -1;
-
-    return 0;
-}
-
-int send_all(int sock, char *data, int length) {
-    int total_send = 0;
-    int actual_send;
-
-    while (total_send < length) {
-        actual_send = send(sock, data + total_send, length - total_send, MSG_NOSIGNAL);
-        if (actual_send < 0)
-            return actual_send;
-
-        total_send += actual_send;
-    }
-
-    return total_send;
-}
