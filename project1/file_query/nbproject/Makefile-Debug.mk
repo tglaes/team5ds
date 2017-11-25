@@ -38,7 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/client.o \
 	${OBJECTDIR}/file.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/server.o
+	${OBJECTDIR}/server.o \
+	${OBJECTDIR}/socket_helper.o
 
 
 # C Compiler Flags
@@ -84,6 +85,11 @@ ${OBJECTDIR}/server.o: server.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/server.o server.c
+
+${OBJECTDIR}/socket_helper.o: socket_helper.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/socket_helper.o socket_helper.c
 
 # Subprojects
 .build-subprojects:
