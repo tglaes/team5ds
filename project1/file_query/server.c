@@ -15,7 +15,7 @@
 
 
 
-int get_data_from_client_package(char* data, char file_names[][64], char** number_of_bytes);
+int get_data_from_client_package(char** data, char file_names[][64], char** number_of_bytes);
 int client_connectin_handler(int client_sock);
 
 
@@ -125,7 +125,7 @@ int client_connectin_handler(int client_sock) {
 
 
             // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
-            get_data_from_client_package(data, file_names, &number_of_bytes_string);
+            get_data_from_client_package(&data, file_names, &number_of_bytes_string);
             
             printf("get data finsihed");
             char* bytes_from_file;
@@ -168,16 +168,19 @@ int client_connectin_handler(int client_sock) {
  * test.txt\ntest2.txt\ntest3.txt\ntest4.txt\ntest5.txt\n1000\n ...
  * 
  */
-int get_data_from_client_package(char* data, char file_names[][64], char** number_of_bytes) {
+int get_data_from_client_package(char** data, char file_names[][64], char** number_of_bytes) {
 
-    printf(data);
+    printf("here");
+    //printf(data);
     char delimiter[] = "\n";
+    
     // Splitte den data String und kopiere das Ergebnis in file_names.
     strncpy(file_names[0], strtok(data, delimiter), 64);
     strncpy(file_names[1], strtok(NULL, delimiter), 64);
     strncpy(file_names[2], strtok(NULL, delimiter), 64);
     strncpy(file_names[3], strtok(NULL, delimiter), 64);
     strncpy(file_names[4], strtok(NULL, delimiter), 64);
+    
     // Der letzte Abschnitt ist die Anzahl der Bytes
     *number_of_bytes = strtok(NULL, delimiter);
     return 0;
