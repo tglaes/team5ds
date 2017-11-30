@@ -15,6 +15,7 @@
 #define SERVER_H
 
 int run_server(int port);
+int client_connectin_handler(int client_sock);
 
 #endif
 
