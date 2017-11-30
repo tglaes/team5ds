@@ -78,10 +78,11 @@ int run_server(int port) {
             continue;
         }
 
-        printf("New Connection from:: %s\n", inet_ntoa(client.sin_addr)); //log ip adresse
+        
 
         pid = fork();
         if (!pid) {//kindprozess     
+            printf("New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr),pid); //log ip adresse
             close(sock); // passiven sock benenden da nicht gebraucht im kind
 
             if (client_connectin_handler(client_sock) < 0) {//fuehre client handler aus 
@@ -107,6 +108,7 @@ int run_server(int port) {
  * gibt -1 zuruck bei fehler sonst 0
  */
 int client_connectin_handler(int client_sock) {
+    printf("handler uernimmt connection");
     char* data = calloc(MAX_DATA_SIZE, sizeof (char));
     char* data_answer = calloc(MAX_DATA_SIZE, sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
@@ -175,7 +177,7 @@ int get_data_from_client_package(char** data, char file_names[][64], char** numb
     char delimiter[] = "\n";
     
     // Splitte den data String und kopiere das Ergebnis in file_names.
-    strncpy(file_names[0], strtok(data, delimiter), 64);
+    strncpy(file_names[0], strtok(*data, delimiter), 64);
     strncpy(file_names[1], strtok(NULL, delimiter), 64);
     strncpy(file_names[2], strtok(NULL, delimiter), 64);
     strncpy(file_names[3], strtok(NULL, delimiter), 64);
