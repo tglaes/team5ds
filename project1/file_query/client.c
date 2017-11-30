@@ -72,7 +72,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
-
+ printf("log gesendet:\n %s\n",data);
 
     // Sendet die Daten an den Server return1 falls fehler
     if (send_data(sock, data) < 0) {
@@ -90,7 +90,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
     
-    printf("Antwort %s",answer_data);
+    printf("log Antwort erhalten  %s\n",answer_data);
 
 
     close(sock);
@@ -114,8 +114,8 @@ int run_client(char* ip_adress, int port) {
  */
 int get_data_from_user(char* data) {
 
-    char* file_name = malloc(MAX_FILE_NAME_SIZE);
-    char* number_of_bytes = malloc(MAX_BYTES_TO_READ / sizeof (char));
+    char* file_name = malloc(MAX_FILE_NAME_SIZE+2);
+    char* number_of_bytes = malloc((MAX_BYTES_TO_READ / sizeof (char))+2);
 
     printf("Enter the first filename : ");
     fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
@@ -134,7 +134,7 @@ int get_data_from_user(char* data) {
     strncat(data, file_name, MAX_FILE_NAME_SIZE);
     printf("Enter a number of bytes  : ");
     fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, number_of_bytes, MAX_BYTES_TO_READ / sizeof (char));
+    strncat(data, number_of_bytes, (MAX_BYTES_TO_READ / sizeof (char))+2);
 
     free(file_name);
     free(number_of_bytes);
