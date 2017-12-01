@@ -4,7 +4,7 @@
 #include "data.h"
 
 
-int strcat_p(char** dest, const char* string, unsigned position);
+int strcat_p(char* dest, const char* string, unsigned position);
 
 /*
  * Kopiert die ersten number_of_bytes Bytes aus den Dateien aus file_names in
@@ -14,17 +14,16 @@ int strcat_p(char** dest, const char* string, unsigned position);
  * NOCH NICHT GETESTET!!
  * 
  */
-int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_SIZE], int number_of_bytes) {
+int get_bytes_from_file(char* bytes_from_file, char file_names[][MAX_FILE_NAME_SIZE], int number_of_bytes) {
     
     FILE *file_pointer;
     unsigned bytes_written = 0;
     bytes_from_file = calloc(5 * (number_of_bytes + 1), sizeof(char));
     
     for(int i = 0; i<5; i++){
-        printf("here %s", file_names[i]);
         file_pointer = fopen(file_names[i], "r");
         if(file_pointer == NULL){
-            printf("File not found");
+            printf("File not found: %s", file_names[i]);
             strcat_p(bytes_from_file, file_not_found, bytes_written);
             bytes_written = bytes_written + strlen(file_not_found);
             continue;
@@ -49,15 +48,15 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
  * Hängt den string an die entsprechende Position in dest und hängt einen Newline
  * Character dran.
  */
-int strcat_p(char** dest, const char* string, unsigned position){
+int strcat_p(char* dest, const char* string, unsigned position){
     
     unsigned last_pos = position + strlen(string);
     
     for(int i = position; i < last_pos; i++){
-        *(*dest + i) = string[i];  
+        dest[i] = string[i];  
     }
     
-    *(*dest + last_pos) = '\n';
+    dest[last_pos] = '\n';
     
     return 0;
 }

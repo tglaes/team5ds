@@ -15,9 +15,8 @@
 
 
 
-int get_data_from_client_package(char** data, char file_names[][64], char** number_of_bytes);
+int get_data_from_client_package(char* data, char file_names[][64], char* number_of_bytes);
 int client_connectin_handler(int client_sock);
-
 
 /*
  * Startet einen Server, der mehrere Anfragen von Clienten gleichzeitig
@@ -78,11 +77,11 @@ int run_server(int port) {
             continue;
         }
 
-        
+
 
         pid = fork();
         if (!pid) {//kindprozess     
-            printf("New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr),pid); //log ip adresse
+            printf("New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr), pid); //log ip adresse
             close(sock); // passiven sock benenden da nicht gebraucht im kind
 
             if (client_connectin_handler(client_sock) < 0) {//fuehre client handler aus 
@@ -101,6 +100,7 @@ int run_server(int port) {
 
     return 0;
 }
+
 /*
  *  function die sich um eine verbindung kuemmert wird von jeden 
  * erstellten verbindprozess aufgerufen  
@@ -112,7 +112,7 @@ int client_connectin_handler(int client_sock) {
     char* data = calloc(MAX_DATA_SIZE, sizeof (char));
     char* data_answer = calloc(MAX_DATA_SIZE, sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
-    char* number_of_bytes_string = malloc(2);
+    char* number_of_bytes_string = calloc(3, sizeof (char));
     int number_of_bytes = 0;
 
 
@@ -126,23 +126,26 @@ int client_connectin_handler(int client_sock) {
 
 
 
-            // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
-            get_data_from_client_package(&data, file_names, &number_of_bytes_string);
-            
-            printf("get data finsihed");
-            char* bytes_from_file;
-            // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
-            get_bytes_from_file(&bytes_from_file , file_names, number_of_bytes);
-            
-            
+    // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
+    get_data_from_client_package(data, file_names, number_of_bytes_string);
+    number_of_bytes = atoi(number_of_bytes_string);
+    
+    
+    for (int i = 0; i < 5; i++) {
+        printf("File name: %s\n", file_names[i]);
 
-           // TODO: Schicke Client eine Antwort und Speicher freigeben. 
-            /*for(int i= 0; i < 50; i++){    
-                printf("%c", bytes_from_file[i]);
-            } */    
+    }
+    printf("Number of bytes: %s", number_of_bytes_string);
 
+    printf("get data finsihed");
+    char* bytes_from_file;
+    // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
+    get_bytes_from_file(bytes_from_file, file_names, number_of_bytes);
 
-   // zum testen ende zuerst einfach die empfangen daten zuruck bis get_bytes_from_file funktioniert
+    // TODO: Schicke Client eine Antwort und Speicher freigeben.     
+        printf("%s", bytes_from_file);
+
+    // zum testen ende zuerst einfach die empfangen daten zuruck bis get_bytes_from_file funktioniert
     if (send_data(client_sock, data) < 0) {
         perror("Client Error: daten senden fehlgeschlagen");
         close(client_sock);
@@ -150,7 +153,7 @@ int client_connectin_handler(int client_sock) {
         free(data_answer);
         return -1;
     }
-    
+
     free(data);
     free(data_answer);
     //free(bytes_from_file);
@@ -170,20 +173,35 @@ int client_connectin_handler(int client_sock) {
  * test.txt\ntest2.txt\ntest3.txt\ntest4.txt\ntest5.txt\n1000\n ...
  * 
  */
-int get_data_from_client_package(char** data, char file_names[][64], char** number_of_bytes) {
+int get_data_from_client_package(char* data, char file_names[][64], char* number_of_bytes) {
 
-    printf("here");
-    //printf(data);
-    char delimiter[] = "\n";
-    
+    int number_file = 0;
+    int bytes_written = 0;
+    int i;
+
     // Splitte den data String und kopiere das Ergebnis in file_names.
-    strncpy(file_names[0], strtok(*data, delimiter), 64);
-    strncpy(file_names[1], strtok(NULL, delimiter), 64);
-    strncpy(file_names[2], strtok(NULL, delimiter), 64);
-    strncpy(file_names[3], strtok(NULL, delimiter), 64);
-    strncpy(file_names[4], strtok(NULL, delimiter), 64);
-    
+    for (i = 0; i < MAX_FILE_NAME_SIZE * 5; i++) {
+
+        if (number_file >= MAX_FILES_TO_ACCEPT) {
+            break;
+        }
+        if (data[i] == '\n') {
+            file_names[number_file][bytes_written] = '\0';
+            number_file++;
+            bytes_written = 0;
+            continue;
+        } else {
+            file_names[number_file][bytes_written] = data[i];
+            bytes_written++;
+        }
+    }
+
     // Der letzte Abschnitt ist die Anzahl der Bytes
-    *number_of_bytes = strtok(NULL, delimiter);
+    number_of_bytes[0] = data[i];
+    if (data[i] == '\n') {
+        number_of_bytes[1] = '\0';
+    }
+    number_of_bytes[1] = data[i + 1];
+    number_of_bytes[2] = '\0';
     return 0;
 }

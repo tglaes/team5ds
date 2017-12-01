@@ -72,7 +72,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
- printf("log gesendet:\n %s\n",data);
+    printf("log gesendet:\n %s\n",data);
 
     // Sendet die Daten an den Server return1 falls fehler
     if (send_data(sock, data) < 0) {
