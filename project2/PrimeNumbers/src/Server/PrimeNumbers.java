@@ -6,6 +6,9 @@
 package Server;
 
 import Main.PrimeNumberCollection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -21,7 +24,6 @@ public class PrimeNumbers {
     private String[] stringArray;
     private int[] intArray;
     
-    
     @WebMethod
     public String getPrimeNumbersAsString(int n ){
         return null;
@@ -34,12 +36,20 @@ public class PrimeNumbers {
     
     @WebMethod
     public PrimeNumberCollection getPrimeNumbersAsStringArray1(int n){
-        return null;
+        
+        Integer[] primeNumberArray = calcPrimes(n);
+        
+        ArrayList<Integer> primeNumbersArrayList = new ArrayList<>();
+        Collections.addAll(primeNumbersArrayList, primeNumberArray);
+             
+        PrimeNumberCollection pnc = new PrimeNumberCollection(primeNumbersArrayList);
+               
+        return pnc;
     }
      
     
-    private int[] calcPrimes(int n) {
-        int[] primeNumbers = new int[n];
+    private Integer[] calcPrimes(int n) {
+        Integer[] primeNumbers = new Integer[n];
         int sumPrimes = 0;
         for (int i = 2; sumPrimes < n ; i++) {
             boolean isPrime = true;

@@ -5,7 +5,9 @@
  */
 package Main;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlElement;
+
 
 /**
  *
@@ -13,9 +15,14 @@ import java.util.HashMap;
  */
 public class PrimeNumberCollection {
     
-    public HashMap<Integer, Integer> primeNumbers;
+    @XmlElement
+    private ArrayList<Integer> primeNumbers = new ArrayList<>();
     
-    public PrimeNumberCollection(){
-        
+    public PrimeNumberCollection(ArrayList<Integer> primeNumbers){
+        this.primeNumbers = primeNumbers;
+    }
+    
+    public ArrayList<Integer> getPrimeNumbers(){
+        return this.primeNumbers;
     }
 }
