@@ -24,16 +24,18 @@ public class PrimeNumbers {
     private String[] stringArray;
     private int[] intArray;
     
+     
     @WebMethod
     public String getPrimeNumbersAsString(int n ){
-        return null;
+        //String[] stringArray = intToStringArray(calcPrimes(n));
+        String primeString = Arrays.toString(calcPrimes(n));
+        return primeString;
     }
-    
     @WebMethod
     public int[] getPrimeNumbersAsArray(int n){
-        return null;
+        int[] intArray = toPrimitive(calcPrimes(n));
+        return intArray;
     }
-    
     @WebMethod
     public PrimeNumberCollection getPrimeNumbersAsStringArray1(int n){
         
@@ -66,6 +68,19 @@ public class PrimeNumbers {
         return primeNumbers;  
     }
     
+    public static int[] toPrimitive(Integer[] array) {
+        if (array == null) {
+            return null;
+        } else if (array.length == 0) {
+            int[] EMPTY_INT_ARRAY = null;
+            return EMPTY_INT_ARRAY;
+        }
+        final int[] result = new int[array.length];
+        for (int i = 0; i < array.length; i++) {
+            result[i] = array[i].intValue();
+        }
+        return result;
+    }
     
     private void intArrayOutput(int[] primeArray){
         System.out.println("Primzahlenausgabe als Int-Array");
