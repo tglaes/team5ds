@@ -5,7 +5,6 @@
  */
 package Server;
 
-import Main.PrimeNumberCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,7 +43,8 @@ public class PrimeNumbers {
         ArrayList<Integer> primeNumbersArrayList = new ArrayList<>();
         Collections.addAll(primeNumbersArrayList, primeNumberArray);
              
-        PrimeNumberCollection pnc = new PrimeNumberCollection(primeNumbersArrayList);
+        PrimeNumberCollection pnc = new PrimeNumberCollection();
+        pnc.primeNumbers = primeNumbersArrayList;
                
         return pnc;
     }

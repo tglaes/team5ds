@@ -3,26 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package Server;
 
 import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
  *
  * @author Tristan Glaes
  */
+@XmlRootElement
 public class PrimeNumberCollection {
     
     @XmlElement
-    private ArrayList<Integer> primeNumbers = new ArrayList<>();
-    
-    public PrimeNumberCollection(ArrayList<Integer> primeNumbers){
-        this.primeNumbers = primeNumbers;
-    }
-    
-    public ArrayList<Integer> getPrimeNumbers(){
-        return this.primeNumbers;
-    }
+    public ArrayList<Integer> primeNumbers = new ArrayList<>();  
 }

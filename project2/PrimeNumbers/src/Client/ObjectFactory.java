@@ -1,7 +1,10 @@
 
 package Client;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -21,6 +24,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _PrimeNumberCollection_QNAME = new QName("http://Server/", "primeNumberCollection");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: Client
@@ -43,6 +47,15 @@ public class ObjectFactory {
      */
     public IntArray createIntArray() {
         return new IntArray();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PrimeNumberCollection }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://Server/", name = "primeNumberCollection")
+    public JAXBElement<PrimeNumberCollection> createPrimeNumberCollection(PrimeNumberCollection value) {
+        return new JAXBElement<PrimeNumberCollection>(_PrimeNumberCollection_QNAME, PrimeNumberCollection.class, null, value);
     }
 
 }

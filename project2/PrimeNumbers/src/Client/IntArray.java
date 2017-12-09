@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für intArray complex type.
+ * <p>Java-Klasse fuer intArray complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "intArray", propOrder = {
+@XmlType(name = "intArray", namespace = "http://jaxb.dev.java.net/array", propOrder = {
     "item"
 })
 public class IntArray {

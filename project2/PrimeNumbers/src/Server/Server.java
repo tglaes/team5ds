@@ -17,6 +17,7 @@ public class Server {
     private Endpoint endpoint;
     
     public void run(int port){
+        // Diese Operation ist Non-Blocking!!
         endpoint = Endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
     } 
     

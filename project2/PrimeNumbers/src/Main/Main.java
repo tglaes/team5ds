@@ -5,117 +5,55 @@
  */
 package Main;
 
+import Client.Client;
 import Server.Server;
-import java.util.Scanner;
 
 /**
  *
  * @author Tristan
  */
 public class Main {
-    
-    private static Scanner input = new Scanner(System.in); 
 
-    //-----------Constants--------------------// 
-    private static final int START_SERVER           = 1;
-    private static final int START_CLIENT           = 2;
-    private static final int END                    = 0;
-    
-    public static void main(String[] args){
+    public static void main(String[] args) {
         start();
     }
+
     public static void start() {
-        Server s = new Server();
+        Server s = null;
+        Client c = null;
         int function = -1;
         int port = 0;
-        int nPrim= 0;
-        String ipAdress = "";
-        int output = 0;
-        
-        while (function != END) {
-            try {
-                function = readFunction(); 
-                switch (function)
-                {
-                    case START_SERVER :
-                        port = readlnInt(input,"\nPort: ");
-                        // TODO: noch zu testen
-                        System.out.println( "\nServer is running...");
-                        
-                        s.run(port);
-                        break;
-                    
-                    case START_CLIENT :
-                        port = readlnInt(input,"\nPort: ");
-                        ipAdress = readlnString(input,"\nIP-Adress: ");
-                        // TODO: Client starten und mit Server verbinden
-                        // startClient();
-                        // connectToServer(ipAdress, port);
-                        System.out.println( "\nClient is connected with server...");
-                        break;
-                    /*
-                    case CALCULATE_PRIM :
-                        nPrim = readlnInt(input,"\nAnzahl(n): ");
-                        output = readlnInt(input,"\nOutput (INT-Array-->4 / STRING-->5 / STRUCT--> 6): ");
-                        if(output == 4){
-                            //intArrayOutput(nPrim);
-                        } else if(output == 5) {
-                            //stringArrayOutput(nPrim);
-                        } else if(output == 6) {
-                            //structOutput(nPrim);
-                        }
-                        break;
-                      */                 
-                    case END :
-                        // TODO Server und Client Verbindung "beenden"
-                        // closeSocket();
-                        
-                        if(s != null){
-                            s.stop();
-                            System.out.println("\nServer stopped...");
-                        }else{
-                            throw new RuntimeException("Diese Server kaputtt!");
-                        }
+
+        try {
+            function = Dialog.readFunction();
+            switch (function) {
+                case Dialog.START_SERVER:
+                    s = new Server();
+                    port = Dialog.readlnInt("\nPort: ");
+                    System.out.println("\nServer is running under port " + port);
+                    s.run(port);
                     break;
 
-                    default :
-                        System.out.println("\nWrong input");
+                case Dialog.START_CLIENT:
+                    c = new Client();
+                    c.start();
                     break;
-                } 
+                case Dialog.END:
+                    if (s != null) {
+                        s.stop();
+                        System.out.println("\nServer stopped...");
+                    }
+                    break;
 
+                default:
+                    System.out.println("\nWrong input");
+                    break;
             }
-            catch (AssertionError e) {
-                System.out.println(e);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+
+        } catch (AssertionError e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    /**
-     * Liest eingegebene Int, String.
-     */
-    private static int readlnInt(Scanner input,String stringInput) {
-        System.out.print(stringInput);
-        String line = input.nextLine();
-        return Integer.parseInt(line);
-    }
-
-    private static String readlnString(Scanner input, String stringInput) {
-        System.out.print(stringInput);
-        String word = input.nextLine();
-        return word;
-    }
-    /**
-     * Menue anzeigen und functionen einlesen
-     */
-    private static int readFunction() { 
-        System.out.println ( 
-            "\n: START_SERVER             -> "    + START_SERVER +   
-            "\n: START_CLIENT             -> "    + START_CLIENT + 
-            "\n: Programm Beenden         -> "    + END  );
-
-        return readlnInt(input,"\n\t Input: ");                    
-    }
-    
 }
