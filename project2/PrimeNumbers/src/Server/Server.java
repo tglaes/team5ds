@@ -5,6 +5,7 @@
  */
 package Server;
 
+import java.io.IOException;
 import javax.xml.ws.Endpoint;
 
 /**
@@ -16,12 +17,11 @@ public class Server {
     
     private Endpoint endpoint;
     
-    public void run(int port){
+    public void run(int port) throws IOException{
         // Diese Operation ist Non-Blocking!!
         endpoint = Endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
-    } 
-    
-    public void stop(){
+        System.out.println("Press enter to stop the server.");
+        System.in.read();
         endpoint.stop();
-    }
+    } 
 }

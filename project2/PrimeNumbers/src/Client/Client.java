@@ -23,6 +23,7 @@ public class Client {
     }
 
     public void start() {
+        //TODO: Den Client nocheinmal nach einer Eingabe fragen oder beenden.
         getNumberOfPrimes();
         getFunction();
         switch (function) {

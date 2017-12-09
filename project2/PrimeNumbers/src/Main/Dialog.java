@@ -42,5 +42,4 @@ public class Dialog {
 
         return readlnInt("\n\t Input: ");                    
     }
-    
 }

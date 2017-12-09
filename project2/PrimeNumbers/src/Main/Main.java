@@ -39,12 +39,7 @@ public class Main {
                     c.start();
                     break;
                 case Dialog.END:
-                    if (s != null) {
-                        s.stop();
-                        System.out.println("\nServer stopped...");
-                    }
                     break;
-
                 default:
                     System.out.println("\nWrong input");
                     break;
