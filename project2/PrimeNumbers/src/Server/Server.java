@@ -6,22 +6,24 @@
 package Server;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import javax.xml.ws.Endpoint;
 
 /**
  *
  * @author Tristan
  */
-
 public class Server {
-    
+
     private Endpoint endpoint;
-    
-    public void run(int port) throws IOException{
-        // Diese Operation ist Non-Blocking!!
-        endpoint = Endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
+
+    public void run(int port) throws IOException {
+        
+        endpoint = Endpoint.create(new PrimeNumbers());
+        endpoint.setExecutor(Executors.newFixedThreadPool(10));
+        endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
         System.out.println("Press enter to stop the server.");
         System.in.read();
         endpoint.stop();
-    } 
+    }
 }
