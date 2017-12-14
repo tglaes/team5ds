@@ -5,12 +5,15 @@
  */
 package Client;
 
-import Main.Dialog;
+import Main.ClientDialog;
 import java.util.List;
 
 /**
- *
- * @author Tristan Glaes
+ * Klasse welche Webmethoden vom Server aufruft und Primzahlen Ergebnisse
+ * zurueck liefert.
+ * 
+ *@author Tristan Glaes,Meris Krupic,Jurie Golovencic,Vadim Khablov 
+ *@version 14.12.2017
  */
 public class Client {
 
@@ -18,12 +21,18 @@ public class Client {
     private int function = 0;
     private PrimeNumbersService pns;
     
+    /**
+     * Konstruktor der uns ein PrimeNumbersService Objekt erstellt 
+     * ueber das wir auf die Webmethoden zugreifen koennen.
+     */
     public Client() {
         pns = new PrimeNumbersService();
     }
 
+    /**
+     * Methode zur Ausgabe der gewaehlten Ausgabeart(Array,String,Struktur).
+     */
     public void start() {
-        //TODO: Den Client nocheinmal nach einer Eingabe fragen oder beenden.
         getNumberOfPrimes();
         getFunction();
         switch (function) {
@@ -48,11 +57,11 @@ public class Client {
     }
     
     private void getFunction(){
-        function = Dialog.readlnInt("\nOutput (INT-Array-->1 / STRING-->2 / STRUCT--> 3): ");
+        function = ClientDialog.readlnInt("\nOutput (INT-Array-->1 / STRING-->2 / STRUCT--> 3): ");
     }
     
     private void getNumberOfPrimes() {
-        numberOfPrimes = Dialog.readlnInt("\nAnzahl(n): ");
+        numberOfPrimes = ClientDialog.readlnInt("\nAnzahl(n): ");
     }
     
 }

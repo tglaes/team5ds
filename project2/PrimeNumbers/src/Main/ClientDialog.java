@@ -11,7 +11,7 @@ import java.util.Scanner;
  *
  * @author Tristan Glaes
  */
-public class Dialog {
+public class ClientDialog {
     
     public static final int START_SERVER           = 1;
     public static final int START_CLIENT           = 2;
