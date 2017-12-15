@@ -13,8 +13,12 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 /**
+ * Diese Klasse dient zur berechnung der Primzahlen und stellt Methoden
+ * zur Rueckgabe der Primzahlen mit verschiedenen Datentypen.
  *
- * @author Tristan
+ * @author Tristan Glaes,Meris Krupic,Jurie Golovencic,Vadim Khablov 
+ * @version 14.12.2017
+ * 
  */
 @WebService()
 @SOAPBinding(style = SOAPBinding.Style.RPC)
@@ -23,18 +27,35 @@ public class PrimeNumbers {
     private String[] stringArray;
     private int[] intArray;
     
-     
+    /**
+     * Gibt Primzahlen als StringArray zurueck.
+     * @param n
+     * @return Ausgabe der Primzahlen als String.
+     */
     @WebMethod
     public String getPrimeNumbersAsString(int n ){
         //String[] stringArray = intToStringArray(calcPrimes(n));
         String primeString = Arrays.toString(calcPrimes(n));
         return primeString;
     }
+    
+    /**
+     * Gibt die Primzahlen als IntArray zurueck.
+     * @param n
+     * @return IntArray mit Primzahlen
+     */
     @WebMethod
     public int[] getPrimeNumbersAsArray(int n){
         int[] intArray = toPrimitive(calcPrimes(n));
         return intArray;
     }
+    
+    /**
+     * Gibt die Primzahlen als eine eine Struktur von der PrimeNumberCollection 
+     * zurueck.
+     * @param n
+     * @return 
+     */
     @WebMethod
     public PrimeNumberCollection getPrimeNumbersAsStringArray1(int n){
         
@@ -49,7 +70,12 @@ public class PrimeNumbers {
         return pnc;
     }
      
-    
+    /**
+     * Methode zur berechnung der Primzahlen 
+     * 
+     * @param n Anzahl der zurueckgegebenen Primzahlen
+     * @return Primzahlen
+     */
     private Integer[] calcPrimes(int n) {
         Integer[] primeNumbers = new Integer[n];
         int sumPrimes = 0;
@@ -68,6 +94,12 @@ public class PrimeNumbers {
         return primeNumbers;  
     }
     
+    /**
+     * Methode zur Umwandlung eines IntegerArray in ein IntArray.
+     * 
+     * @param array 
+     * @return Gibt ein IntArray zurueck.
+     */
     public static int[] toPrimitive(Integer[] array) {
         if (array == null) {
             return null;
@@ -82,6 +114,10 @@ public class PrimeNumbers {
         return result;
     }
     
+    /**
+     * Methode zur Ausgabe der Primzahlen als IntArray in der Konsole.
+     * @param primeArray
+     */
     private void intArrayOutput(int[] primeArray){
         System.out.println("Primzahlenausgabe als Int-Array");
         for (int i = 0; i < primeArray.length ; i++) {
@@ -90,6 +126,11 @@ public class PrimeNumbers {
         System.out.println("\n");
     }
     
+    /**
+     * Methode zur Umwandlung des IntArray zu einem StringArray.
+     * @param primeArray
+     * @return Gibt das IntArray als String zurueck
+     */
     private String[] intToStringArray(int[] primeArray){
         String[] stringArray = new String[primeArray.length];
         for (int i = 0; i < primeArray.length ; i++) {
@@ -98,7 +139,10 @@ public class PrimeNumbers {
         return stringArray;
     }
     
-    
+    /**
+     * Methode zur Ausgabe der Primzahlen als StringArray in der Konsole.
+     * @param stringArray 
+     */
     private void stringArrayOutput(String[] stringArray){
         System.out.println("Primzahlenausgabe als String-Array");
         for (int i = 0; i < stringArray.length ; i++) {   
@@ -106,17 +150,5 @@ public class PrimeNumbers {
         }
         System.out.println("\n");
     }
-    
-    /*
-    private void structOutput(String[] stringArray, int[] intArray){
-          
-        System.out.println("Primzahlenausgabe als Struktur");
-        
-        for (int i = 0; i < intArray.length; i++) {   
-            System.out.println(i+1 +")\tString-Array: " +prim.stringArray[i]+ " \tInteger-Array: "
-            + prim.intArray[i]);           
-        }
-        System.out.println("\n");
-    }*/
 
 }

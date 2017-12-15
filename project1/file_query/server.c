@@ -80,8 +80,9 @@ int run_server(int port) {
 
 
         pid = fork();
+       
         if (!pid) {//kindprozess     
-            printf("New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr), pid); //log ip adresse
+            
             close(sock); // passiven sock benenden da nicht gebraucht im kind
 
             if (client_connectin_handler(client_sock) < 0) {//fuehre client handler aus 
@@ -93,6 +94,7 @@ int run_server(int port) {
                 exit(0);
             }
         } else { //Vaterprozess 
+            printf("log:New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr), pid); //log ip adresse
             close(client_sock); //aktiven client sock beenden da im eltern prozeccs nicht gebraucht
             while (waitpid(-1, NULL, WNOHANG) > 0);
         }
@@ -108,11 +110,12 @@ int run_server(int port) {
  * gibt -1 zuruck bei fehler sonst 0
  */
 int client_connectin_handler(int client_sock) {
-    printf("handler uernimmt connection");
+    printf("debug:handler ubernimmt connection");
     char* data = calloc(MAX_DATA_SIZE, sizeof (char));
     char* data_answer = calloc(MAX_DATA_SIZE, sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
-    char* number_of_bytes_string = calloc(3, sizeof (char));
+    char number_of_bytes_string[sizeof MAX_BYTES_TO_READ_STRING + 1];
+    char* bytes_from_file;
     int number_of_bytes = 0;
 
 
@@ -129,21 +132,21 @@ int client_connectin_handler(int client_sock) {
     // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
     get_data_from_client_package(data, file_names, number_of_bytes_string);
     number_of_bytes = atoi(number_of_bytes_string);
-    
-    
+
+
     for (int i = 0; i < 5; i++) {
-        printf("File name: %s\n", file_names[i]);
+        printf("\nFile name: %s\n", file_names[i]);
 
     }
-    printf("Number of bytes: %s", number_of_bytes_string);
+    printf("Number of bytes: %s\n", number_of_bytes_string);
 
-    printf("get data finsihed");
-    char* bytes_from_file;
+    printf("get data finsihed\n");
+
     // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
-    get_bytes_from_file(bytes_from_file, file_names, number_of_bytes);
+    get_bytes_from_file(&bytes_from_file, file_names, number_of_bytes);
 
     // TODO: Schicke Client eine Antwort und Speicher freigeben.     
-        printf("%s", bytes_from_file);
+    printf("%s", bytes_from_file);
 
     // zum testen ende zuerst einfach die empfangen daten zuruck bis get_bytes_from_file funktioniert
     if (send_data(client_sock, data) < 0) {
@@ -151,11 +154,13 @@ int client_connectin_handler(int client_sock) {
         close(client_sock);
         free(data);
         free(data_answer);
+        free(bytes_from_file);
         return -1;
     }
 
     free(data);
     free(data_answer);
+    free(bytes_from_file);
     //free(bytes_from_file);
     return 0;
 

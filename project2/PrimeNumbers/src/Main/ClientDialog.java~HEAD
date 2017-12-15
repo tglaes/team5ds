@@ -11,10 +11,8 @@ import java.util.Scanner;
  *
  * @author Tristan Glaes
  */
-public class Dialog {
-    
-    public static final int START_SERVER           = 1;
-    public static final int START_CLIENT           = 2;
+public class ClientDialog {
+    public static final int START_CLIENT           = 1;
     public static final int END                    = 0; 
     private static Scanner input = new Scanner(System.in); 
     /**
@@ -35,11 +33,19 @@ public class Dialog {
      * Menue anzeigen und functionen einlesen
      */
     public static int readFunction() { 
-        System.out.println ( 
-            "\n: START_SERVER             -> "    + START_SERVER +   
+        System.out.println (  
             "\n: START_CLIENT             -> "    + START_CLIENT + 
             "\n: Programm Beenden         -> "    + END  );
 
         return readlnInt("\n\t Input: ");                    
     }
+    
+    public static int readClientFunction() { 
+        System.out.println (  
+            "\n: Weitere Berechnungen?    -> "    + START_CLIENT + 
+            "\n: Programm Beenden         -> "    + END  );
+
+        return readlnInt("\n\t Input: ");                    
+    }
+    
 }

@@ -11,8 +11,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
- *
- * @author Tristan Glaes
+ * Erstellt ein ArrayList Objekt einer Collektion.
+ * 
+ *@author Tristan Glaes,Meris Krupic,Jurie Golovencic,Vadim Khablov 
+ *@version 14.12.2017
  */
 @XmlRootElement
 public class PrimeNumberCollection {

@@ -8,37 +8,38 @@ package Main;
 import Client.Client;
 import Server.Server;
 
-/**
- *
- * @author Tristan
- */
+//TODO: Getrennter Dialog fuer Server und fuer Client
+
 public class Main {
 
     public static void main(String[] args) {
         start();
     }
 
+    
+    
     public static void start() {
         Server s = null;
         Client c = null;
         int function = -1;
-        int port = 0;
+        int port = 8000;
 
+        while(function!= 0){
         try {
-            function = Dialog.readFunction();
+            function = ClientDialog.readFunction();
             switch (function) {
-                case Dialog.START_SERVER:
+                case ClientDialog.START_SERVER:
                     s = new Server();
-                    port = Dialog.readlnInt("\nPort: ");
-                    System.out.println("\nServer is running under port " + port);
+                    //port = ClientDialog.readlnInt("\nPort: ");
+                    System.out.println("\nServer is running under port 8000" );
                     s.run(port);
                     break;
 
-                case Dialog.START_CLIENT:
+                case ClientDialog.START_CLIENT:
                     c = new Client();
                     c.start();
                     break;
-                case Dialog.END:
+                case ClientDialog.END:
                     break;
                 default:
                     System.out.println("\nWrong input");
@@ -49,6 +50,7 @@ public class Main {
             System.out.println(e);
         } catch (Exception e) {
             e.printStackTrace();
+        }
         }
     }
 }
