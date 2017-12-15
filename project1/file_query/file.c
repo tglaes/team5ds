@@ -37,6 +37,9 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
         char* file_content = calloc(number_of_bytes, sizeof(char));
         // Lese die Anzahl der Zeichen aus der Datei.
         bytes_read = fread(file_content, sizeof(char), number_of_bytes, file_pointer);
+        strncat(*bytes_from_file ,file_names[i], MAX_FILE_NAME_SIZE);
+        strncat(*bytes_from_file ,":", 2);
+        
         // Hänge den String an 
         strcat_p(*bytes_from_file, file_content, bytes_written);
         // Update der Anzahl der Bytes.
