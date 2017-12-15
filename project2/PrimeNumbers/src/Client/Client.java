@@ -56,12 +56,12 @@ public class Client {
         }
     }
     
-    private void getFunction(){
-        function = ClientDialog.readlnInt("\nOutput (INT-Array-->1 / STRING-->2 / STRUCT--> 3): ");
-    }
-    
     private void getNumberOfPrimes() {
         numberOfPrimes = ClientDialog.readlnInt("\nAnzahl(n): ");
+    }
+    
+    private void getFunction(){
+        function = ClientDialog.readlnInt("\nOutput (INT-Array-->1 / STRING-->2 / STRUCT--> 3): ");
     }
     
 }

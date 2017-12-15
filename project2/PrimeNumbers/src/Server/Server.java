@@ -5,6 +5,7 @@
  */
 package Server;
 
+import java.util.Scanner;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import javax.xml.ws.Endpoint;
@@ -16,6 +17,8 @@ import javax.xml.ws.Endpoint;
  * @version 14.12.2017
  */
 public class Server {
+ 
+private static Scanner input = new Scanner(System.in);
 
     private Endpoint endpoint;
 
@@ -30,8 +33,9 @@ public class Server {
         //endpoint = Endpoint.create(new PrimeNumbers());
         //endpoint.setExecutor(Executors.newFixedThreadPool(10));
         endpoint = Endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
-        System.out.println("Press enter to stop the server.");
-        System.in.read();
+        }
+    
+    public void stop() throws IOException {
         endpoint.stop();
+        }
     }
-}
