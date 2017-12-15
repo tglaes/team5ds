@@ -17,6 +17,8 @@
         </gdb_signals>
         <gdb_options>
           <DebugOptions>
+            <option name="gdb_follow_fork_mode" value="child"/>
+            <option name="gdb_detach_on_fork" value="off"/>
             <option name="debug_command" value="&quot;${OUTPUT_PATH}&quot; -s 3000"/>
           </DebugOptions>
         </gdb_options>
