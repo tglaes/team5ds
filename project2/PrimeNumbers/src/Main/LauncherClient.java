@@ -1,44 +1,40 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and open the template in the editor. 
+
  */
 package Main;
 
 import Client.Client;
-import Server.Server;
 
-/**
- *
- * @author Tristan
- */
-public class Main {
+public class LauncherClient {
 
     public static void main(String[] args) {
-        start();
+        startClient();
     }
 
-    public static void start() {
-        Server s = null;
+    public static void startClient() {
         Client c = null;
         int function = -1;
-        int port = 0;
+        int port = 8000;
 
+        while(function!= 0){
         try {
-            function = Dialog.readFunction();
+            if(c == null){
+                function = ClientDialog.readFunction();
+            }else if(c != null){
+                function = ClientDialog.readClientFunction();
+            }
             switch (function) {
-                case Dialog.START_SERVER:
-                    s = new Server();
-                    port = Dialog.readlnInt("\nPort: ");
-                    System.out.println("\nServer is running under port " + port);
-                    s.run(port);
-                    break;
-
-                case Dialog.START_CLIENT:
+                case ClientDialog.START_CLIENT:
+                    if(c == null){
                     c = new Client();
+                    }
                     c.start();
                     break;
-                case Dialog.END:
+                case ClientDialog.END:
+                     System.out.println("\nProgram closed!" );
                     break;
                 default:
                     System.out.println("\nWrong input");
@@ -49,6 +45,7 @@ public class Main {
             System.out.println(e);
         } catch (Exception e) {
             e.printStackTrace();
+        }
         }
     }
 }

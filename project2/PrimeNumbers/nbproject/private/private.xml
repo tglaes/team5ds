@@ -1,8 +1,18 @@
+<<<<<<< HEAD
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group/>
+    </open-files>
+</project-private>
+=======
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/IntArray.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/PrimeNumbersService.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/Main.java</file>
@@ -11,6 +21,13 @@
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/Client.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Server/Server.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/Dialog.java</file>
+=======
+            <file>file:/C:/Users/Vadim/Documents/NetBeansProjects/team5ds/project2/PrimeNumbers/src/Server/PrimeNumbers.java</file>
+            <file>file:/C:/Users/Vadim/Documents/NetBeansProjects/team5ds/project2/PrimeNumbers/src/Server/PrimeNumberCollection.java</file>
+            <file>file:/C:/Users/Vadim/Documents/NetBeansProjects/team5ds/project2/PrimeNumbers/src/Client/Client.java</file>
+            <file>file:/C:/Users/Vadim/Documents/NetBeansProjects/team5ds/project2/PrimeNumbers/src/Server/Server.java</file>
+>>>>>>> 9d476323a21c00e1040a8b006ad3b5a01111e581
         </group>
     </open-files>
 </project-private>
+>>>>>>> 477c298e1b0d2709de23333069fd5bbcc4c3ccb0
