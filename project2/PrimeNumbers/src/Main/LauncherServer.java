@@ -1,19 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Main;
 
 import Server.Server;
 
-//TODO: Getrennter Dialog fuer Server und fuer Client
+/**
+ * Klasse die einen Server erstellt.
+ * 
+ * @author Tristan Glaes,Meris Krupic,Jurie Golovencic,Vadim Khablov 
+ * @version 14.12.2017
+ */
+
 public class LauncherServer {
 
     public static void main(String[] args) {
         startServer();
     }
 
+    /**
+    * Methode zum starten des Server
+    *
+    */
+    
     public static void startServer() {
         Server s = null;
         int function = -1;
