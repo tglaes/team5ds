@@ -1,12 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor. 
 
- */
 package Main;
 
 import Client.Client;
+
+/**
+ * Klasse die einen Client erstellt welcher mit dem Server verbunden ist.
+ * 
+ *@author Tristan Glaes,Meris Krupic,Jurie Golovencic,Vadim Khablov 
+ *@version 14.12.2017
+ */
 
 public class LauncherClient {
 
@@ -14,6 +16,10 @@ public class LauncherClient {
         startClient();
     }
 
+    /**
+     * Methode zum starten des Client
+     * 
+    */
     public static void startClient() {
         Client c = null;
         int function = -1;
