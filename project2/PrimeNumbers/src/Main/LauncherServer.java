@@ -8,7 +8,6 @@ package Main;
 import Server.Server;
 
 //TODO: Getrennter Dialog fuer Server und fuer Client
-
 public class LauncherServer {
 
     public static void main(String[] args) {
@@ -25,17 +24,19 @@ public class LauncherServer {
                 function = ServerDialog.readFunction();
                 switch (function) {
                     case ServerDialog.START_SERVER:
-                        if (s==null){
-                        s = new Server();
-                        System.out.println("\nServer is running under port 8000" );
-                        s.run(port);
-                        }else {
-                           System.out.println("\nServer is already running!" );
-                        } 
+                        if (s == null) {
+                            s = new Server();
+                            System.out.println("\nServer is running under port 8000");
+                            s.run(port);
+                        } else {
+                            System.out.println("\nServer is already running!");
+                        }
                         break;
                     case ServerDialog.END:
-                        s.stop();
-                        System.out.println("\nServer closed successfully." );
+                        if (s != null) {
+                            s.stop();
+                        }
+                        System.out.println("\nServer closed successfully.");
                         break;
                     default:
                         System.out.println("\nWrong input");
@@ -47,6 +48,6 @@ public class LauncherServer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } 
+        }
     }
 }

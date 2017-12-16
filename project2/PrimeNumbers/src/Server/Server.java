@@ -16,8 +16,6 @@ import javax.xml.ws.Endpoint;
  * @version 14.12.2017
  */
 public class Server {
- 
-private static Scanner input = new Scanner(System.in);
 
     private Endpoint endpoint;
 
@@ -31,7 +29,6 @@ private static Scanner input = new Scanner(System.in);
         
         endpoint = Endpoint.publish("http://localhost:" + port + "/primenumbers", new PrimeNumbers());
         System.out.println("Press enter to stop the server.");
-        System.in.read();
         }
     
     public void stop() throws IOException {
