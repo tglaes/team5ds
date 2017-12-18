@@ -17,7 +17,7 @@ int strcat_p(char* dest, const char* string, unsigned position);
 int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_SIZE], int number_of_bytes) {
     
     FILE *file_pointer;
-    unsigned bytes_written = 0;
+    //unsigned bytes_written = 0;
     *bytes_from_file = calloc(MAX_DATA_SIZE, sizeof(char)); //
     int bytes_read;
     
@@ -34,17 +34,22 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
             continue;
         }
         // Speicher für den Inhalt der Datei.
-        char* file_content = calloc(number_of_bytes, sizeof(char));
+        char* file_content = calloc(number_of_bytes+1, sizeof(char));//+1 für die'\0'
         // Lese die Anzahl der Zeichen aus der Datei.
         bytes_read = fread(file_content, sizeof(char), number_of_bytes, file_pointer);
         strncat(*bytes_from_file ,file_names[i], MAX_FILE_NAME_SIZE);
         strncat(*bytes_from_file ,":", 2);
+        file_content[number_of_bytes+1]='\0';//damit wird strcat_p überfüssig und man kann strncat benutzen das problem war das der inhalt immer überschrieben wurde
+        strncat(*bytes_from_file ,file_content, MAX_FILE_NAME_SIZE);
+        strncat(*bytes_from_file ," |", 2);
         
         // Hänge den String an 
-        strcat_p(*bytes_from_file, file_content, bytes_written);
+        //strcat_p(*bytes_from_file, file_content, bytes_written);
         // Update der Anzahl der Bytes.
-        bytes_written = bytes_written + bytes_read;   //problem file_content kein nul terminiert string  
+        //bytes_written = bytes_written + bytes_read;   //problem file_content kein nul terminiert string  
         // Schließen der Datei und freigeben des Speichers
+       
+        
         free(file_content);
         fclose(file_pointer);
     }

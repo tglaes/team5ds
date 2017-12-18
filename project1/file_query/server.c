@@ -144,12 +144,11 @@ int client_connectin_handler(int client_sock) {
 
     // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
     get_bytes_from_file(&bytes_from_file, file_names, number_of_bytes);
-
-    // TODO: Schicke Client eine Antwort und Speicher freigeben.     
+   
     printf("%s", bytes_from_file);
 
-    // zum testen ende zuerst einfach die empfangen daten zuruck bis get_bytes_from_file funktioniert
-    if (send_data(client_sock, data) < 0) {
+    // sendet die zusammengestenten daten zurück
+    if (send_data(client_sock, bytes_from_file) < 0) {
         perror("Client Error: daten senden fehlgeschlagen");
         close(client_sock);
         free(data);
@@ -161,7 +160,6 @@ int client_connectin_handler(int client_sock) {
     free(data);
     free(data_answer);
     free(bytes_from_file);
-    //free(bytes_from_file);
     return 0;
 
 }

@@ -130,10 +130,10 @@ int get_data_from_user(char* data) {
     printf("Enter the forth filename : ");
     fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
     strncat(data, file_name, MAX_FILE_NAME_SIZE);
-    printf("Enter the fith filename  : ");
+    printf("Enter the fifth filename  : ");
     fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
     strncat(data, file_name, MAX_FILE_NAME_SIZE);
-    printf("Enter a number of bytes  : ");
+    printf("Enter a number of bytes  : ");//TODO kontrolle für die zhal damit es nicht über 10 geht
     fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
     strncat(data, number_of_bytes, (MAX_BYTES_TO_READ / sizeof (char)) + 2);
 
