@@ -63,7 +63,7 @@ int run_server(int port) {
         close(sock);
         return -1;
     }
-
+    printf("log:server started \n");
 
     //schleife die auf ankomende verbindung wartet und fur jeden einen neuen prozess erstellt
     sock_len = sizeof (client);
@@ -94,7 +94,7 @@ int run_server(int port) {
                 exit(0);
             }
         } else { //Vaterprozess 
-            printf("log:New Connection from:: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr), pid); //log ip adresse
+            printf("log:New Connection from: %s\n kind mit pid ubernimmt:%d \n", inet_ntoa(client.sin_addr), pid); //log ip adresse
             close(client_sock); //aktiven client sock beenden da im eltern prozeccs nicht gebraucht
             while (waitpid(-1, NULL, WNOHANG) > 0);
         }
@@ -110,7 +110,7 @@ int run_server(int port) {
  * gibt -1 zuruck bei fehler sonst 0
  */
 int client_connectin_handler(int client_sock) {
-    //printf("debug:handler ubernimmt connection");
+    printf("debug:handler ubernimmt connection");
     char* data = calloc(MAX_DATA_SIZE, sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
     char number_of_bytes_string[sizeof MAX_BYTES_TO_READ_STRING];
@@ -128,20 +128,20 @@ int client_connectin_handler(int client_sock) {
     get_data_from_client_package(data, file_names, number_of_bytes_string);
     number_of_bytes = atoi(number_of_bytes_string);
 
+    printf("\ndebug: ergebniss anfrage parse:");
+    for (int i = 0; i < 5; i++) {
+        printf("\nFile name: %s", file_names[i]);
 
-//    for (int i = 0; i < 5; i++) {
-//        printf("\nDebug:File name: %s", file_names[i]);
-//
-//    }
+    }
     
-    //printf("nDebug: Number of bytes: %s\n", number_of_bytes_string);
+    printf("\ndebug: Number of bytes: %s\n", number_of_bytes_string);
 
     printf("log:get data finsihed\n");
 
     // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
     get_bytes_from_file(&bytes_from_file, file_names, number_of_bytes);
    
-    //printf("debug: sende antwot\n%s", bytes_from_file);
+    printf("debug: sende antwot\n%s", bytes_from_file);
    
 
     // sendet die zusammengestenten daten zurück
