@@ -73,7 +73,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
-    
+
 
     // Sendet die Daten an den Server return1 falls fehler
     if (send_data(sock, data) < 0) {
@@ -83,9 +83,9 @@ int run_client(char* ip_adress, int port) {
         free(answer_data);
         return -1;
     }
-        printf("debug: gesendet:\n %s\n", data);
-        
-        
+    printf("debug: gesendet:\n %s\n", data);
+
+
     if (recv_data(sock, answer_data) < 0) {
         perror("Client Error:fehler beim empfang der antwort");
         free(data);
@@ -93,7 +93,7 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
-    printf("debug:Antwort erhalten\n" );
+    printf("debug:Antwort erhalten\n");
     //gebe antowrt aus
     printf("Antwort der Sucheanfrage:\n %s\n", answer_data);
 
@@ -114,32 +114,66 @@ int run_client(char* ip_adress, int port) {
  *  muss verbesser werden falls man filenamen groesser MAX_FILE_NAME_SIZE eingibt 
  * wird beim nachsten fgets aufruft die ubrigen zeichen eingelsen statt ein neue 
  * eingabe
+ * ersteze fget durch getline()
  *  
  * 
  */
 int get_data_from_user(char* data) {
 
-    char file_name[MAX_FILE_NAME_SIZE +1]; // +2 wegen \n und \0
-    char number_of_bytes[sizeof MAX_BYTES_TO_READ_STRING + 2];
+    char* file_name;
+    size_t len;
+    int chars_read;
+    char* number_of_bytes;
+    size_t len2;
+    int number;
+
 
     printf("Enter the first filename : ");
-    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, file_name, MAX_FILE_NAME_SIZE);
+    if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
+        strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+        strncat(data, "\n", 2);
+    } else
+        strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
+
+
     printf("Enter the second filename: ");
-    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, file_name, MAX_FILE_NAME_SIZE);
+
+    if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
+        strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+        strncat(data, "\n", 2);
+    } else
+        strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
     printf("Enter the third filename : ");
-    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, file_name, MAX_FILE_NAME_SIZE);
+
+    if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
+        strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+        strncat(data, "\n", 2);
+    } else
+        strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
+
     printf("Enter the forth filename : ");
-    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, file_name, MAX_FILE_NAME_SIZE);
+    if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
+        strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+        strncat(data, "\n", 2);
+    } else
+        strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
+
     printf("Enter the fifth filename  : ");
-    fgets(file_name, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, file_name, MAX_FILE_NAME_SIZE);
-    printf("Enter a number of bytes  : ");//TODO kontrolle für die zhal damit es nicht über 10 geht
-    fgets(number_of_bytes, MAX_FILE_NAME_SIZE, stdin);
-    strncat(data, number_of_bytes, (MAX_BYTES_TO_READ / sizeof (char)) + 2);
+    if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
+        strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+        strncat(data, "\n", 2);
+    } else
+        strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
+
+    printf("Enter a number of bytes  : ");
+     chars_read= getline(&number_of_bytes, &len2, stdin);
+     number = atoi(number_of_bytes)  ;
+     if( number > MAX_BYTES_TO_READ || number == 0 )
+         strncat(data,MAX_BYTES_TO_READ_STRING,sizeof MAX_BYTES_TO_READ_STRING);
+     else 
+          strncat(data, number_of_bytes, chars_read + 1);;
+
+   
 
     return 0;
 }
