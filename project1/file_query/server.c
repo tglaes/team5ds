@@ -46,20 +46,20 @@ int run_server(int port) {
     // Erstellen des TCP Sockets.
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("Server Error");
+        perror("Server Error: sock erstellen");
         return -1;
     }
 
     // Binden des Sockets.
     if (bind(sock, (struct sockaddr*) &server, sizeof (server)) < 0) {
-        perror("Server Error");
+        perror("Server Error: sock binden");
         close(sock);
         return -1;
     }
 
     // Sag dem Server, dass er auf einkommende Verbindungen horchen soll.
     if (listen(sock, 5) < 0) {
-        perror("Server Error");
+        perror("Server Error: sock listen");
         close(sock);
         return -1;
     }
@@ -86,7 +86,7 @@ int run_server(int port) {
             close(sock); // passiven sock benenden da nicht gebraucht im kind
 
             if (client_connectin_handler(client_sock) < 0) {//fuehre client handler aus 
-                perror("Server Error");
+                perror("Server Error: connection handler");
                 close(client_sock);
                 exit(1);
             } else {
@@ -110,11 +110,10 @@ int run_server(int port) {
  * gibt -1 zuruck bei fehler sonst 0
  */
 int client_connectin_handler(int client_sock) {
-    printf("debug:handler ubernimmt connection");
+    //printf("debug:handler ubernimmt connection");
     char* data = calloc(MAX_DATA_SIZE, sizeof (char));
-    char* data_answer = calloc(MAX_DATA_SIZE, sizeof (char));
     char file_names[MAX_FILES_TO_ACCEPT][MAX_FILE_NAME_SIZE];
-    char number_of_bytes_string[sizeof MAX_BYTES_TO_READ_STRING + 1];
+    char number_of_bytes_string[sizeof MAX_BYTES_TO_READ_STRING];
     char* bytes_from_file;
     int number_of_bytes = 0;
 
@@ -122,43 +121,40 @@ int client_connectin_handler(int client_sock) {
     if (recv_data(client_sock, data) < 0) {
         perror("Server Error:fehler beim empfang der anfrage");
         free(data);
-        free(data_answer);
         return -1;
     }
-
-
-
 
     // Sortiert die Daten des Packets in die Dateinamen und die Anzahl der Bytes.
     get_data_from_client_package(data, file_names, number_of_bytes_string);
     number_of_bytes = atoi(number_of_bytes_string);
 
 
-    for (int i = 0; i < 5; i++) {
-        printf("\nFile name: %s\n", file_names[i]);
+//    for (int i = 0; i < 5; i++) {
+//        printf("\nDebug:File name: %s", file_names[i]);
+//
+//    }
+    
+    //printf("nDebug: Number of bytes: %s\n", number_of_bytes_string);
 
-    }
-    printf("Number of bytes: %s\n", number_of_bytes_string);
-
-    printf("get data finsihed\n");
+    printf("log:get data finsihed\n");
 
     // Lese die Bytes aus den Dateinen und speichere sie in bytes_from_file.
     get_bytes_from_file(&bytes_from_file, file_names, number_of_bytes);
    
-    printf("%s", bytes_from_file);
+    //printf("debug: sende antwot\n%s", bytes_from_file);
+   
 
     // sendet die zusammengestenten daten zurück
     if (send_data(client_sock, bytes_from_file) < 0) {
-        perror("Client Error: daten senden fehlgeschlagen");
+        perror("Server Error: daten senden fehlgeschlagen");
         close(client_sock);
         free(data);
-        free(data_answer);
         free(bytes_from_file);
         return -1;
     }
+     printf("log:send  response finished \n");
 
     free(data);
-    free(data_answer);
     free(bytes_from_file);
     return 0;
 
@@ -176,7 +172,7 @@ int client_connectin_handler(int client_sock) {
  * test.txt\ntest2.txt\ntest3.txt\ntest4.txt\ntest5.txt\n1000\n ...
  * 
  */
-int get_data_from_client_package(char* data, char file_names[][64], char* number_of_bytes) {
+int get_data_from_client_package(char* data, char file_names[][MAX_FILE_NAME_SIZE], char* number_of_bytes) {
 
     int number_file = 0;
     int bytes_written = 0;
