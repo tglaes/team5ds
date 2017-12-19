@@ -173,8 +173,6 @@ int get_data_from_user(char* data) {
      else 
           strncat(data, number_of_bytes, chars_read + 1);;
 
-   
-
     return 0;
 }
 
