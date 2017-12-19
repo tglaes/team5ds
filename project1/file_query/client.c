@@ -145,7 +145,11 @@ int get_data_from_user(char* data) {
         strncat(data, MAX_BYTES_TO_READ_STRING, sizeof MAX_BYTES_TO_READ_STRING);
     else
         strncat(data, number_of_bytes, chars_read + 1);
-
+    
+    
+    //speicher freigeben das von getline allocaiert wurde
+    free(file_name);
+    free(number_of_bytes);
     return 0;
 }
 
