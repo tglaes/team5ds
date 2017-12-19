@@ -26,7 +26,7 @@ int run_client(char* ip_adress, int port) {
 
     // Liest die 5 Dateinamen und die Anzahl der Bytes des Clienten ein.
     if (get_data_from_user(data) < 0) {
-        fprintf(stderr, "%s", "Client Error while receiving user data from stdin!\n");
+        fprintf(stderr, "%s", "Client Error: receiving user data from stdin!\n");
         free(data);
         free(answer_data);
         return -1;
@@ -44,7 +44,7 @@ int run_client(char* ip_adress, int port) {
 
     //formatiere ipadress in korrekte format  gebe fehler aus falls  format error
     if (inet_aton(ip_adress, &ipaddr) == 0) {
-        fprintf(stderr, "%s", "Client Error wrong ip Adress format!\n");
+        fprintf(stderr, "%s", "Client Error:wrong ip Adress format!\n");
         free(data);
         free(answer_data);
         return -1;
@@ -58,7 +58,7 @@ int run_client(char* ip_adress, int port) {
     // Erstellen eines TCP Sockets.
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("Client Error");
+        perror("Client Error: sock erstellen");
         free(data);
         free(answer_data);
         return -1;
@@ -66,14 +66,14 @@ int run_client(char* ip_adress, int port) {
 
     // Versucht mit dem Server eine Verbindung einzugehen.
     if (connect(sock, (struct sockaddr*) &client, sizeof (client)) < 0) {
-        perror("Client Error");
+        perror("Client Error:verbinden");
         close(sock);
         free(data);
         free(answer_data);
         return -1;
     }
 
-    printf("log gesendet:\n %s\n", data);
+    
 
     // Sendet die Daten an den Server return1 falls fehler
     if (send_data(sock, data) < 0) {
@@ -83,15 +83,19 @@ int run_client(char* ip_adress, int port) {
         free(answer_data);
         return -1;
     }
-
+        printf("debug: gesendet:\n %s\n", data);
+        
+        
     if (recv_data(sock, answer_data) < 0) {
-        perror("Server Error:fehler beim empfang der antwort");
+        perror("Client Error:fehler beim empfang der antwort");
         free(data);
         free(answer_data);
         return -1;
     }
 
-    printf("log Antwort erhalten  %s\n", answer_data);
+    printf("debug:Antwort erhalten\n" );
+    //gebe antowrt aus
+    printf("Antwort der Sucheanfrage:\n %s\n", answer_data);
 
 
     close(sock);
@@ -115,7 +119,7 @@ int run_client(char* ip_adress, int port) {
  */
 int get_data_from_user(char* data) {
 
-    char file_name[MAX_FILE_NAME_SIZE + 2]; // +2 wegen \n und \0
+    char file_name[MAX_FILE_NAME_SIZE +1]; // +2 wegen \n und \0
     char number_of_bytes[sizeof MAX_BYTES_TO_READ_STRING + 2];
 
     printf("Enter the first filename : ");
