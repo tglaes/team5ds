@@ -4,7 +4,6 @@
 #include "data.h"
 
 
-int strcat_p(char* dest, const char* string, unsigned position);
 
 /*
  * Kopiert die ersten number_of_bytes Bytes aus den Dateien aus file_names in
@@ -21,7 +20,7 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
     *bytes_from_file = calloc(MAX_DATA_SIZE, sizeof(char)); //
     int bytes_read;
     
-    for(int i = 0; i<5; i++){
+    for(int i = 0; i<MAX_FILES_TO_ACCEPT; i++){
         if(strlen(file_names[i]) == 0) //ignore empty filenames 
             continue;
         
@@ -41,15 +40,10 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
         strncat(*bytes_from_file ,":", 2);
         file_content[number_of_bytes+1]='\0';//damit wird strcat_p überfüssig und man kann strncat benutzen das problem war das der inhalt immer überschrieben wurde
         strncat(*bytes_from_file ,file_content, MAX_FILE_NAME_SIZE);
-        strncat(*bytes_from_file ," |", 2);
+        strncat(*bytes_from_file ," |\n", 3);
         
-        // Hänge den String an 
-        //strcat_p(*bytes_from_file, file_content, bytes_written);
-        // Update der Anzahl der Bytes.
-        //bytes_written = bytes_written + bytes_read;   //problem file_content kein nul terminiert string  
         // Schließen der Datei und freigeben des Speichers
-       
-        
+
         free(file_content);
         fclose(file_pointer);
     }
@@ -57,21 +51,3 @@ int get_bytes_from_file(char** bytes_from_file, char file_names[][MAX_FILE_NAME_
     return 0;
 }
 
-/*
- * Hängt den string an die entsprechende Position in dest und hängt einen Newline
- * Character dran.
- * 
- * warum kein memcop oder strncat benutzen
- */
-int strcat_p(char* dest, const char* string, unsigned position){
-    
-    unsigned last_pos = position + strlen(string);
-    
-    for(int i = position; i < last_pos; i++){
-        dest[i] = string[i];  
-    }
-    
-    dest[last_pos] = '\n';
-    
-    return 0;
-}
