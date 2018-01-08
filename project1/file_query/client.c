@@ -31,7 +31,7 @@ int run_client(char* ip_adress, int port) {
         free(answer_data);
         return -1;
     }
-
+            
 
     /* 
      * Bereinigen des Speichers und setzten der Parameter
@@ -93,9 +93,9 @@ int run_client(char* ip_adress, int port) {
         return -1;
     }
 
-    printf("debug:Antwort erhalten\n");
+    //printf("debug:Antwort erhalten\n");
     //gebe antowrt aus
-    printf("Antwort der Sucheanfrage:\n %s\n", answer_data);
+    printf("Antwort der Sucheanfrage:\n%s\n", answer_data);
 
 
     close(sock);
@@ -163,15 +163,31 @@ int get_data_from_user(char* data) {
         strncat(data, "\n", 2);
     } else
         strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert
+    /*
+    //dateinamen einlesen
+    for (int i = 1; i <= MAX_FILES_TO_ACCEPT; i++) {
+        printf("Enter the %d. filename : ", i);
+        chars_read = getline(&file_name, &len, stdin);
+        if (chars_read > MAX_FILE_NAME_SIZE - 1) { // mehr als 64 zeiche(mit \n+\0) eingelesen
+            strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);
+            strncat(data, "\n", 2);
+        } else
+            strncat(data, file_name, chars_read + 1); //+1 da chars read nur groesse ohne null byte speichert;
+    }*/
+
 
     printf("Enter a number of bytes  : ");
-     chars_read= getline(&number_of_bytes, &len2, stdin);
-     number = atoi(number_of_bytes)  ;
-     if( number > MAX_BYTES_TO_READ || number == 0 )
-         strncat(data,MAX_BYTES_TO_READ_STRING,sizeof MAX_BYTES_TO_READ_STRING);
-     else 
-          strncat(data, number_of_bytes, chars_read + 1);;
-
+    chars_read = getline(&number_of_bytes, &len2, stdin);
+    number = atoi(number_of_bytes);
+    if (number > MAX_BYTES_TO_READ || number == 0)
+        strncat(data, MAX_BYTES_TO_READ_STRING, sizeof MAX_BYTES_TO_READ_STRING);
+    else
+        strncat(data, number_of_bytes, chars_read + 1);
+    
+    
+    //speicher freigeben das von getline allocaiert wurde
+    free(file_name);
+    free(number_of_bytes);
     return 0;
 }
 
