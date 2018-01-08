@@ -127,7 +127,6 @@ int get_data_from_user(char* data) {
     size_t len2;
     int number;
 
-
     printf("Enter the first filename : ");
     if ((chars_read = getline(&file_name, &len, stdin)) > MAX_FILE_NAME_SIZE - 1) {
         strncat(data, file_name, MAX_FILE_NAME_SIZE - 2);

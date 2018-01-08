@@ -24,9 +24,6 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class PrimeNumbers {
     
-    private String[] stringArray;
-    private int[] intArray;
-    
     /**
      * Gibt Primzahlen als StringArray zurueck.
      * @param n
@@ -113,42 +110,4 @@ public class PrimeNumbers {
         }
         return result;
     }
-    
-    /**
-     * Methode zur Ausgabe der Primzahlen als IntArray in der Konsole.
-     * @param primeArray
-     */
-    private void intArrayOutput(int[] primeArray){
-        System.out.println("Primzahlenausgabe als Int-Array");
-        for (int i = 0; i < primeArray.length ; i++) {
-            System.out.println(i+1 +")\t" +primeArray[i]);
-        }
-        System.out.println("\n");
-    }
-    
-    /**
-     * Methode zur Umwandlung des IntArray zu einem StringArray.
-     * @param primeArray
-     * @return Gibt das IntArray als String zurueck
-     */
-    private String[] intToStringArray(int[] primeArray){
-        String[] stringArray = new String[primeArray.length];
-        for (int i = 0; i < primeArray.length ; i++) {
-            stringArray[i]= String.valueOf(primeArray[i]); 
-        }
-        return stringArray;
-    }
-    
-    /**
-     * Methode zur Ausgabe der Primzahlen als StringArray in der Konsole.
-     * @param stringArray 
-     */
-    private void stringArrayOutput(String[] stringArray){
-        System.out.println("Primzahlenausgabe als String-Array");
-        for (int i = 0; i < stringArray.length ; i++) {   
-            System.out.println(i+1 +")\t" +stringArray[i]);           
-        }
-        System.out.println("\n");
-    }
-
 }

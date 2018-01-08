@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/LauncherServer.java</file>
-            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/ClientDialog.java</file>
-            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/IntArray.java</file>
-            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/ServerDialog.java</file>
+            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/PrimeNumbers.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/PrimeNumbersService.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Server/PrimeNumbers.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Server/PrimeNumberCollection.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Client/Client.java</file>
             <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Server/Server.java</file>
-            <file>file:/C:/Users/Tristan%20Glaes/Documents/team5ds/project2/PrimeNumbers/src/Main/LauncherClient.java</file>
         </group>
     </open-files>
 </project-private>

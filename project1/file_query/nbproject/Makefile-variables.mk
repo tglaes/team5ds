@@ -7,21 +7,21 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=Cygwin-Windows
-CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
+CND_PLATFORM_Debug=None-Windows
+CND_ARTIFACT_DIR_Debug=dist/Debug/None-Windows
 CND_ARTIFACT_NAME_Debug=file_query
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/file_query
-CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/None-Windows/file_query
+CND_PACKAGE_DIR_Debug=dist/Debug/None-Windows/package
 CND_PACKAGE_NAME_Debug=filequery.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/filequery.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/None-Windows/package/filequery.tar
 # Release configuration
-CND_PLATFORM_Release=Cygwin-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
+CND_PLATFORM_Release=None-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/None-Windows
 CND_ARTIFACT_NAME_Release=file_query
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/file_query
-CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
+CND_ARTIFACT_PATH_Release=dist/Release/None-Windows/file_query
+CND_PACKAGE_DIR_Release=dist/Release/None-Windows/package
 CND_PACKAGE_NAME_Release=filequery.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/filequery.tar
+CND_PACKAGE_PATH_Release=dist/Release/None-Windows/package/filequery.tar
 #
 # include compiler specific variables
 #
