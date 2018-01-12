@@ -23,7 +23,6 @@ public class Login {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String sendLoginPage() {
-		Database.executeQuery("test");
 		return "test";
 	}
 
