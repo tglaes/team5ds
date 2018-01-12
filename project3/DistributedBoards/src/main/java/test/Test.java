@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -27,9 +26,9 @@ public class Test {
 	  @GET
 	  @Path("ajaxTest")
 	  @Produces(MediaType.TEXT_HTML)
-	  public String AjaxTest(@Context HttpServletRequest req) {
+	  public String AjaxTest() {
 		  
-		  return req.getRemoteAddr();
+		  return "test";
 	  }
 	  
 }

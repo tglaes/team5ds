@@ -2,17 +2,21 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>com.vogella.jersey.first</display-name>
  <servlet>
-    <servlet-name>TestService</servlet-name>
+    <servlet-name>DistributedBoards</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
      <!-- Register resources and providers under com.vogella.jersey.first package. -->
     <init-param>
         <param-name>jersey.config.server.provider.packages</param-name>
-        <param-value>test</param-value>
+        <param-value>routes</param-value>
     </init-param>
+     <init-param>
+            <param-name>jersey.config.server.provider.scanning.recursive</param-name>
+            <param-value>false</param-value>
+        </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>TestService</servlet-name>
+    <servlet-name>DistributedBoards</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 </web-app>
