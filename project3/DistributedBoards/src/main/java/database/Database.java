@@ -71,20 +71,19 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static ResultSet executeSql(String sqlCommand) throws SQLException {
+		
 		System.out.println(sqlCommand);
-
 		connect();
 		ResultSet rs = null;
+		
 		try {
 			Statement stmt = connection.createStatement();
 			rs = stmt.executeQuery(sqlCommand);
 		} catch (SQLException e) {
 			e.printStackTrace();
-
-		} finally {
 			connection.close();
 		}
-
+		
 		return rs;
 	}
 }

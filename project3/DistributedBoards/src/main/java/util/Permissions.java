@@ -9,15 +9,20 @@ import database.Database;
 public final class Permissions {
 
 	// Put a default value for a user and localhost. So no login is required.
-	private static HashMap<String, Integer> sessionMap = new HashMap<String, Integer>() {
-		{
-			put("127.0.0.1", 1);
-		}
-	};
+	private static HashMap<String, Integer> sessionMap = new HashMap<String, Integer>();
 
 	private Permissions() {
 	}
 
+	
+	public static void createSession(String ip, Integer ID) {
+		sessionMap.put(ip, ID);
+	}
+	
+	public static void destroySession(String ip) {
+		sessionMap.remove(ip);
+	}
+	
 	/**
 	 * 
 	 * @param ip

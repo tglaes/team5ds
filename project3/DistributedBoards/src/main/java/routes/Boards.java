@@ -1,5 +1,13 @@
 package routes;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -21,21 +29,23 @@ public class Boards {
 	 * @param user
 	 * @param request
 	 * @return
+	 * @throws FileNotFoundException 
+	 * @throws UnsupportedEncodingException 
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getData(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) {
+	public InputStream getData(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws FileNotFoundException, UnsupportedEncodingException {
 
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
-			return "<h1>Login page<h1>";
+			return new FileInputStream(new File("WebContent\\HTML\\Login.html"));	 
 		} else {
 			return createPage(Permissions.isAuthorized(userID, boardID));
 		}
 	}
 
-	private String createPage(Permission p) {
+	private InputStream createPage(Permission p) throws UnsupportedEncodingException {
 
 		String ret = "";
 		switch (p) {
@@ -46,11 +56,11 @@ public class Boards {
 			ret = "<h1>Board page: Permission User<h1>";
 			break;
 		case None:
-			ret = "<h1>You dont have the rights to acces this side!<h1>";
+			ret = "<h1>You dont have the rights to acces this site!<h1>";
 			break;
 		}
 
-		return ret;
+		return new ByteArrayInputStream(ret.getBytes(StandardCharsets.UTF_8.name()));
 	}
 
 }
