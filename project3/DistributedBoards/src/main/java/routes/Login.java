@@ -52,11 +52,12 @@ public class Login {
 		if(rs.next()) {
 			
 			Integer userID = rs.getInt(1);
+			String email = rs.getString(3);
 			String ip = request.getRemoteAddr();
 			
 			Permissions.createSession(ip, userID);
-
-			return rs.getString(3);
+			Database.closeConnection();
+			return "Successful login! Email: " + email + ", IP: " + ip;
 			
 		} else {
 			return "Login failed BITCH";

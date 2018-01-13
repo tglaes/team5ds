@@ -86,4 +86,12 @@ public final class Database {
 		
 		return rs;
 	}
+	
+	public static void closeConnection() throws SQLException {
+		if(!(connection == null)) {
+			if(!connection.isClosed()) {
+				connection.close();
+			}
+		}
+	}
 }
