@@ -34,7 +34,7 @@ public class Boards {
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public InputStream getData(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws FileNotFoundException, UnsupportedEncodingException {
+	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws FileNotFoundException, UnsupportedEncodingException {
 
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
@@ -45,22 +45,23 @@ public class Boards {
 		}
 	}
 
-	private InputStream createPage(Permission p) throws UnsupportedEncodingException {
+	private static InputStream createPage(Permission p) throws UnsupportedEncodingException, FileNotFoundException {
 
-		String ret = "";
+		InputStream ret = null;
 		switch (p) {
 		case Admin:
-			ret = "<h1>Board page: Permission Admin <h1>";
+			ret = new FileInputStream(new File("WebContent\\HTML\\Boards.html"));
 			break;
 		case User:
-			ret = "<h1>Board page: Permission User<h1>";
+			ret = new FileInputStream(new File("WebContent\\HTML\\Boards.html"));
 			break;
 		case None:
-			ret = "<h1>You dont have the rights to acces this site!<h1>";
+			String side = "<h1>You dont have the rights to acces this site!<h1>";
+			ret = new ByteArrayInputStream(side.getBytes(StandardCharsets.UTF_8.name()));
 			break;
 		}
 
-		return new ByteArrayInputStream(ret.getBytes(StandardCharsets.UTF_8.name()));
+		return ret;
 	}
 
 }

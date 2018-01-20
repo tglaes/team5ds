@@ -1,9 +1,12 @@
 package routes;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -44,7 +47,7 @@ public class Login {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-    public String getLoginData(@FormParam("username") String username, @FormParam("password") String password, @Context HttpServletRequest request) throws SQLException {
+    public InputStream getLoginData(@FormParam("username") String username, @FormParam("password") String password, @Context HttpServletRequest request) throws SQLException, FileNotFoundException, UnsupportedEncodingException {
         
 		String sqlCommand = "SELECT * FROM Users WHERE Username='" + username + "' AND Password='" + password +"'";
 		ResultSet rs = Database.executeSql(sqlCommand);
@@ -57,10 +60,11 @@ public class Login {
 			
 			Permissions.createSession(ip, userID);
 			Database.closeConnection();
-			return "Successful login! Email: " + email + ", IP: " + ip;
+			return Boards.sendBoardsPage(0, request);
 			
 		} else {
-			return "Login failed BITCH";
+			String loginFailed = "Login failed BITCH";		
+			return new ByteArrayInputStream(loginFailed.getBytes(StandardCharsets.UTF_8.name()));
 		}
     }
 }

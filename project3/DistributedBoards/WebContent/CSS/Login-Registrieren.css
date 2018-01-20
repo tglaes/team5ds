@@ -1,0 +1,33 @@
+.sign-in, .sign-up {
+  max-width: 600px;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 50%;
+  min-width: 300px;
+  color: white;
+}
+
+.sign-up {
+  top: 27%;
+}
+
+body {
+  background-color: #222222;
+}
+
+#bg-img {
+  opacity: 0.1;
+  position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+   repeat: no-repeat;
+}
+
+.sign-in-form, .sign-up-form {
+  border: 0px solid white;
+  background-color: rgba(0, 0, 0, 0.7);
+}
