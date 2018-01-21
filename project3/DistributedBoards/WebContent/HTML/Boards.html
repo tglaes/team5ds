@@ -44,116 +44,253 @@
 <body>
 
 <!----------------------------------- Nav-Bar (Header) --------------------------------->
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Foackbook</a>
+<div class="nav-bar">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Facebook</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Profil</a></li>
+          <li><a href="#">HowAboutDae</a></li>
+          <li><a href="#">MansNotHot</a></li>
+          <li><a href="#">2+2=4-1</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/DistributedBoards/Logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Profil</a></li>
-        <li><a href="#">HowAboutDae</a></li>
-        <li><a href="#">MansNotHot</a></li>
-        <li><a href="#">2+2=4-1</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
+</div>
 
 <!----------------------------------- Center  --------------------------------->
 <div class="container-fluid text-center">
   <div class="row content">
+
+    <!-- Tafel-Navigation -->
+    <!-- ### Wird einfach aus der DB nach dem Login geladen! ### -->
     <div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
       <p><a href="#">Main-Tafel</a></p>
       <hr noshade style="width:100%; height:0px; text-align:left; border:3px solid rgb(34, 34, 34);">
       <p><a href="#">HTW-Tafel</a></p>
       <p><a href="#">Upercut-Tafel</a></p>
     </div>
-    <div class="col-sm-8 text-left">
-      <h1>Main-Tafel</h1>
-      <p>Yo, Big Shaq, the one and only
-      Man's not hot, never hot
-      Skrrat (GottiOnEm), skidi-kat-kat
-      Boom
-      </p>
-      <p>
-      [Verse 1]
-      Two plus two is four
-      Minus one that's three, quick maths
-      Everyday man's on the block
-      Smoke trees (ah)
-      See your girl in the park
-      That girl is a uckers
-      When the ting went quack-quack-quack
-      You man were ducking (you man ducked)
-      Hold tight, Asznee (my brudda)
-      He's got the pumpy (big ting)
-      Hold tight, my man (my guy)
-      He's got the frisbee (shew)
-      I trap, trap, trap on the phone
-      Movin' that cornflakes
-      Rice Krispies
-      Hold tight my girl Whitney (my G)
-      On, on, on, on, on the road doin' ten toes
-      Like my toes (like my toes)
-      You man thought I froze
-      I see a peng girl, then I pose (chilin')
-      If she ain't on it, I ghost
-      Hah, look at your nose (check your nose, fam)
-      You donut
-      Nose long like garden hose
-      </p>
-      <p>
-      [Chorus]
-      I tell her man's not hot
-      I tell her man's not hot
-      The girl told me, "Take off your jacket"
-      I said, "Babes, man's not hot" (never hot)
-      I tell her man's not hot (never hot)
-      I tell her man's not hot (never hot)
-      The girl told me, "Take off your jacket"
-      I said, "Babes, man's not hot" (never hot)
-      </p>
-      <p>
-      [Verse 2]
-      Hop out the four-door with the .44
-      It was one, two, three and four (us, man)
-      Chillin' in the corridor (yo)
-      Your dad is forty-four (uh)
-      And he's still callin' man for a draw (look at him)
-      Let him know
-      When I see him
-      I'm gonna spin his jaw (finished)
-      Take man's Twix by force (take it)
-      Send man's shop by force (send him)
-      Your girl knows I've got the sauce (flexin')
-      No ketchup (none)
-      Just sauce (saucy)
-      Raw sauce
-      Ah, yo, boom, ah
-      </p>
-      <p>
-      [Refrain]
-      The ting goes skrrrahh (ah)
-      Pap, pap, ka-ka-ka (ka)
-      Skidiki-pap-pap (pap)
-      And a pu-pu-pudrrrr-boom (boom)
-      Skya (ah)
-      Du-du-ku-ku-dun-dun (dun)
-      Poom, poom
-      You don' know</p>
-      <hr>
-      <h3>Test</h3>
-      <p>Lorem ipsum...</p>
+
+    <!-- Tafel-Inhalt -->
+    <div class="col-sm-8 text-left" style="overflow: auto; height: calc(100vh - 52px);">
+      <!-- ### tafel-name wird nach dem Click auf die Tafel geladen! ### -->
+      <!-- TODO: (Meris)soll bei viele posts fixiert sein! -->
+      <!-- TODO: (Meris)div mit tafel-name sieht nur unter firefox gut aus muss
+      noch iwann auch für ander Browser angepasst werden! -->
+      <div style="background-color: #F1F1F1; position: fixed; width: calc(100% - 37%); border-radius: 0px 0px 10px 10px;">
+        <h1 style="margin-left: 10px;" class="tafel-name">Main-Tafel</h1>
+      </div>
+
+      <!------------------------- Inhalt --------------------->
+
+      <!-- erster Post -->
+      <!-- ### in regelmäßigen Abständen wird geschaut ob es was neues in der DB
+       gibt und jeder Post wird hier geladen mit (name, date, post-text)! ### -->
+      <div class="all-posts" style="margin-top: 60px;">
+        <div class="post">
+          <hr>
+          <div class="post-header">
+            <div class="post-name">
+              <h3 class="name">Jeff Bohr</h3>
+            </div>
+            <div class="post-date">
+              <p class="date">21.01.2018</p>
+            </div>
+          </div>
+          <div class="post-body">
+            <p class="post-text">
+            [Verse 1]
+            Two plus two is four
+            Minus one that's three, quick maths
+            Everyday man's on the block
+            Smoke trees (ah)
+            See your girl in the park
+            That girl is a uckers
+            When the ting went quack-quack-quack
+            You man were ducking (you man ducked)
+            Hold tight, Asznee (my brudda)
+            He's got the pumpy (big ting)
+            Hold tight, my man (my guy)
+            He's got the frisbee (shew)
+            I trap, trap, trap
+            </p>
+          </div>
+        </div>
+
+        <!-- zweiter Post -->
+        <!-- TODO: (Bojka)Post soll auf eine bestimmte größe begrenzt wrden[...]! -->
+        <div class="post">
+          <hr>
+          <div class="post-header">
+            <div class="post-name">
+              <h3 class="name">Jeff Bohr</h3>
+            </div>
+            <div class="post-date">
+              <p class="date">21.01.2018</p>
+            </div>
+          </div>
+          <div class="post-body">
+            <p class="post-text">
+            [Verse 1]
+            Two plus two is four
+            Minus one that's three, quick maths
+            Everyday man's on the block
+            Smoke trees (ah)
+            See your girl in the park
+            That girl is a uckers
+            When the ting went quack-quack-quack
+            You man were ducking (you man ducked)
+            Hold tight, Asznee (my brudda)
+            He's got the pumpy (big ting)
+            Hold tight, my man (my guy)
+            He's got the frisbee (shew)
+            I trap, trap, trap
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- test -->
+      <!-- TODO: (Bojka)Post soll auf eine bestimmte größe begrenzt wrden[...]! -->
+      <div class="post">
+        <hr>
+        <div class="post-header">
+          <div class="post-name">
+            <h3 class="name">Jeff Bohr</h3>
+          </div>
+          <div class="post-date">
+            <p class="date">21.01.2018</p>
+          </div>
+        </div>
+        <div class="post-body">
+          <p class="post-text">
+          [Verse 1]
+          Two plus two is four
+          Minus one that's three, quick maths
+          Everyday man's on the block
+          Smoke trees (ah)
+          See your girl in the park
+          That girl is a uckers
+          When the ting went quack-quack-quack
+          You man were ducking (you man ducked)
+          Hold tight, Asznee (my brudda)
+          He's got the pumpy (big ting)
+          Hold tight, my man (my guy)
+          He's got the frisbee (shew)
+          I trap, trap, trap
+          </p>
+        </div>
+      </div>
+      <!-- test -->
+      <!-- TODO: (Bojka)Post soll auf eine bestimmte größe begrenzt wrden[...]! -->
+      <div class="post">
+        <hr>
+        <div class="post-header">
+          <div class="post-name">
+            <h3 class="name">Jeff Bohr</h3>
+          </div>
+          <div class="post-date">
+            <p class="date">21.01.2018</p>
+          </div>
+        </div>
+        <div class="post-body">
+          <p class="post-text">
+          [Verse 1]
+          Two plus two is four
+          Minus one that's three, quick maths
+          Everyday man's on the block
+          Smoke trees (ah)
+          See your girl in the park
+          That girl is a uckers
+          When the ting went quack-quack-quack
+          You man were ducking (you man ducked)
+          Hold tight, Asznee (my brudda)
+          He's got the pumpy (big ting)
+          Hold tight, my man (my guy)
+          He's got the frisbee (shew)
+          I trap, trap, trap
+          </p>
+        </div>
+      </div>
+      <!-- test -->
+      <!-- TODO: (Bojka)Post soll auf eine bestimmte größe begrenzt wrden[...]! -->
+      <div class="post">
+        <hr>
+        <div class="post-header">
+          <div class="post-name">
+            <h3 class="name">Jeff Bohr</h3>
+          </div>
+          <div class="post-date">
+            <p class="date">21.01.2018</p>
+          </div>
+        </div>
+        <div class="post-body">
+          <p class="post-text">
+          [Verse 1]
+          Two plus two is four
+          Minus one that's three, quick maths
+          Everyday man's on the block
+          Smoke trees (ah)
+          See your girl in the park
+          That girl is a uckers
+          When the ting went quack-quack-quack
+          You man were ducking (you man ducked)
+          Hold tight, Asznee (my brudda)
+          He's got the pumpy (big ting)
+          Hold tight, my man (my guy)
+          He's got the frisbee (shew)
+          I trap, trap, trap
+          </p>
+        </div>
+      </div>
+      <!-- test -->
+      <!-- TODO: (Bojka)Post soll auf eine bestimmte größe begrenzt wrden[...]! -->
+      <div class="post">
+        <hr>
+        <div class="post-header">
+          <div class="post-name">
+            <h3 class="name">Jeff Bohr</h3>
+          </div>
+          <div class="post-date">
+            <p class="date">21.01.2018</p>
+          </div>
+        </div>
+        <div class="post-body">
+          <p class="post-text">
+          [Verse 1]
+          Two plus two is four
+          Minus one that's three, quick maths
+          Everyday man's on the block
+          Smoke trees (ah)
+          See your girl in the park
+          That girl is a uckers
+          When the ting went quack-quack-quack
+          You man were ducking (you man ducked)
+          Hold tight, Asznee (my brudda)
+          He's got the pumpy (big ting)
+          Hold tight, my man (my guy)
+          He's got the frisbee (shew)
+          I trap, trap, trap
+          </p>
+        </div>
+      </div>
+
     </div>
+
+    <!-- User-List -->
+    <!-- ### Wird einfach aus der DB geladen, nach dem man auf eine Tafel geclickt hat! ### -->
     <div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
       <h3>Admins</h3>
       <div class="list-group">

@@ -2,29 +2,23 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/DistributedBoards/WebContent/CSS/Login.css">
-<link rel="stylesheet" type="text/css" href="/DistributedBoards/WebContent/CSS/Login-Registrieren.css">
+<link rel="stylesheet" type="text/css" href="/DistributedBoards/Resources?resourceName=Login.css&resourceType=css">
+<link rel="stylesheet" type="text/css" href="/DistributedBoards/Resources?resourceName=Login-Registrieren.css&resourceType=css">
 </head>
 <body>
-
   <!-- Backgroundimage -->
-  <img id="bg-img" src="bg-img.jpg">
-
+  <img id="bg-img" src="/DistributedBoards/Resources?resourceName=bg-img.jpg&resourceType=img">
   <!-- Body -->
   <div class="sign-in">
-    <form class="sign-in-form" action="Login" method="POST">
+    <form class="sign-in-form" action="/DistributedBoards/Login" method="POST">
      <div class="container">
        <h1>Sign In</h1>
-
        <label><b>Username</b></label>
        <input type="text" placeholder="Enter Username" name="username" required>
-
        <label><b>Password</b></label>
        <input type="password" placeholder="Enter Password" name="password" required>
-
        <button type="submit">Login</button>
      </div>
-
      <div class="container">
        <button type="button" class="cancelbtn">Cancel</button>
        <span class="psw">Forgot <a href="#">password?</a></span>
