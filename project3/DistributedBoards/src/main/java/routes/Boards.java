@@ -39,7 +39,7 @@ public class Boards {
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
-			return new FileInputStream(new File("WebContent\\HTML\\Login.html"));	 
+			return Resources.getResource("Login.html", "html");
 		} else {
 			return createPage(Permissions.isAuthorized(userID, boardID));
 		}
@@ -50,10 +50,10 @@ public class Boards {
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
-			ret = new FileInputStream(new File("WebContent\\HTML\\Boards.html"));
+			ret = Resources.getResource("Boards.html", "html");
 			break;
 		case User:
-			ret = new FileInputStream(new File("WebContent\\HTML\\Boards.html"));
+			ret = Resources.getResource("Boards.html", "html");
 			break;
 		case None:
 			String side = "<h1>You dont have the rights to acces this site!<h1>";

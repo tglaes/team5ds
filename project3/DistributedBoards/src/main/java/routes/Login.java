@@ -41,7 +41,7 @@ public class Login {
 	@Produces(MediaType.TEXT_HTML)
 	public InputStream sendLoginPage() throws FileNotFoundException {
 		
-		return new FileInputStream(new File("WebContent\\HTML\\Login.html"));
+		return Resources.getResource("Login.html", "html");
 	}
 	
 	@POST
@@ -55,7 +55,6 @@ public class Login {
 		if(rs.next()) {
 			
 			Integer userID = rs.getInt(1);
-			String email = rs.getString(3);
 			String ip = request.getRemoteAddr();
 			
 			Permissions.createSession(ip, userID);
