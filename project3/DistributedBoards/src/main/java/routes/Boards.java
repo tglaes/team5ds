@@ -1,8 +1,6 @@
 package routes;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -18,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import util.Permissions;
+import util.Resources;
 import util.Permission;
 
 @Path("/Boards")
@@ -63,5 +62,4 @@ public class Boards {
 
 		return ret;
 	}
-
 }

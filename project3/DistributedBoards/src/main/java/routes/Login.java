@@ -1,8 +1,6 @@
 package routes;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -22,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 
 import database.Database;
 import util.Permissions;
+import util.Resources;
 
 /**
  * The class is used to check if a user has a current session.

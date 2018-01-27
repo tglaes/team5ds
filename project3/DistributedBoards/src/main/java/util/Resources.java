@@ -1,4 +1,4 @@
-package routes;
+package util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,5 +47,4 @@ public class Resources {
 		return new FileInputStream(new File("WebContent\\HTML\\" + resource));
 		//return new FileInputStream(new File("WebContent/HTML/" + resource));
 	}
-	
 }
