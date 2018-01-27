@@ -1,10 +1,10 @@
 package routes;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -15,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import htmlBuilder.HTMLBuilder;
 import util.Permissions;
 import util.Permission;
 
@@ -27,31 +28,31 @@ public class Boards {
 	 * @param user
 	 * @param request
 	 * @return
-	 * @throws FileNotFoundException 
-	 * @throws UnsupportedEncodingException 
+	 * @throws SQLException 
+	 * @throws IOException 
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws FileNotFoundException, UnsupportedEncodingException {
+	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws IOException, SQLException {
 
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			return createPage(Permissions.isAuthorized(userID, boardID));
+			return createPage(Permissions.isAuthorized(userID, boardID), userID);
 		}
 	}
 
-	private static InputStream createPage(Permission p) throws UnsupportedEncodingException, FileNotFoundException {
+	private static InputStream createPage(Permission p, int userID) throws IOException, SQLException {
 
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
-			ret = Resources.getResource("Boards.html", "html");
+			ret = HTMLBuilder.buildBoardsPage(userID);  
 			break;
 		case User:
-			ret = Resources.getResource("Boards.html", "html");
+			ret = HTMLBuilder.buildBoardsPage(userID);
 			break;
 		case None:
 			String side = "<h1>You dont have the rights to acces this site!<h1>";
