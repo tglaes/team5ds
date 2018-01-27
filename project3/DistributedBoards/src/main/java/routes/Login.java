@@ -20,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 
 import database.Database;
 import util.Permissions;
-import util.Resources;
 
 /**
  * The class is used to check if a user has a current session.

@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import util.Permissions;
-import util.Resources;
 import util.Permission;
 
 @Path("/Boards")
