@@ -28,31 +28,32 @@ public class Boards {
 	 * @param user
 	 * @param request
 	 * @return
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws SQLException
+	 * @throws IOException
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID, @Context HttpServletRequest request) throws IOException, SQLException {
+	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
+			@Context HttpServletRequest request) throws IOException, SQLException {
 
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			return createPage(Permissions.isAuthorized(userID, boardID), userID);
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
 
-	private static InputStream createPage(Permission p, int userID) throws IOException, SQLException {
+	private static InputStream createPage(Permission p, int userID, int boardID) throws IOException, SQLException {
 
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
-			ret = HTMLBuilder.buildBoardsPage(userID);  
+			ret = HTMLBuilder.buildBoardsPage(userID, boardID);
 			break;
 		case User:
-			ret = HTMLBuilder.buildBoardsPage(userID);
+			ret = HTMLBuilder.buildBoardsPage(userID, boardID);
 			break;
 		case None:
 			String side = "<h1>You dont have the rights to acces this site!<h1>";
