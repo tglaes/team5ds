@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import database.Database;
+import htmlBuilder.HTMLBuilder;
 import util.Permissions;
 
 /**
@@ -60,8 +61,7 @@ public class Login {
 			return Boards.sendBoardsPage(0, request);
 			
 		} else {
-			String loginFailed = "Login failed BITCH";		
-			return new ByteArrayInputStream(loginFailed.getBytes(StandardCharsets.UTF_8.name()));
+			return HTMLBuilder.buildFailedLogin();
 		}
     }
 }

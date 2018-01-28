@@ -25,6 +25,7 @@ public class HTMLBuilder {
 	private static final String userNameMarker = "###UserName###";
 	private static final String boardAdminMarker = "###BoardAdmin###";
 	private static final String boardUserListMarker = "###BoardUsers###";
+	private static final String loginFailedMarker = "###LoginFailed###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -240,5 +241,16 @@ public class HTMLBuilder {
 			//TODO: Profil exitiert nicht anzeigen.
 		}
 		return userName;
+	}
+
+	public static InputStream buildFailedLogin() throws IOException {
+		
+		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent\\HTML\\Login.html");
+		String loginFailedAlert = "<div class='alert alert-danger' role='alert'>" + 
+				"<strong>LOGIN FAILED BITCH!</strong></div>"; 
+		String newPage = page[0] + loginFailedAlert + page[1];
+		newPage = newPage.replace("hidden", "");
+				
+		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 }
