@@ -100,11 +100,11 @@
 <body>
 
   <!-- Backgroundimage -->
-  <img id="bg-img" src="bg-img.jpg">
+  <img id="bg-img" src="/DistributedBoards/Resources?resourceName=bg-img.jpg&resourceType=img">
 
   <!-- Body -->
   <div id="signUp" class="sign-up">
-    <form class="sign-up-form" action="action_page.php">
+    <form class="sign-up-form" action="/DistributedBoards/Registration" method="POST">
      <div class="container">
        <h1>Sign Up</h1>
        <p>Please fill in this form to create an account.</p>
@@ -125,6 +125,7 @@
        <div class="clearfix">
          <button type="button" class="cancelbtn">Cancel</button>
          <button onclick="check()" type="button" class="signupbtn">Sign Up</button>
+         <button type="submit" class="signupbtn">Sign Up</button>
        </div>
      </div>
    </form>
