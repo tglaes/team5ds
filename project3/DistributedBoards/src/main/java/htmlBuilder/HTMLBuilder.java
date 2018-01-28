@@ -22,6 +22,9 @@ public class HTMLBuilder {
 	private static final String boardListMarker = "###BoardsList###";
 	private static final String boardNameMarker = "###BoardName###";
 	private static final String boardPostsMarker = "###BoardPosts###";
+	private static final String userNameMarker = "###UserName###";
+	private static final String boardAdminMarker = "###BoardAdmin###";
+	private static final String boardUserListMarker = "###BoardUsers###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -35,12 +38,12 @@ public class HTMLBuilder {
 	 * @throws SQLException
 	 */
 	public static InputStream buildBoardsPage(int userID, int boardID) throws IOException, SQLException {
-		
+
 		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
 		String newPage;
-		
+
 		// Einfügen der Boardliste
 		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
 		String boardListHTML = getBoardsListForUser(userID);
@@ -50,46 +53,69 @@ public class HTMLBuilder {
 		page = splitStringPageAtMarker(boardNameMarker, newPage);
 		String boardNameHTML = getBoardName(boardID);
 		newPage = page[0] + boardNameHTML + page[1];
-		
-		//Einfügen der Posts und Kommentare
+
+		// Einfügen der Posts und Kommentare
 		page = splitStringPageAtMarker(boardPostsMarker, newPage);
 		String postListHTML = getPosts(boardID);
 		newPage = page[0] + postListHTML + page[1];
+	
+		
+		//TODO: Anderes Zeug anzeigen wenn Tafel Zentrale Tafel.
+		//Einfügen des Admins des Boards in Sidebar
+		page = splitStringPageAtMarker(boardAdminMarker, newPage);
+		String adminHTML = getAdminForBoard(boardID);
+		newPage = page[0] + adminHTML + page[1];
+		
+		//Einfügen der Benutzer
+		page = splitStringPageAtMarker(boardUserListMarker, newPage);
+		String userListHTML = getUserListForBoard(boardID);
+		newPage = page[0] + userListHTML + page[1];
 		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
-	
-	
+
+	private static String getUserListForBoard(int boardID) throws SQLException {
+		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board=" + boardID;
+		ResultSet rs = Database.executeSql(sqlCommand);
+		String userListForBoardHTML = "";
+		
+		while(rs.next()) {
+			userListForBoardHTML += "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+		}
+		
+		return userListForBoardHTML;
+	}
+
+	private static String getAdminForBoard(int boardID) throws SQLException {
+		
+		String sqlCommand = "SELECT u.Username,u.ID FROM Boards as b JOIN Users as u ON b.Admin=u.ID WHERE b.ID=" + boardID;
+		ResultSet rs = Database.executeSql(sqlCommand);
+		
+		if(rs.next()) {
+			return "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+		}
+		
+		return "";
+	}
 
 	private static String getPosts(int boardID) throws SQLException {
-		
+
 		String noPosts = "<h1>No Posts yet! <h1>";
 		String posts = "";
 		boolean postsFound = false;
-		String sqlCommand = "SELECT u.Username,p.Date,p.ID,p.Content FROM Posts as p JOIN BoardPosts as bp JOIN Users as u ON bp.Post=p.ID AND u.ID=p.User WHERE bp.Board=" + boardID + " ORDER BY Date DESC";
+		String sqlCommand = "SELECT u.Username,p.Date,p.ID,p.Content,u.ID FROM Posts as p JOIN BoardPosts as bp JOIN Users as u ON bp.Post=p.ID AND u.ID=p.User WHERE bp.Board="
+				+ boardID + " ORDER BY Date DESC";
 		ResultSet rs = Database.executeSql(sqlCommand);
-		
-		while(rs.next()) {
+
+		while (rs.next()) {
 			postsFound = true;
-			posts +=
-			"<div class='post'>"
-			+ " <hr>"
-			+ "<div class='post-header'>"
-			+ "<div class='post-name'>"
-			+ "<h3 class='name'>" + rs.getString(1) + "</h3>"
-			+ "</div>"
-			+ "<div class='post-date'>"
-			+ "<p class='date'>" + rs.getString(2) + "</p>"
-			+ "</div>"
-			+ "</div>"
-			+ "<div class='post-body'>"
-			+ "<p class='post-text'>" + rs.getString(4)
-			+ "</p>"
-			+ "</div>"
-			+ "</div>"; 	      
+			posts += "<div class='post'>" + " <hr>" + "<div class='post-header'>" + "<div class='post-name'>"
+					+ "<h3 class='name'><a href='/DistributedBoards/Profile?profile=" + rs.getString(5) + "'>" + rs.getString(1) + "</a></h3>" + "</div>" + "<div class='post-date'>"
+					+ "<p class='date'>" + rs.getString(2) + "</p>" + "</div>" + "</div>" + "<div class='post-body'>"
+					+ "<p class='post-text'>" + rs.getString(4) + "</p>" + "</div>" + "</div>";
 		}
-		
-		if(postsFound) {
+
+		if (postsFound) {
 			return posts;
 		} else {
 			return noPosts;
@@ -123,7 +149,7 @@ public class HTMLBuilder {
 		String sqlCommand = "SELECT ID,name FROM Boards as b,UserBoards AS ub WHERE ub.Board=b.ID AND ub.User=" + userID
 				+ " ORDER BY ID ASC";
 		ResultSet rs = Database.executeSql(sqlCommand);
-		
+
 		while (rs.next()) {
 			boardsListHTML += "<p><a href='Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
 
@@ -136,7 +162,7 @@ public class HTMLBuilder {
 		// SUche alle Tafeln auf denen der Benutuzer Admin ist.
 		sqlCommand = "SELECT ID,name FROM Boards WHERE Admin=" + userID + " ORDER BY ID ASC";
 		rs = Database.executeSql(sqlCommand);
-		
+
 		while (rs.next()) {
 			boardsListHTML += "<p><a href='Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
 		}
@@ -184,4 +210,35 @@ public class HTMLBuilder {
 
 	}
 
+	public static InputStream buildProfilePage(int userID, int profileID) throws IOException, SQLException {
+
+		String[] page = splitHTMLPageAtMarker(userNameMarker, "WebContent\\HTML\\Profile.html");
+		String newPage;
+
+		// User schaut sich eigenes Profil an.
+		// Profil sollte bearbeitbar sein.
+		if (userID == profileID) {
+			//TODO: Editierbares Profil anzeigen.
+			newPage = page[0] + getUserData(profileID) + page[1];
+		} else {
+			newPage = page[0] + getUserData(profileID) + page[1];
+		}
+
+		return new ByteArrayInputStream(newPage.getBytes(charset));
+	}
+
+	private static String getUserData(int profileID) throws SQLException {
+
+		String sqlCommand = "SELECT Username FROM Users WHERE ID=" + profileID;
+		ResultSet rs = Database.executeSql(sqlCommand);
+		String userName = "";
+
+		if (rs.next()) {
+			userName = rs.getString(1);
+		} else {
+			// Profil existiert nicht.
+			//TODO: Profil exitiert nicht anzeigen.
+		}
+		return userName;
+	}
 }
