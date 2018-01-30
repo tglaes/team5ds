@@ -101,7 +101,7 @@ public class HTMLBuilder {
 
 	private static String getPosts(int boardID) throws SQLException {
 
-		String noPosts = "<h1>No Posts yet! <h1>";
+		String noPosts = "<br><br><h1>No Posts yet! <h1>";
 		String posts = "";
 		boolean postsFound = false;
 		String sqlCommand = "SELECT u.Username,p.Date,p.ID,p.Content,u.ID FROM Posts as p JOIN BoardPosts as bp JOIN Users as u ON bp.Post=p.ID AND u.ID=p.User WHERE bp.Board="
@@ -247,7 +247,7 @@ public class HTMLBuilder {
 		
 		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent\\HTML\\Login.html");
 		String loginFailedAlert = "<div class='alert alert-danger' role='alert'>" + 
-				"<strong>LOGIN FAILED BITCH!</strong></div>"; 
+				"<strong>LOGIN FAILED!</strong></div>"; 
 		String newPage = page[0] + loginFailedAlert + page[1];
 		newPage = newPage.replace("hidden", "");
 				
