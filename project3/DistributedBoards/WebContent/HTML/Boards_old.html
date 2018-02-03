@@ -16,22 +16,26 @@
 	margin-bottom: 0;
 	border-radius: 0;
 }
+
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {
 	height: 450px
 }
+
 /* Set gray background color and 100% height */
 .sidenav {
 	padding-top: 20px;
 	background-color: #f1f1f1;
 	height: 100%;
 }
+
 /* Set black background color, white text and some padding */
 footer {
 	background-color: #555;
 	color: white;
 	padding: 15px;
 }
+
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px) {
 	.sidenav {
@@ -56,36 +60,28 @@ footer {
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Home</a>
+					<a class="navbar-brand" href="#">Facebook</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
-						<li><a href="###Profile###">Profile</a></li>
+						<li class="active"><a href="#">Profil</a></li>
+						<li><a href="#">HowAboutDae</a></li>
+						<li><a href="#">MansNotHot</a></li>
+						<li><a href="#">2+2=4-1</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<form class="navbar-form navbar-left" action="/action_page.php">
-					      <div class="input-group">
-					        <input type="text" class="form-control" placeholder="Search" name="search">
-					        <div class="input-group-btn">
-					          <button class="btn btn-default" type="submit">
-					            <i class="glyphicon glyphicon-search"></i>
-					          </button>
-					        </div>
-					      </div>
-					    </form>
-						</li>
 						<li><a href="/DistributedBoards/Logout"><span
-								class="glyphicon glyphicon-log-out"></span> Logout</a>
-						</li>
+								class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</div>
+
 	<!----------------------------------- Center  --------------------------------->
 	<div class="container-fluid text-center">
 		<div class="row content">
+
 			<!-- Tafel-Navigation -->
 			<!-- ### Wird einfach aus der DB nach dem Login geladen! ### -->
 			<div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
@@ -95,6 +91,7 @@ footer {
 			<div class="col-sm-8 text-left"
 				style="overflow: auto; height: calc(100vh - 52px);">
 				<!-- ### tafel-name wird nach dem Click auf die Tafel geladen! ### -->
+				<!-- TODO: (Meris)soll bei viele posts fixiert sein! -->
 				<!-- TODO: (Meris)div mit tafel-name sieht nur unter firefox gut aus muss
       noch iwann auch für ander Browser angepasst werden! -->
 				<div
@@ -102,6 +99,7 @@ footer {
 					###BoardName###</div>
 
 				<!------------------------- Inhalt --------------------->
+
 				<!-- erster Post -->
 				<!-- ### in regelmäßigen Abständen wird geschaut ob es was neues in der DB
        gibt und jeder Post wird hier geladen mit (name, date, post-text)! ### -->
@@ -113,7 +111,7 @@ footer {
 			<!-- ### Wird einfach aus der DB geladen, nach dem man auf eine Tafel geclickt hat! ### -->
 			<div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
 				<h3>Admin</h3>
-				<div class="list-group">
+				<div class="list-group">				
 					###BoardAdmin###
 				</div>
 				<h3>Benutzer</h3>

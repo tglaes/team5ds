@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.Database;
+import routes.Resources;
 
 /**
  * Die Klasse fügt die benutzerspezifischen Daten in die jeweilige Seite ein.
@@ -26,6 +27,7 @@ public class HTMLBuilder {
 	private static final String boardAdminMarker = "###BoardAdmin###";
 	private static final String boardUserListMarker = "###BoardUsers###";
 	private static final String loginFailedMarker = "###LoginFailed###";
+	private static final String profileLinkMarker = "###Profile###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -72,6 +74,11 @@ public class HTMLBuilder {
 		String userListHTML = getUserListForBoard(boardID);
 		newPage = page[0] + userListHTML + page[1];
 		
+		//Einfügen des Links zum eigenden Profil.
+		page = splitStringPageAtMarker(profileLinkMarker, newPage);
+		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
+		newPage = page[0] + linkToUserProfile + page[1];
+		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 
@@ -110,10 +117,29 @@ public class HTMLBuilder {
 
 		while (rs.next()) {
 			postsFound = true;
-			posts += "<div class='post'>" + " <hr>" + "<div class='post-header'>" + "<div class='post-name'>"
-					+ "<h3 class='name'><a href='/DistributedBoards/Profile?profile=" + rs.getString(5) + "'>" + rs.getString(1) + "</a></h3>" + "</div>" + "<div class='post-date'>"
-					+ "<p class='date'>" + rs.getString(2) + "</p>" + "</div>" + "</div>" + "<div class='post-body'>"
-					+ "<p class='post-text'>" + rs.getString(4) + "</p>" + "</div>" + "</div>";
+			posts += "<div class='post'>" + 
+					"<hr>" + 
+					"<div class='media'><div class='media-left'>" + 
+					"<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>" + 
+					"</div>" + 
+					"<div class='media-body'>" + 
+					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4><p>" + rs.getString(4) + "</p>";
+							
+			String sqlCommand2 = "SELECT * FROM Posts WHERE Post=" + rs.getInt(3);
+			ResultSet rs2 = Database.executeSql(sqlCommand2);
+			while(rs2.next()) {
+				
+				posts += "<div class='media'>" + 
+						"<div class='media-left'>" + 
+						"<img src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object' style='width:45px'></div>" + 
+						"<div class='media-body'>" + 
+						"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4>" + 
+						"<p>" + rs.getString(4) + "</p></div></div>";
+				
+			}
+							
+			posts += "</div></div></div>";
+			
 		}
 
 		if (postsFound) {
@@ -212,35 +238,12 @@ public class HTMLBuilder {
 	}
 
 	public static InputStream buildProfilePage(int userID, int profileID) throws IOException, SQLException {
+		
+		//TODO: Liste der Anzeigetafeln laden.
+		
+		InputStream page = Resources.getResource("Profile.html", "HTML");
 
-		String[] page = splitHTMLPageAtMarker(userNameMarker, "WebContent\\HTML\\Profile.html");
-		String newPage;
-
-		// User schaut sich eigenes Profil an.
-		// Profil sollte bearbeitbar sein.
-		if (userID == profileID) {
-			//TODO: Editierbares Profil anzeigen.
-			newPage = page[0] + getUserData(profileID) + page[1];
-		} else {
-			newPage = page[0] + getUserData(profileID) + page[1];
-		}
-
-		return new ByteArrayInputStream(newPage.getBytes(charset));
-	}
-
-	private static String getUserData(int profileID) throws SQLException {
-
-		String sqlCommand = "SELECT Username FROM Users WHERE ID=" + profileID;
-		ResultSet rs = Database.executeSql(sqlCommand);
-		String userName = "";
-
-		if (rs.next()) {
-			userName = rs.getString(1);
-		} else {
-			// Profil existiert nicht.
-			//TODO: Profil exitiert nicht anzeigen.
-		}
-		return userName;
+		return page;
 	}
 
 	public static InputStream buildFailedLogin() throws IOException {

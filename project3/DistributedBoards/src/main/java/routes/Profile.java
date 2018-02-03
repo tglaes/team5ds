@@ -29,7 +29,8 @@ public class Profile {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			return HTMLBuilder.buildProfilePage(userID,profileID);
+			// TODO: HTMLBuilder aufrufen.
+			return Resources.getResource("Profile.html", "html");
 		}
 	}
 	
