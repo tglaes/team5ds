@@ -81,6 +81,12 @@ public class HTMLBuilder {
 		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
+	
+	public static InputStream buildProfilePage(int userID, int boardID) throws IOException, SQLException {
+		return null;
+	}
+	
+	
 
 	private static String getUserListForBoard(int boardID) throws SQLException {
 		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board=" + boardID;
@@ -123,7 +129,18 @@ public class HTMLBuilder {
 					"<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>" + 
 					"</div>" + 
 					"<div class='media-body'>" + 
-					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4><p>" + rs.getString(4) + "</p>";
+					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4><p>" + rs.getString(4) + "</p>" +
+					"<div class='btn-group'>" + 
+					"<a href='#' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
+					"<span class='glyphicon glyphicon-thumbs-up'></span> Like" + 
+					"</a>" + 
+					"<a href='#' data-toggle='' data-target='#comment-modal' class='btn btn-md'>" + 
+					"<span class='glyphicon glyphicon-edit'></span> Comment" + 
+					"</a>" + 
+					"<a href='' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
+					"<span class='glyphicon glyphicon-bookmark'></span> Mark" + 
+					"</a>" + 
+					"</div>";
 							
 			String sqlCommand2 = "SELECT * FROM Posts WHERE Post=" + rs.getInt(3);
 			ResultSet rs2 = Database.executeSql(sqlCommand2);
@@ -235,15 +252,6 @@ public class HTMLBuilder {
 		pageParts[1] = page.substring(index + marker.length());
 		return pageParts;
 
-	}
-
-	public static InputStream buildProfilePage(int userID, int profileID) throws IOException, SQLException {
-		
-		//TODO: Liste der Anzeigetafeln laden.
-		
-		InputStream page = Resources.getResource("Profile.html", "HTML");
-
-		return page;
 	}
 
 	public static InputStream buildFailedLogin() throws IOException {

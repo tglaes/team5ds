@@ -42,6 +42,16 @@ footer {
 		height: auto;
 	}
 }
+
+@media screen and (min-width: 768px) {
+      label {
+        width: 150px;
+        margin-bottom: 20px;
+      }
+    }
+    label {
+      text-align: left;
+    }
 </style>
 </head>
 <body>
@@ -56,7 +66,7 @@ footer {
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Home</a>
+					<a class="navbar-brand" href="/DistributedBoards/Boards?board=0">Home</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
@@ -100,6 +110,9 @@ footer {
 				<div
 					style="background-color: #F1F1F1; position: fixed; width: calc(100% - 37%); border-radius: 0px 0px 10px 10px;">
 					###BoardName###</div>
+					<a href="#" data-toggle="modal" data-target="#post-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
+          <span class="glyphicon" style="float: right; margin-top: 15px;">&#x2b;</span>
+        </a>
 
 				<!------------------------- Inhalt --------------------->
 				<!-- erster Post -->
@@ -123,6 +136,40 @@ footer {
 			</div>
 		</div>
 	</div>
+	
+	<!-- Add-Post -->
+<div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+  <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+  	<h3>Post something!</h3>
+    <div class="widget-area no-padding blank">
+    	<div class="status-upload">
+    		<form>
+          <br />
+    			<textarea rows="4" cols="52" placeholder="What are you doing right now?" ></textarea>
+    			<input style="width: 201.5px;" type="submit" name="post" class="btn btn-success" value="Post">
+          <input style="width: 201.5px;" type="submit" name="cancel" class="btn btn-danger" value="Cancel">
+    		</form>
+    	</div><!-- Status Upload  -->
+    </div><!-- Widget Area -->
+  </div>
+</div>
+
+<!-- Comment-Post -->
+<div class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+  <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+  	<h3>Comment!</h3>
+    <div class="widget-area no-padding blank">
+    	<div class="status-upload">
+    		<form>
+          <br />
+    			<textarea rows="4" cols="52" placeholder="You'r comment?" ></textarea>
+    			<input style="width: 201.5px;" type="submit" name="cancel" class="btn btn-danger" value="Cancel">
+          <input style="width: 201.5px;" type="submit" name="post" class="btn btn-success" value="Post">
+    		</form>
+    	</div><!-- Status Upload  -->
+    </div><!-- Widget Area -->
+  </div>
+</div>
 
 	<!----------------------------------- Footer --------------------------------->
 	<!--

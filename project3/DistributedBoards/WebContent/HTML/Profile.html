@@ -4,6 +4,7 @@
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--  <link rel="stylesheet" type="text/css" href="vs/upload-file.css">-->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -57,6 +58,22 @@ input.hidden {
 }
 .tital{ font-size:16px; font-weight:500;}
 .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
+
+@media screen and (min-width: 768px) {
+  label {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+}
+@media screen and (min-width: 768px) {
+  label {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+}
+label {
+  text-align: left;
+}
 </style>
 </head>
 <body>
@@ -71,11 +88,11 @@ input.hidden {
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Home</a>
+					<a class="navbar-brand" href="/DistributedBoards/Boards?board=0">Home</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Profil</a></li>
+						<li class="active"><a href="###Profile###">Profile</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
@@ -117,20 +134,35 @@ input.hidden {
 
               <div class="box-body">
                 <div class="col-sm-6">
-                  <div align="center"> <img alt="User Pic" src="/DistributedBoards/Resources?resourceName=Meris2.png&resourceType=img" id="profile-image1" class="img-circle img-responsive">
 
+                  <a href="#" class="profile-pic">
+                      <div class="profile-pic" style="background-image: url('https://s3-eu-west-1.amazonaws.com/lynks-blog/wp-content/uploads/2016/10/11153439/rsz_1shutterstock_325243652.jpg')" >
+                        <!--<input id="profile-image-upload" class="hidden" type="file">-->
+                        <div type="file" id="main-input" class="form-control form-input form-style-base">
+                          <input type="file" id="main-input" class="form-control form-input form-style-base">
+                          <span class="glyphicon glyphicon-camera"></span>
+                          <span> Change Image</span>
+                        </div>
+                      </div>
+                    </a>
+
+
+                  <!--<div align="center"> <img alt="User Pic" src="Meris2.png" id="profile-image1" class="img-circle img-responsive">
                     <input id="profile-image-upload" class="hidden" type="file">
                     <div style="color:#999;">click here to change profile image</div>
-                    <!--Upload Image Js And Css-->
-                  </div>
+                    Upload Image Js And Css
+                  </div>-->
 
                   <br>
 
                   <!-- /input-group -->
                 </div>
                 <div class="col-sm-6">
-                  <h4 style="color:#00b1b1;" class="text-left">Meris Krupic</h4></span>
+                  <span><h4 style="color:#00b1b1;" class="text-left">Meris Krupic</h4></span>
                   <span><p class="text-left">Student</p></span>
+                    <a href="#" data-toggle="modal" data-target="#profile-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
+                      <span class="glyphicon glyphicon-pencil"></span> Edit
+                    </a>
                 </div>
                 <div class="clearfix"></div>
                 <hr style="margin:5px 0 5px 0;">
@@ -173,7 +205,56 @@ input.hidden {
         </div>
       </div>
 
-			<!-- User-List -->
+      <!-- Profile-Edit -->
+      <div class="modal fade" id="profile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+        <div class="container" style="background-color: #F1F1F1; max-width: 450px; ">
+          <h1>Edit your Profile</h1>
+          <br>
+          <form class="form-inline" action="/action_page.php" style="padding: 30px 30px 30px 30px;">
+
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input type="text" class="form-control" name="username" placeholder="Username" value="frank">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="text" class="form-control" name="email" placeholder="E-Mail">
+            </div>
+            <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+            </div>
+            <div class="form-group">
+              <label for="pwd">Repeat Password:</label>
+              <input type="password" class="form-control" id="pwd" placeholder="Repeat password" name="pwd">
+            </div>
+            <div class="form-group">
+              <label for="firstname">Firstname:</label>
+              <input type="text" class="form-control" name="firstname" placeholder="Firstname">
+            </div>
+            <div class="form-group">
+              <label for="lastname">Lastname:</label>
+              <input type="text" class="form-control" name="lastname" placeholder="Lastname">
+            </div>
+            <div class="form-group">
+              <label for="username">Date of Birth:</label>
+              <input type="text" class="form-control" name="birthday" placeholder="Date of Birth">
+            </div>
+            <div class="form-group">
+              <label style="float: left;" for="username">Studet???:</label>
+              <input type="text" class="form-control" name="studnet???" placeholder="Student">
+            </div>
+            <br />
+            <div class="form-group">
+              <input style="width: 178px;" type="submit" name="save" class="btn btn-success" value="Save">
+              <input style="width: 178px;" type="submit" name="cancel" class="btn btn-danger" value="Cancel">
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+			<!-- Statistiken -->
 			<!-- ### Wird einfach aus der DB geladen, nach dem man auf eine Tafel geclickt hat! ### -->
 			<div class="col-sm-3 sidenav" style="min-height: calc(100vh - 52px);">
 				<h3>Statistiken</h3>

@@ -26,7 +26,7 @@ import util.Permissions;
  * @author Tristan Glaes
  *
  */
-@Path("/Login")
+@Path("/{route:Login|login|}")
 public class Login {
 
 	/**

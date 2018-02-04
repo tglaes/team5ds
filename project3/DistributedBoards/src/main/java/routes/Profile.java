@@ -33,6 +33,4 @@ public class Profile {
 			return Resources.getResource("Profile.html", "html");
 		}
 	}
-	
-	
 }
