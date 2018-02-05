@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.Database;
-import routes.Resources;
 
 /**
  * Die Klasse fügt die benutzerspezifischen Daten in die jeweilige Seite ein.
@@ -28,6 +27,9 @@ public class HTMLBuilder {
 	private static final String boardUserListMarker = "###BoardUsers###";
 	private static final String loginFailedMarker = "###LoginFailed###";
 	private static final String profileLinkMarker = "###Profile###";
+	private static final String numberBoardsMarker = "###NumberBoards###";
+	private static final String numberPostsMarker = "###NumberPosts###";
+	private static final String numberCommentsMarker = "###NumberComments###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -82,11 +84,74 @@ public class HTMLBuilder {
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 	
-	public static InputStream buildProfilePage(int userID, int boardID) throws IOException, SQLException {
-		return null;
+	public static InputStream buildProfilePage(int userID, boolean editable) throws IOException, SQLException {
+		
+		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
+		String[] page;
+		// Die neue Seite.
+		String newPage;
+
+		// Einfügen der Boardliste
+	    page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Profile.html");
+		String boardListHTML = getBoardsListForUser(userID);
+		newPage = page[0] + boardListHTML + page[1];
+		
+		// TODO: Benutzerinformationen eintragen
+		
+		//Statistiken
+		page = splitStringPageAtMarker(numberBoardsMarker, newPage);
+		String numberBoards = getNumberOfBoards(userID);
+		newPage = page[0] + numberBoards + page[1];
+		
+		page = splitStringPageAtMarker(numberPostsMarker, newPage);
+		String numberPosts = getNumberOfPosts(userID);
+		newPage = page[0] + numberPosts + page[1];
+		
+		page = splitStringPageAtMarker(numberCommentsMarker, newPage);
+		String numberComments = getNumberOfComments(userID);
+		newPage = page[0] + numberComments + page[1];
+		
+		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 	
 	
+
+	private static String getNumberOfComments(int userID) throws SQLException {
+		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post=0";
+		ResultSet rs = Database.executeSql(sqlCommand);
+		if(rs.next()) {
+			String numberOfComments = String.valueOf(rs.getInt(1));
+			Database.closeConnection();
+			return numberOfComments;
+		} else {
+			return "0";
+		}
+	}
+
+	private static String getNumberOfPosts(int userID) throws SQLException {
+		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post>0";
+		ResultSet rs = Database.executeSql(sqlCommand);
+		if(rs.next()) {
+			String numberOfPosts = String.valueOf(rs.getInt(1));
+			Database.closeConnection();		
+			return numberOfPosts;
+		} else {
+			return "0";
+		}
+		
+	}
+
+	private static String getNumberOfBoards(int userID) throws SQLException {
+		String sqlCommand = "SELECT COUNT(*) FROM UserBoards WHERE User=" + userID;
+		ResultSet rs = Database.executeSql(sqlCommand);
+		if(rs.next()) {
+			String numberOfBoards = String.valueOf(rs.getInt(1));
+			Database.closeConnection();				
+			return numberOfBoards;
+		} else {
+			return "0";
+		}
+	}
 
 	private static String getUserListForBoard(int boardID) throws SQLException {
 		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board=" + boardID;
@@ -142,7 +207,7 @@ public class HTMLBuilder {
 					"</a>" + 
 					"</div>";
 							
-			String sqlCommand2 = "SELECT * FROM Posts WHERE Post=" + rs.getInt(3);
+			String sqlCommand2 = "SELECT p.ID,p.Content,p.Date,u.Username FROM Posts AS p JOIN Users AS u ON p.User=u.ID WHERE Post=" + rs.getInt(3) + " ORDER BY Date";
 			ResultSet rs2 = Database.executeSql(sqlCommand2);
 			while(rs2.next()) {
 				
@@ -150,8 +215,8 @@ public class HTMLBuilder {
 						"<div class='media-left'>" + 
 						"<img src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object' style='width:45px'></div>" + 
 						"<div class='media-body'>" + 
-						"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4>" + 
-						"<p>" + rs.getString(4) + "</p></div></div>";
+						"<h4 class='media-heading'>" + rs2.getString(4) + "<small><i>" + rs2.getString(3) + "</i></small></h4>" + 
+						"<p>" + rs2.getString(2) + "</p></div></div>";
 				
 			}
 							

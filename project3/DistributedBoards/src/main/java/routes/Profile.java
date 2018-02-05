@@ -27,10 +27,14 @@ public class Profile {
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
+			// Benutzer ist nicht angemeldet.
 			return Resources.getResource("Login.html", "html");
+		} else if(profileID == userID) {
+			// Benutzer schaut sein eigenes Profil an.
+			return HTMLBuilder.buildProfilePage(userID,true);
 		} else {
-			// TODO: HTMLBuilder aufrufen.
-			return Resources.getResource("Profile.html", "html");
+			// Eine Benutzer schaut das Profil eines anderen Benutzers an.
+			return HTMLBuilder.buildProfilePage(userID, false);
 		}
 	}
 }
