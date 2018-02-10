@@ -71,11 +71,11 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static ResultSet executeSql(String sqlCommand) throws SQLException {
-		
+
 		System.out.println(sqlCommand);
 		connect();
 		ResultSet rs = null;
-		
+
 		try {
 			Statement stmt = connection.createStatement();
 			rs = stmt.executeQuery(sqlCommand);
@@ -83,13 +83,27 @@ public final class Database {
 			e.printStackTrace();
 			connection.close();
 		}
-		
+
 		return rs;
 	}
 	
+	public static int getlastID() throws SQLException {
+		connect();
+
+		String sql = "SELECT last_insert_rowid()";
+		Statement stmt = connection.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		if(rs.next()) {
+			return rs.getInt(1);
+		}
+	    return 0;
+	}
+	
+
 	public static void closeConnection() throws SQLException {
-		if(!(connection == null)) {
-			if(!connection.isClosed()) {
+		if (!(connection == null)) {
+			if (!connection.isClosed()) {
 				connection.close();
 			}
 		}

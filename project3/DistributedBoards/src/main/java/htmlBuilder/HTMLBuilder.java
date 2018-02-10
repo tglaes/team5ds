@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.Database;
+import util.Permission;
 
 /**
  * Die Klasse fügt die benutzerspezifischen Daten in die jeweilige Seite ein.
@@ -30,6 +31,7 @@ public class HTMLBuilder {
 	private static final String numberBoardsMarker = "###NumberBoards###";
 	private static final String numberPostsMarker = "###NumberPosts###";
 	private static final String numberCommentsMarker = "###NumberComments###";
+	private static final String boardDeleteButtonMarker = "###deleteButtonBoard###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -42,7 +44,7 @@ public class HTMLBuilder {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static InputStream buildBoardsPage(int userID, int boardID) throws IOException, SQLException {
+	public static InputStream buildBoardsPage(int userID, int boardID, Permission p) throws IOException, SQLException {
 
 		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
 		String[] page;
@@ -79,8 +81,15 @@ public class HTMLBuilder {
 		//Einfügen des Links zum eigenden Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
-		newPage = page[0] + linkToUserProfile + page[1];
+		newPage = page[0] + linkToUserProfile + page[1];		
 		
+		page = splitStringPageAtMarker(boardDeleteButtonMarker, newPage);
+		if(p == Permission.Admin) {		
+			newPage = page[0]+ "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button>"+ page[1];
+		} else {
+			newPage = page[0] + page[1];
+		}
+			
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 	
@@ -260,7 +269,7 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 
 		while (rs.next()) {
-			boardsListHTML += "<p><a href='Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
+			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
 
 			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingefügt.
 			if (rs.getInt(1) == 0) {
@@ -273,7 +282,7 @@ public class HTMLBuilder {
 		rs = Database.executeSql(sqlCommand);
 
 		while (rs.next()) {
-			boardsListHTML += "<p><a href='Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
+			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></p>";
 		}
 		// Schließen der Datenbankverbindung
 		Database.closeConnection();
@@ -327,6 +336,19 @@ public class HTMLBuilder {
 		String newPage = page[0] + loginFailedAlert + page[1];
 		newPage = newPage.replace("hidden", "");
 				
+		return new ByteArrayInputStream(newPage.getBytes(charset));
+	}
+	
+	
+	public static InputStream buildFailedRegistration(int errorCode) throws IOException {
+		
+		//Remove the hidden attribute form the error display.
+		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren_new.html");		
+		String newPage = page[0] + "" + page[1];
+		
+		
+		//Mark the fields that are not correct.
+		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 }

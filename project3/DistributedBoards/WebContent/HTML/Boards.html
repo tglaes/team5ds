@@ -99,20 +99,24 @@ footer {
 			<!-- Tafel-Navigation -->
 			<!-- ### Wird einfach aus der DB nach dem Login geladen! ### -->
 			<div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
-				###BoardsList###</div>
-
+				###BoardsList###
+				<a href="#" data-toggle="modal" data-target="#board-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
+          				<span class="glyphicon" style="float: right; margin-top: 15px;">&#x2b;</span>
+        		</a>	
+			</div>
+			
 			<!-- Tafel-Inhalt -->
 			<div class="col-sm-8 text-left"
 				style="overflow: auto; height: calc(100vh - 52px);">
 				<!-- ### tafel-name wird nach dem Click auf die Tafel geladen! ### -->
 				<!-- TODO: (Meris)div mit tafel-name sieht nur unter firefox gut aus muss
       noch iwann auch für ander Browser angepasst werden! -->
-				<div
-					style="background-color: #F1F1F1; position: fixed; width: calc(100% - 37%); border-radius: 0px 0px 10px 10px;">
-					###BoardName###</div>
+				<div style="background-color: #F1F1F1; position: fixed; width: calc(100% - 37%); border-radius: 0px 0px 10px 10px;">
+					###BoardName###
+				</div>
 					<a href="#" data-toggle="modal" data-target="#post-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
-          <span class="glyphicon" style="float: right; margin-top: 15px;">&#x2b;</span>
-        </a>
+          				<span class="glyphicon" style="float: right; margin-top: 15px;">&#x2b;</span>
+        			</a>
 
 				<!------------------------- Inhalt --------------------->
 				<!-- erster Post -->
@@ -133,6 +137,7 @@ footer {
 				<div class="list-group">
 					###BoardUsers###
 				</div>
+				###deleteButtonBoard###				
 			</div>
 		</div>
 	</div>
@@ -153,6 +158,24 @@ footer {
     </div><!-- Widget Area -->
   </div>
 </div>
+
+<!-- Add Board -->
+<div class="modal fade" id="board-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+  <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+  	<h3>Add a new Board</h3>
+    <div class="widget-area no-padding blank">
+    	<div class="status-upload">
+    		<form action="/DistributedBoards/Boards/newBoard" method="POST">
+          		<br/>
+    			<input placeholder="Boardname" name="boardName"></input>
+    			<button class="btn btn-success" type="submit">Add the board</button>
+    			<button class="btn btn-danger" type="button" data-dismiss="modal">Mans too hot!</button>
+    		</form>
+    	</div><!-- Status Upload  -->
+    </div><!-- Widget Area -->
+  </div>
+</div>
+
 
 <!-- Comment-Post -->
 <div class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
