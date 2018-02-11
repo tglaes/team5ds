@@ -47,7 +47,7 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static boolean executeQuery(String sqlCommand) throws SQLException {
-		System.out.println(sqlCommand);
+		//System.out.println(sqlCommand);
 		connect();
 
 		try {
@@ -72,7 +72,7 @@ public final class Database {
 	 */
 	public static ResultSet executeSql(String sqlCommand) throws SQLException {
 
-		System.out.println(sqlCommand);
+		//System.out.println(sqlCommand);
 		connect();
 		ResultSet rs = null;
 

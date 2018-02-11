@@ -32,6 +32,7 @@ public class HTMLBuilder {
 	private static final String numberPostsMarker = "###NumberPosts###";
 	private static final String numberCommentsMarker = "###NumberComments###";
 	private static final String boardDeleteButtonMarker = "###deleteButtonBoard###";
+	private static final String boardIDMarker = "###boardID###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -83,12 +84,17 @@ public class HTMLBuilder {
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];		
 		
+		// Einfügen der boardID
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];	
+		
 		page = splitStringPageAtMarker(boardDeleteButtonMarker, newPage);
 		if(p == Permission.Admin) {		
 			newPage = page[0]+ "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button>"+ page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
+			
 			
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
@@ -202,8 +208,12 @@ public class HTMLBuilder {
 					"<div class='media'><div class='media-left'>" + 
 					"<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>" + 
 					"</div>" + 
-					"<div class='media-body'>" + 
-					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i></small></h4><p>" + rs.getString(4) + "</p>" +
+					"<div class='media-body'>" +
+					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i>" +
+					"<a href='#' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
+					"<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + 
+					"</a>"+
+				    "</small></h4><p>" + rs.getString(4) + "</p>" +
 					"<div class='btn-group'>" + 
 					"<a href='#' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
 					"<span class='glyphicon glyphicon-thumbs-up'></span> Like" + 

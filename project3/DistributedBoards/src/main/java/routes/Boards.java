@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -119,6 +120,81 @@ public class Boards {
 			Database.closeConnection();
 			
 			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
+		}
+	}
+	
+	@POST
+	@Path("/newPost")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream newPost(@QueryParam("board") int boardID, @FormParam("postText") String postText,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else {
+			// Post in die Datenbank eintragen.
+			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('"+ postText +"', '" + new Date().toString() + "',0," + userID + ")";
+			Database.executeQuery(sqlCommand);
+			sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
+			ResultSet rs = Database.executeSql(sqlCommand);
+			rs.next();
+			int postID = rs.getInt(1);
+			// Post dem Board zuordnen.
+			sqlCommand = "INSERT INTO BoardPosts (Board,Post) VALUES(" + boardID + "," + postID + ")";
+			Database.executeQuery(sqlCommand);
+			rs.close();
+			Database.closeConnection();
+				
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		}
+	}	
+	
+	@POST
+	@Path("/editPost")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream editPost(@QueryParam("board") int boardID, @QueryParam("post") int postID,@FormParam("postText") String postText,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else {
+			
+			String sqlCommand = "UPDATE Posts SET content='" + postText + "' WHERE ID=" + postID;
+			Database.executeQuery(sqlCommand);
+			Database.closeConnection();
+				
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		}
+	}	
+	
+	//TODO: ist user berechtigt.
+	@GET
+	@Path("/deletePost")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream deletePost(@QueryParam("board") int boardID, @QueryParam("post") int postID,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else {
+			// Löschen der Zuordnung zum Board.
+			String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
+			Database.executeQuery(sqlCommand);
+			// Löschen des Posts
+			sqlCommand = "DELETE FROM Posts WHERE ID=" + postID;
+			Database.executeQuery(sqlCommand);
+			// Löschen der Kommentare
+			sqlCommand = "DELETE FROM Posts WHERE Post=" + postID;
+			Database.executeQuery(sqlCommand);
+			Database.closeConnection();
+				
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
 }

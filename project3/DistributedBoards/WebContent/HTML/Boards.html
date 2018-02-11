@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script type='text/javascript' src='/DistributedBoards/Resources?resourceName=board.js&resourceType=js'></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -101,7 +102,7 @@ footer {
 			<div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
 				###BoardsList###
 				<a href="#" data-toggle="modal" data-target="#board-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
-          				<span class="glyphicon" style="float: right; margin-top: 15px;">&#x2b;</span>
+          				<span class="glyphicon" style="margin-top: 15px;">&#x2b;</span>
         		</a>	
 			</div>
 			
@@ -148,11 +149,11 @@ footer {
   	<h3>Post something!</h3>
     <div class="widget-area no-padding blank">
     	<div class="status-upload">
-    		<form>
-          <br />
-    			<textarea rows="4" cols="52" placeholder="What are you doing right now?" ></textarea>
-    			<input style="width: 201.5px;" type="submit" name="post" class="btn btn-success" value="Post">
-          <input style="width: 201.5px;" type="submit" name="cancel" class="btn btn-danger" value="Cancel">
+    		<form action="/DistributedBoards/Boards/newPost?board=###boardID###" method="POST">
+          		<br/>
+    			<textarea rows="4" cols="52" name="postText" placeholder="What are you doing right now?"></textarea>
+    			<button class="btn btn-success" type="submit">Add Post</button>
+    			<button class="btn btn-danger" type="button" data-dismiss="modal">нет, я не хочу!</button>
     		</form>
     	</div><!-- Status Upload  -->
     </div><!-- Widget Area -->
@@ -193,6 +194,26 @@ footer {
     </div><!-- Widget Area -->
   </div>
 </div>
+
+<!-- Edit Post -->
+<div class="modal fade" id="editPost-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+  <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+  	<h3>Comment!</h3>
+    <div class="widget-area no-padding blank">
+    	<div class="status-upload">
+    		<form action="/DistributedBoards/Boards/editPost" method="POST">
+    		<input placeholder="Your post text should be here." name="postText"></input>
+    		<br/>
+    		<br/>
+    		<button class="btn btn-success" type="submit">Edit the post</button>
+    		<button class="btn btn-warning" type="button" data-dismiss="modal">Cancel edit</button>
+    		<button class="btn btn-danger" type="button" data-dismiss="modal">Delete the post</button>
+    		</form>
+    	</div><!-- Status Upload  -->
+    </div><!-- Widget Area -->
+  </div>
+</div>
+
 
 	<!----------------------------------- Footer --------------------------------->
 	<!--
