@@ -4,13 +4,17 @@
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/DistributedBoards/Resources?resourceName=favicon.png&resourceType=img">
 <!--  <link rel="stylesheet" type="text/css" href="vs/upload-file.css">-->
+<link rel="stylesheet" type="text/css" href="/DistributedBoards/Resources?resourceName=Statistiken.css&resourceType=css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/DistributedBoards/Resources?resourceName=SimpleChart.js&resourceType=js"></script>
+    <script src="/DistributedBoards/Resources?resourceName=chart.js&resourceType=js"></script>
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -82,18 +86,22 @@ label {
 	<div class="nav-bar">
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
+			   
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
 						data-target="#myNavbar">
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/DistributedBoards/Boards?board=0">Home</a>
+					<a class="" href="/DistributedBoards/Boards?board=0">
+						<img alt="logo" src="/DistributedBoards/Resources?resourceName=logo.png&resourceType=img" style="margin-top: 6px; margin-right: 20px;">
+					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="###Profile###">Profile</a></li>
 					</ul>
+										
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<form class="navbar-form navbar-left" action="/action_page.php">
@@ -124,7 +132,7 @@ label {
 				###BoardsList###</div>
 
 			<!-- User-Profile -->
-      <div class="col-md-7 " style="margin-top: 50px">
+      <div class="col-md-5 " style="margin-top: 50px">
         <div class="panel panel-default">
           <div class="panel-heading" style="background-color: #F1F1F1">
             <h1>User Profile</h1></div>
@@ -256,11 +264,18 @@ label {
 
 			<!-- Statistiken -->
 			<!-- ### Wird einfach aus der DB geladen, nach dem man auf eine Tafel geclickt hat! ### -->
-			<div class="col-sm-3 sidenav" style="min-height: calc(100vh - 52px);">
-				<h3>Statistiken</h3>
-				<p>Boards: ###NumberBoards###</p>
+			<div class="col-sm-5 sidenav" style="min-height: calc(100vh - 52px);">
+				<!--  <p>Boards: ###NumberBoards###</p>
 				<p>Posts: ###NumberPosts###</p>
-				<p>Kommentare: ###NumberComments###</p>
+				<p>Kommentare: ###NumberComments###</p> -->
+				<!-- Line-Chart-->
+                <h3>Weekly Statistics</h3>
+                <div class="col-md-12" id="Linegraph" style="height: 500px">
+                </div>
+                <!-- Pie-Chart-->
+                <h3 style="margin-top: 600px;">All Statistics</h3>
+                <div class="col-md-10" id="Piegraph" style="height: 700px; margin-left: 15%;">
+                </div>
 			</div>
 		</div>
 	</div>
