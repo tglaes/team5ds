@@ -31,7 +31,7 @@ public class HTMLBuilder {
 	private static final String numberBoardsMarker = "###NumberBoards###";
 	private static final String numberPostsMarker = "###NumberPosts###";
 	private static final String numberCommentsMarker = "###NumberComments###";
-	private static final String boardDeleteButtonMarker = "###deleteButtonBoard###";
+	private static final String boardDeleteButtonNewUserMarker = "###deleteButtonNewUserBoard###";
 	private static final String boardIDMarker = "###boardID###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
@@ -87,10 +87,14 @@ public class HTMLBuilder {
 		// Einfügen der boardID
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];	
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		
-		page = splitStringPageAtMarker(boardDeleteButtonMarker, newPage);
+		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if(p == Permission.Admin) {		
-			newPage = page[0]+ "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button>"+ page[1];
+			newPage = page[0]+ "<div><button href='#' data-toggle='modal' data-target='#newUser-modal' class='btn btn-primary'>Add User</button><br>" + 
+			           "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button></div>"+					           
+					  page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
@@ -174,7 +178,7 @@ public class HTMLBuilder {
 		String userListForBoardHTML = "";
 		
 		while(rs.next()) {
-			userListForBoardHTML += "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
 		}
 		
 		return userListForBoardHTML;
@@ -186,7 +190,7 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 		
 		if(rs.next()) {
-			return "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+			return "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
 		}
 		
 		return "";
@@ -287,7 +291,7 @@ public class HTMLBuilder {
 			}
 		}
 
-		// SUche alle Tafeln auf denen der Benutuzer Admin ist.
+		// Suche alle Tafeln auf denen der Benutuzer Admin ist.
 		sqlCommand = "SELECT ID,name FROM Boards WHERE Admin=" + userID + " ORDER BY ID ASC";
 		rs = Database.executeSql(sqlCommand);
 

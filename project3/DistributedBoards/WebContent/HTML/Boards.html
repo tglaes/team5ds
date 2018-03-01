@@ -141,7 +141,7 @@ footer {
 				<div class="list-group">
 					###BoardUsers###
 				</div>
-				###deleteButtonBoard###				
+				###deleteButtonNewUserBoard###		
 			</div>
 		</div>
 	</div>
@@ -156,7 +156,24 @@ footer {
           		<br/>
     			<textarea rows="4" cols="52" name="postText" placeholder="What are you doing right now?"></textarea>
     			<button class="btn btn-success" type="submit">Add Post</button>
-    			<button class="btn btn-danger" type="button" data-dismiss="modal">нет, я не хочу!</button>
+    			<button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+    		</form>
+    	</div><!-- Status Upload  -->
+    </div><!-- Widget Area -->
+  </div>
+</div>
+
+	<!-- Add User -->
+<div class="modal fade" id="newUser-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
+  <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+  	<h3>Add a new User</h3>
+    <div class="widget-area no-padding blank">
+    	<div class="status-upload">
+    		<form action="/DistributedBoards/Boards/addUser?board=###boardID###" method="POST">
+          		<br/>
+    			<input name="userName" placeholder="Enter a username or email"></input>
+    			<button class="btn btn-success" type="submit">Add User</button>
+    			<button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
     		</form>
     	</div><!-- Status Upload  -->
     </div><!-- Widget Area -->
@@ -173,7 +190,7 @@ footer {
           		<br/>
     			<input placeholder="Boardname" name="boardName"></input>
     			<button class="btn btn-success" type="submit">Add the board</button>
-    			<button class="btn btn-danger" type="button" data-dismiss="modal">Mans too hot!</button>
+    			<button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
     		</form>
     	</div><!-- Status Upload  -->
     </div><!-- Widget Area -->
