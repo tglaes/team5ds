@@ -75,8 +75,8 @@ public class HTMLBuilder {
 		newPage = page[0] + adminHTML + page[1];
 		
 		//Einfügen der Benutzer
-		page = splitStringPageAtMarker(boardUserListMarker, newPage);
-		String userListHTML = getUserListForBoard(boardID);
+		page = splitStringPageAtMarker(boardUserListMarker,newPage);
+		String userListHTML = getUserListForBoard(boardID,p);
 		newPage = page[0] + userListHTML + page[1];
 		
 		//Einfügen des Links zum eigenden Profil.
@@ -172,13 +172,19 @@ public class HTMLBuilder {
 		}
 	}
 
-	private static String getUserListForBoard(int boardID) throws SQLException {
+	private static String getUserListForBoard(int boardID,Permission p) throws SQLException {
 		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board=" + boardID;
 		ResultSet rs = Database.executeSql(sqlCommand);
 		String userListForBoardHTML = "";
 		
 		while(rs.next()) {
-			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>";
+					
+					// Füge den Benutzer entfernen Button hinzu.
+					if(p == Permission.Admin) {
+						userListForBoardHTML += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board=" + boardID + "&user=" + rs.getString(2) + "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>";
+					}
+					userListForBoardHTML += "</p>";
 		}
 		
 		return userListForBoardHTML;

@@ -122,6 +122,31 @@ public class Boards {
 			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
 		}
 	}
+	
+	@GET
+	@Path("/removeUser")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream deleteBoard(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID ,@Context HttpServletRequest request)
+			throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if(Permissions.isAuthorized(userID, boardID) == Permission.Admin){
+
+			//Lösche den Benutzer
+			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
+			Database.executeQuery(sql);
+			Database.closeConnection();
+			
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		} else {
+			// TODO: Error Seite anzeigen.
+			String error = "<h1>You do not have the permissions for this action.</h1>";
+			return new ByteArrayInputStream(error.getBytes(StandardCharsets.UTF_8.name()));
+		}
+	}
 
 	@POST
 	@Path("/newPost")
