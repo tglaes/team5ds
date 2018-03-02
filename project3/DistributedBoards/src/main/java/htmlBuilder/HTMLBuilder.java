@@ -31,7 +31,7 @@ public class HTMLBuilder {
 	private static final String numberBoardsMarker = "###NumberBoards###";
 	private static final String numberPostsMarker = "###NumberPosts###";
 	private static final String numberCommentsMarker = "###NumberComments###";
-	private static final String boardDeleteButtonMarker = "###deleteButtonBoard###";
+	private static final String boardDeleteButtonNewUserMarker = "###deleteButtonNewUserBoard###";
 	private static final String boardIDMarker = "###boardID###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
@@ -75,8 +75,8 @@ public class HTMLBuilder {
 		newPage = page[0] + adminHTML + page[1];
 		
 		//Einfügen der Benutzer
-		page = splitStringPageAtMarker(boardUserListMarker, newPage);
-		String userListHTML = getUserListForBoard(boardID);
+		page = splitStringPageAtMarker(boardUserListMarker,newPage);
+		String userListHTML = getUserListForBoard(boardID,p);
 		newPage = page[0] + userListHTML + page[1];
 		
 		//Einfügen des Links zum eigenden Profil.
@@ -87,10 +87,18 @@ public class HTMLBuilder {
 		// Einfügen der boardID
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];	
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		
-		page = splitStringPageAtMarker(boardDeleteButtonMarker, newPage);
+		// Add User to Board and delete board
+		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if(p == Permission.Admin) {		
-			newPage = page[0]+ "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button>"+ page[1];
+			newPage = page[0]+ "<div><p><button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='#add-user-board-modal'>" + 
+					"<span class='glyphicon glyphicon-plus-sign'></span> Add User</button></p>" +
+			           "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button></div>"+					           
+					  page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
@@ -168,15 +176,25 @@ public class HTMLBuilder {
 		}
 	}
 
-	private static String getUserListForBoard(int boardID) throws SQLException {
+	private static String getUserListForBoard(int boardID,Permission p) throws SQLException {
 		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board=" + boardID;
 		ResultSet rs = Database.executeSql(sqlCommand);
 		String userListForBoardHTML = "";
 		
 		while(rs.next()) {
-			userListForBoardHTML += "<p align='left' class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>"
+
+			/*userListForBoardHTML += "<p align='left' class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>"
 					+ "<a href='#' data-toggle='modal' data-target='#delete-user-modal' class='btn btn-lg' style='background-color: white; color: black; float: right;'>"
-					+ "<span class='glyphicon glyphicon-trash' style='float: right; height: 2px;'></span> " + "</a></p>";
+					+ "<span class='glyphicon glyphicon-trash' style='float: right; height: 2px;'></span> " + "</a></p>";*/
+
+			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>";
+					
+					// Füge den Benutzer entfernen Button hinzu.
+					if(p == Permission.Admin) {
+						userListForBoardHTML += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board=" + boardID + "&user=" + rs.getString(2) + "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>";
+					}
+					userListForBoardHTML += "</p>";
+
 		}
 		
 		return userListForBoardHTML;
@@ -188,7 +206,7 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 		
 		if(rs.next()) {
-			return "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+			return "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
 		}
 		
 		return "";
@@ -289,7 +307,7 @@ public class HTMLBuilder {
 			}
 		}
 
-		// SUche alle Tafeln auf denen der Benutuzer Admin ist.
+		// Suche alle Tafeln auf denen der Benutuzer Admin ist.
 		sqlCommand = "SELECT ID,name FROM Boards WHERE Admin=" + userID + " ORDER BY ID ASC";
 		rs = Database.executeSql(sqlCommand);
 
