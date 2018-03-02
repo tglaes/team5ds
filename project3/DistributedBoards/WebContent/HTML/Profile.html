@@ -14,7 +14,49 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="/DistributedBoards/Resources?resourceName=SimpleChart.js&resourceType=js"></script>
-    <script src="/DistributedBoards/Resources?resourceName=chart.js&resourceType=js"></script>
+  
+
+<script>
+function changeStats() {
+    $("canvas").css( "margin-left", "30px");
+}
+</script>
+<!-- ###################### PIE CHART DATEN EINFUEGEN -->
+<script type="text/javascript">
+
+	var Piedata = {
+	    linecolor: "Random",
+	    title: "Profit",
+	    values: [
+	        { X: "Boards", Y: ###NumberBoards###},   /*"###NumberBoards###"*/
+	        { X: "Posts", Y:###NumberPosts###},	 /*"###NumberPosts###"*/
+	        { X: "Comments", Y: ###NumberComments###}, /*"###NumberComments###"*/
+	        { X: "Likes", Y: 5.00 }
+	    ]
+	};
+
+	$(function () {
+
+	    $("#Piegraph").SimpleChart({
+	        ChartType: "Pie",
+	        toolwidth: "50",
+	        toolheight: "25",
+	        axiscolor: "#E6E6E6",
+	        textcolor: "#6E6E6E",
+	        showlegends: true,
+	        showpielables: true,
+	        data: [Piedata],
+	        legendsize: "100",
+	        legendposition: 'top',
+	        xaxislabel: 'Days',
+	        title: '',
+	        yaxislabel: 'Count'
+	    });
+	});
+	
+</script>
+
+
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -80,13 +122,12 @@ label {
 }
 </style>
 </head>
-<body>
+<body onchange="changeStats()">
 
 	<!----------------------------------- Nav-Bar (Header) --------------------------------->
 	<div class="nav-bar">
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
-			   
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
 						data-target="#myNavbar">
@@ -268,14 +309,11 @@ label {
 				<!--  <p>Boards: ###NumberBoards###</p>
 				<p>Posts: ###NumberPosts###</p>
 				<p>Kommentare: ###NumberComments###</p> -->
-				<!-- Line-Chart-->
-                <h3>Weekly Statistics</h3>
-                <div class="col-md-12" id="Linegraph" style="height: 500px">
-                </div>
-                <!-- Pie-Chart-->
-                <h3 style="margin-top: 600px;">All Statistics</h3>
-                <div class="col-md-10" id="Piegraph" style="height: 700px; margin-left: 15%;">
-                </div>
+				
+        		<h3>Statistics</h3>
+          		
+          		<div class="col-md-10" id="Piegraph" style="height: 650px; margin-left: 10%; margin-top: 25px;">
+          		</div>
 			</div>
 		</div>
 	</div>

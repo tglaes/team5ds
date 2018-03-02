@@ -174,7 +174,9 @@ public class HTMLBuilder {
 		String userListForBoardHTML = "";
 		
 		while(rs.next()) {
-			userListForBoardHTML += "<p class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a></p>";
+			userListForBoardHTML += "<p align='left' class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>"
+					+ "<a href='#' data-toggle='modal' data-target='#delete-user-modal' class='btn btn-lg' style='background-color: white; color: black; float: right;'>"
+					+ "<span class='glyphicon glyphicon-trash' style='float: right; height: 2px;'></span> " + "</a></p>";
 		}
 		
 		return userListForBoardHTML;
