@@ -89,10 +89,14 @@ public class HTMLBuilder {
 		newPage = page[0] + boardID + page[1];	
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		
+		// Add User to Board and delete board
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if(p == Permission.Admin) {		
-			newPage = page[0]+ "<div><button href='#' data-toggle='modal' data-target='#newUser-modal' class='btn btn-primary'>Add User</button><br>" + 
+			newPage = page[0]+ "<div><p><button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='#add-user-board-modal'>" + 
+					"<span class='glyphicon glyphicon-plus-sign'></span> Add User</button></p>" +
 			           "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button></div>"+					           
 					  page[1];
 		} else {
@@ -178,6 +182,11 @@ public class HTMLBuilder {
 		String userListForBoardHTML = "";
 		
 		while(rs.next()) {
+
+			/*userListForBoardHTML += "<p align='left' class='list-group-item'><a href='Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>"
+					+ "<a href='#' data-toggle='modal' data-target='#delete-user-modal' class='btn btn-lg' style='background-color: white; color: black; float: right;'>"
+					+ "<span class='glyphicon glyphicon-trash' style='float: right; height: 2px;'></span> " + "</a></p>";*/
+
 			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>" + rs.getString(1) + "</a>";
 					
 					// Füge den Benutzer entfernen Button hinzu.
@@ -185,6 +194,7 @@ public class HTMLBuilder {
 						userListForBoardHTML += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board=" + boardID + "&user=" + rs.getString(2) + "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>";
 					}
 					userListForBoardHTML += "</p>";
+
 		}
 		
 		return userListForBoardHTML;
