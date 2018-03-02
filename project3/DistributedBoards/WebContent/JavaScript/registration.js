@@ -89,7 +89,7 @@ function checkFormData() {
         }
 
         function checkProfession(profession) {
-            if (profession && !checkForWhiteSpace(profession)) {
+            if (profession) {
                 var v = document.getElementById("beruf")
                 v.className = "form-control is-valid"
                 return true

@@ -1,7 +1,3 @@
-//Author: Monie Corleone
-//Purpose: To draw line chart in canvas element
-//The MIT License (MIT)
-//Copyright (c) <2015> <Monie Corleone>
 ; (function ($, window, document, undefined) {
     var pluginName = "SimpleChart";
     var defaults = {
