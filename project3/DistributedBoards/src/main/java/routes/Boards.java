@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class Boards {
 	@Produces(MediaType.TEXT_HTML)
 	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
-
+		//System.out.println(boardID);
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
@@ -51,7 +53,10 @@ public class Boards {
 	}
 
 	private static InputStream createPage(Permission p, int userID, int boardID) throws IOException, SQLException {
-
+		
+		//TODO: gibt es das Board, falls nicht Page not found anzeigen.
+				
+		//System.out.println(boardID);
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
@@ -61,8 +66,8 @@ public class Boards {
 			ret = HTMLBuilder.buildBoardsPage(userID, boardID, p);
 			break;
 		case None:
-			String side = "<h1>You dont have the rights to acces this site!<h1>";
-			ret = new ByteArrayInputStream(side.getBytes(StandardCharsets.UTF_8.name()));
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			ret = new ByteArrayInputStream(pageBytes);
 			break;
 		}
 
@@ -112,7 +117,9 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-
+			
+			//TODO: Überprüfen ob User Admin ist.
+			
 			// Löschen des Boards.
 			System.out.println("Lösche Board mit ID: " + boardID);
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
@@ -135,6 +142,8 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if(Permissions.isAuthorized(userID, boardID) == Permission.Admin){
 
+			//TODO: Überprüfen ob User Admin ist.
+			
 			//Lösche den Benutzer
 			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
 			Database.executeQuery(sql);
@@ -142,9 +151,8 @@ public class Boards {
 			
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		} else {
-			// TODO: Error Seite anzeigen.
-			String error = "<h1>You do not have the permissions for this action.</h1>";
-			return new ByteArrayInputStream(error.getBytes(StandardCharsets.UTF_8.name()));
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
 		}
 	}
 
@@ -159,6 +167,9 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
+			
+			//TODO: Überprufen ob der User im Board ist.
+			
 			// Post in die Datenbank eintragen.
 			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText + "', '"
 					+ new Date().toString() + "',0," + userID + ")";
@@ -198,7 +209,6 @@ public class Boards {
 		}
 	}
 
-	// TODO: ist user berechtigt.
 	@GET
 	@Path("/deletePost")
 	@Produces(MediaType.TEXT_HTML)
@@ -210,6 +220,9 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
+			
+			//TODO: Überprüfen ob User Admin ist oder der Post dem User gehört.
+			
 			// Löschen der Zuordnung zum Board.
 			String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
 			Database.executeQuery(sqlCommand);
@@ -275,9 +288,7 @@ public class Boards {
 			// Dem User das neue Board schicken.
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
-		// TODO: Error Seite anzeigen.
-		String error = "<h1>You do not have the permissions for this action.</h1>";
-		return new ByteArrayInputStream(error.getBytes(StandardCharsets.UTF_8.name()));
+		byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+		return new ByteArrayInputStream(pageBytes);
 	}
-
 }

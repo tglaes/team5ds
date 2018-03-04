@@ -33,6 +33,16 @@ public class HTMLBuilder {
 	private static final String numberCommentsMarker = "###NumberComments###";
 	private static final String boardDeleteButtonNewUserMarker = "###deleteButtonNewUserBoard###";
 	private static final String boardIDMarker = "###boardID###";
+	private static final String profileFirstnameMarker = "###firstname###";
+	private static final String profileLastnameMarker = "###lastname###";
+	private static final String profileEmailMarker = "###email###";
+	private static final String profileUsernameMarker = "###username###";
+	private static final String profilePasswordMarker = "###password###";
+	private static final String profileProfessionMarker = "###profession###";
+	private static final String profileAgeMarker = "###age###";
+	private static final String profileFullnameMarker = "###fullname###";
+	private static final String profileIDMarker = "###profileID###";
+	private static final String profileEditButtonMarker = "###profileEditButton###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -51,7 +61,7 @@ public class HTMLBuilder {
 		String[] page;
 		// Die neue Seite.
 		String newPage;
-
+		System.out.println(boardID);
 		// Einfügen der Boardliste
 		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
 		String boardListHTML = getBoardsListForUser(userID);
@@ -68,31 +78,33 @@ public class HTMLBuilder {
 		newPage = page[0] + postListHTML + page[1];
 	
 		
-		//TODO: Anderes Zeug anzeigen wenn Tafel Zentrale Tafel.
-		//Einfügen des Admins des Boards in Sidebar
+		// TODO: Anderes Zeug anzeigen wenn Tafel Zentrale Tafel.
+		// Einfügen des Admins des Boards in Sidebar
 		page = splitStringPageAtMarker(boardAdminMarker, newPage);
 		String adminHTML = getAdminForBoard(boardID);
 		newPage = page[0] + adminHTML + page[1];
 		
-		//Einfügen der Benutzer
+		// Einfügen der Benutzer
 		page = splitStringPageAtMarker(boardUserListMarker,newPage);
 		String userListHTML = getUserListForBoard(boardID,p);
 		newPage = page[0] + userListHTML + page[1];
 		
-		//Einfügen des Links zum eigenden Profil.
+		// Einfügen des Links zum eigenden Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];		
 		
 		// Einfügen der boardID
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];	
+		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
 		
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if(p == Permission.Admin) {		
-			newPage = page[0]+ "<div><button href='#' data-toggle='modal' data-target='#newUser-modal' class='btn btn-primary'>Add User</button><br>" + 
+			newPage = page[0]+ "<div><button href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>Add User</button><br>" + 
 			           "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID + "'\" class='btn btn-danger'> Board Löschen</button></div>"+					           
 					  page[1];
 		} else {
@@ -103,37 +115,126 @@ public class HTMLBuilder {
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 	
-	public static InputStream buildProfilePage(int userID, boolean editable) throws IOException, SQLException {
+	/**
+	 * 
+	 * @param userID ID des Benutzers der eingeloggt ist.
+	 * @param profileID ID des Profiles
+	 * @param editable ist das Profil für den Benutzer editierbar.
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public static InputStream buildProfilePage(Integer userID, Integer profileID, boolean editable) throws IOException, SQLException {
 		
 		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
-		String newPage;
-
+		String newPage;	
+		
 		// Einfügen der Boardliste
 	    page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Profile.html");
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 		
-		// TODO: Benutzerinformationen eintragen
+		//Einfügen des Links zum eigenden Profil.
+		page = splitStringPageAtMarker(profileLinkMarker, newPage);
+		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
+		newPage = page[0] + linkToUserProfile + page[1];
 		
+		// Informationen des Benutzers	
+		page = splitStringPageAtMarker(profileIDMarker, newPage);
+		newPage = page[0] + profileID + page[1];
+		
+		
+		String sqlCommand = "SELECT * FROM Users WHERE ID=" + profileID;
+		ResultSet rs = Database.executeSql(sqlCommand);		
+		
+		if(rs.next()) {
+			page = splitStringPageAtMarker(profileFirstnameMarker, newPage);
+			String firstname = rs.getString(5);
+			newPage = page[0] + firstname + page[1];
+			
+			page = splitStringPageAtMarker(profileFirstnameMarker, newPage);
+			firstname = rs.getString(5);
+			newPage = page[0] + firstname + page[1];
+			
+			page = splitStringPageAtMarker(profileLastnameMarker, newPage);
+			String lastname = rs.getString(6);
+			newPage = page[0] + lastname + page[1];
+			
+			page = splitStringPageAtMarker(profileLastnameMarker, newPage);
+			lastname = rs.getString(6);
+			newPage = page[0] + lastname + page[1];
+			
+			page = splitStringPageAtMarker(profileProfessionMarker, newPage);
+			String profession = rs.getString(7);
+			newPage = page[0] + profession + page[1];			
+			page = splitStringPageAtMarker(profileProfessionMarker, newPage);
+			newPage = page[0] + profession + page[1];			
+			page = splitStringPageAtMarker(profileProfessionMarker, newPage);
+			newPage = page[0] + profession + page[1];
+			
+			page = splitStringPageAtMarker(profilePasswordMarker, newPage);
+			String pwd = rs.getString(2);
+			newPage = page[0] + pwd + page[1];
+			page = splitStringPageAtMarker(profilePasswordMarker, newPage);
+			newPage = page[0] + pwd + page[1];
+			
+			page = splitStringPageAtMarker(profileUsernameMarker, newPage);
+			String username = rs.getString(4);
+			newPage = page[0] + username + page[1];
+			page = splitStringPageAtMarker(profileUsernameMarker, newPage);
+			newPage = page[0] + username + page[1];
+			
+			page = splitStringPageAtMarker(profileAgeMarker, newPage);
+			String age = rs.getString(8);
+			newPage = page[0] + age + page[1];
+			page = splitStringPageAtMarker(profileAgeMarker, newPage);
+			newPage = page[0] + age + page[1];
+			
+			page = splitStringPageAtMarker(profileEmailMarker, newPage);
+			String email = rs.getString(3);
+			newPage = page[0] + email + page[1];
+			page = splitStringPageAtMarker(profileEmailMarker, newPage);
+			newPage = page[0] + email + page[1];
+			
+			page = splitStringPageAtMarker(profileFullnameMarker, newPage);
+			String fullname = rs.getString(5) + ", " + rs.getString(6);
+			newPage = page[0] + fullname + page[1];
+					
+			rs.close();
+			Database.closeConnection();
+			
+			String buttonHTML = "";	
+			page = splitStringPageAtMarker(profileEditButtonMarker, newPage);
+			if(editable) {
+				buttonHTML = "<a href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
+					"<span class='glyphicon glyphicon-pencil'></span> Edit" + 
+					"</a>";
+			}
+			newPage = page[0] + buttonHTML + page[1];
+			
+				
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/404.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+			
 		//Statistiken
 		page = splitStringPageAtMarker(numberBoardsMarker, newPage);
-		String numberBoards = getNumberOfBoards(userID);
+		String numberBoards = getNumberOfBoards(profileID);
 		newPage = page[0] + numberBoards + page[1];
 		
 		page = splitStringPageAtMarker(numberPostsMarker, newPage);
-		String numberPosts = getNumberOfPosts(userID);
+		String numberPosts = getNumberOfPosts(profileID);
 		newPage = page[0] + numberPosts + page[1];
 		
 		page = splitStringPageAtMarker(numberCommentsMarker, newPage);
-		String numberComments = getNumberOfComments(userID);
+		String numberComments = getNumberOfComments(profileID);
 		newPage = page[0] + numberComments + page[1];
 		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
-	
-	
 
 	private static String getNumberOfComments(int userID) throws SQLException {
 		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post=0";

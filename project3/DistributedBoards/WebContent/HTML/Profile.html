@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Bootstrap Example</title>
+<title>D-Boards</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/DistributedBoards/Resources?resourceName=favicon.png&resourceType=img">
@@ -22,40 +22,6 @@ function changeStats() {
 }
 </script>
 <!-- ###################### PIE CHART DATEN EINFUEGEN -->
-<script type="text/javascript">
-
-	var Piedata = {
-	    linecolor: "Random",
-	    title: "Profit",
-	    values: [
-	        { X: "Boards", Y: ###NumberBoards###},   /*"###NumberBoards###"*/
-	        { X: "Posts", Y:###NumberPosts###},	 /*"###NumberPosts###"*/
-	        { X: "Comments", Y: ###NumberComments###}, /*"###NumberComments###"*/
-	        { X: "Likes", Y: 5.00 }
-	    ]
-	};
-
-	$(function () {
-
-	    $("#Piegraph").SimpleChart({
-	        ChartType: "Pie",
-	        toolwidth: "50",
-	        toolheight: "25",
-	        axiscolor: "#E6E6E6",
-	        textcolor: "#6E6E6E",
-	        showlegends: true,
-	        showpielables: true,
-	        data: [Piedata],
-	        legendsize: "100",
-	        legendposition: 'top',
-	        xaxislabel: 'Days',
-	        title: '',
-	        yaxislabel: 'Count'
-	    });
-	});
-	
-</script>
-
 
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
@@ -207,42 +173,45 @@ label {
                   <!-- /input-group -->
                 </div>
                 <div class="col-sm-6">
-                  <span><h4 style="color:#00b1b1;" class="text-left">Meris Krupic</h4></span>
-                  <span><p class="text-left">Student</p></span>
-                    <a href="#" data-toggle="modal" data-target="#profile-modal" class="btn btn-lg" style="background-color: #F1F1F1; color: black; float: right;">
-                      <span class="glyphicon glyphicon-pencil"></span> Edit
-                    </a>
+                  <span><h4 style="color:#00b1b1;" class="text-left">###fullname###</h4></span>
+                  <span><p class="text-left">###profession###</p></span>
+                    ###profileEditButton###
                 </div>
                 <div class="clearfix"></div>
                 <hr style="margin:5px 0 5px 0;">
 
                 <div class="col-sm-5 col-xs-6 tital text-left">Username:</div>
-                <div class="col-sm-7 col-xs-6 text-left">meris</div>
+                <div class="col-sm-7 col-xs-6 text-left">###username###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
                 <div class="col-sm-5 col-xs-6 tital text-left">E-Mail:</div>
-                <div class="col-sm-7 text-left">test@hotmail.com</div>
+                <div class="col-sm-7 text-left">###email###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
                 <div class="col-sm-5 col-xs-6 tital text-left">Password:</div>
-                <div class="col-sm-7 text-left">********</div>
+                <div class="col-sm-7 text-left">###password###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
                 <div class="col-sm-5 col-xs-6 tital text-left">First Name:</div>
-                <div class="col-sm-7 col-xs-6 text-left">Meris</div>
+                <div class="col-sm-7 col-xs-6 text-left">###firstname###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
                 <div class="col-sm-5 col-xs-6 tital text-left">Last Name:</div>
-                <div class="col-sm-7 text-left"> Krupic</div>
+                <div class="col-sm-7 text-left">###lastname###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
-                <div class="col-sm-5 col-xs-6 tital text-left">Date Of Birth:</div>
-                <div class="col-sm-7 text-left">07 Jan 1995</div>
+                <div class="col-sm-5 col-xs-6 tital text-left">Profession:</div>
+                <div class="col-sm-7 text-left">###profession###</div>
+                <div class="clearfix"></div>
+                <div class="bot-border"></div>
+
+				<div class="col-sm-5 col-xs-6 tital text-left">Age:</div>
+                <div class="col-sm-7 text-left">###age###</div>
                 <div class="clearfix"></div>
                 <div class="bot-border"></div>
 
@@ -259,39 +228,39 @@ label {
         <div class="container" style="background-color: #F1F1F1; max-width: 450px; ">
           <h1>Edit your Profile</h1>
           <br>
-          <form class="form-inline" action="/action_page.php" style="padding: 30px 30px 30px 30px;">
+          <form class="form-inline" action="/DistributedBoards/Profile/editProfile?profileID=###profileID###" method="POST" style="padding: 30px 30px 30px 30px;">
 
             <div class="form-group">
-              <label for="username">Username:</label>
-              <input type="text" class="form-control" name="username" placeholder="Username" value="frank">
+              <label >Username:</label>
+              <input type="text" class="form-control" name="username" value="###username###">
             </div>
             <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="text" class="form-control" name="email" placeholder="E-Mail">
+              <label >Email:</label>
+              <input type="text" class="form-control" name="email" value="###email###">
             </div>
             <div class="form-group">
-              <label for="pwd">Password:</label>
-              <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+              <label >Password:</label>
+              <input type="password" class="form-control" id="pwd" name="pwd" value="###password###">
             </div>
             <div class="form-group">
-              <label for="pwd">Repeat Password:</label>
-              <input type="password" class="form-control" id="pwd" placeholder="Repeat password" name="pwd">
+              <label >Repeat Password:</label>
+              <input type="password" class="form-control" id="pwd-rep" name="pwd" placeholder="Repeat Password" value="">
             </div>
             <div class="form-group">
-              <label for="firstname">Firstname:</label>
-              <input type="text" class="form-control" name="firstname" placeholder="Firstname">
+              <label >Firstname:</label>
+              <input type="text" class="form-control" name="firstname" value="###firstname###">
             </div>
             <div class="form-group">
-              <label for="lastname">Lastname:</label>
-              <input type="text" class="form-control" name="lastname" placeholder="Lastname">
+              <label >Lastname:</label>
+              <input type="text" class="form-control" name="lastname" value="###lastname###">
             </div>
             <div class="form-group">
-              <label for="username">Date of Birth:</label>
-              <input type="text" class="form-control" name="birthday" placeholder="Date of Birth">
+              <label >Age:</label>
+              <input type="text" class="form-control" name="age" value="###age###">
             </div>
             <div class="form-group">
-              <label for="username">Profession:</label>
-              <input type="text" class="form-control" name="profession" placeholder="Profession">
+              <label >Profession:</label>
+              <input type="text" class="form-control" name="profession" value="###profession###">
             </div>
             <!-- damit oben der div richtig eingerückt ist -->
             <div class="form-group">
@@ -300,8 +269,8 @@ label {
             
             <br />
             <div class="form-group">
-              <input style="width: 178px;" type="submit" name="save" class="btn btn-success" value="Save">
-              <input style="width: 178px;" type="submit" name="cancel" class="btn btn-danger" value="Cancel">
+              <button class="btn btn-success" type="submit">Save Changes</button>
+    		  <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
             </div>
 
           </form>
@@ -311,16 +280,53 @@ label {
 			<!-- Statistiken -->
 			<!-- ### Wird einfach aus der DB geladen, nach dem man auf eine Tafel geclickt hat! ### -->
 			<div class="col-sm-5 sidenav" style="min-height: calc(100vh - 52px);">
-				<!--  <p>Boards: ###NumberBoards###</p>
-				<p>Posts: ###NumberPosts###</p>
-				<p>Kommentare: ###NumberComments###</p> -->
-				
         		<h3>Statistics</h3>
-          		
           		<div class="col-md-10" id="Piegraph" style="height: 650px; margin-left: 10%; margin-top: 25px;">
           		</div>
 			</div>
 		</div>
 	</div>
+	<p id='hiddenNumberBoards' hidden='true'>###NumberBoards###</p>
+	<p id='hiddenNumberPosts' hidden='true'>###NumberPosts###</p>
+	<p id='hiddenNumberComments' hidden='true'>###NumberComments###</p>
+	<script type="text/javascript">
+	
+	var boards = Number(document.getElementById('hiddenNumberBoards').innerText)
+	var posts = Number(document.getElementById('hiddenNumberPosts').innerText)
+	var comments = Number(document.getElementById('hiddenNumberComments').innerText)
+	var likes = 5
+	var Piedata = {
+	    linecolor: "Random",
+	    title: "Profit",
+	    values: [
+	        { X: "Boards", Y: boards},
+	        { X: "Posts", Y: posts},
+	        { X: "Comments", Y: comments},
+	        { X: "Likes", Y: likes }
+	    ]
+	};
+
+	$(function () {
+
+	    $("#Piegraph").SimpleChart({
+	        ChartType: "Pie",
+	        toolwidth: "50",
+	        toolheight: "25",
+	        axiscolor: "#E6E6E6",
+	        textcolor: "#6E6E6E",
+	        showlegends: true,
+	        showpielables: true,
+	        data: [Piedata],
+	        legendsize: "100",
+	        legendposition: 'top',
+	        xaxislabel: 'Days',
+	        title: '',
+	        yaxislabel: 'Count'
+	    });
+	});
+	
+</script>
+	
 </body>
+
 </html>
