@@ -219,7 +219,7 @@ public class HTMLBuilder {
 					"<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>" + 
 					"</div>" + 
 					"<div class='media-body'>" +
-					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i>" + rs.getString(2) + "</i>" +
+					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i> " + rs.getString(2) + "</i>" +
 					"<a href='#' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
 					"<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + 
 					"</a>"+
@@ -244,7 +244,7 @@ public class HTMLBuilder {
 						"<div class='media-left'>" + 
 						"<img src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object' style='width:45px'></div>" + 
 						"<div class='media-body'>" + 
-						"<h4 class='media-heading'>" + rs2.getString(4) + "<small><i>" + rs2.getString(3) + "</i></small></h4>" + 
+						"<h4 class='media-heading'>" + rs2.getString(4) + "<small><i> " + rs2.getString(3) + "</i></small></h4>" + 
 						"<p>" + rs2.getString(2) + "</p></div></div>";
 				
 			}
