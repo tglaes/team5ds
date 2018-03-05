@@ -3,7 +3,6 @@ package routes;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
@@ -174,6 +173,8 @@ public class Boards {
 			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText + "', '"
 					+ new Date().toString() + "',0," + userID + ")";
 			Database.executeQuery(sqlCommand);
+			
+			// Letzte hinzugefügte ID aus der Datenbank auslesen.
 			sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
 			ResultSet rs = Database.executeSql(sqlCommand);
 			rs.next();
@@ -221,20 +222,24 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else {
 			
-			//TODO: Überprüfen ob User Admin ist oder der Post dem User gehört.
-			
-			// Löschen der Zuordnung zum Board.
-			String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
-			Database.executeQuery(sqlCommand);
-			// Löschen des Posts
-			sqlCommand = "DELETE FROM Posts WHERE ID=" + postID;
-			Database.executeQuery(sqlCommand);
-			// Löschen der Kommentare
-			sqlCommand = "DELETE FROM Posts WHERE Post=" + postID;
-			Database.executeQuery(sqlCommand);
-			Database.closeConnection();
+			if(Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+				// Löschen der Zuordnung zum Board.
+				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
+				Database.executeQuery(sqlCommand);
+				// Löschen des Posts
+				sqlCommand = "DELETE FROM Posts WHERE ID=" + postID;
+				Database.executeQuery(sqlCommand);
+				// Löschen der Kommentare
+				sqlCommand = "DELETE FROM Posts WHERE Post=" + postID;
+				Database.executeQuery(sqlCommand);
+				Database.closeConnection();
 
-			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+			} else {
+				// User ist nicht berechtigt.
+				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+				return new ByteArrayInputStream(pageBytes);
+			}		
 		}
 	}
 

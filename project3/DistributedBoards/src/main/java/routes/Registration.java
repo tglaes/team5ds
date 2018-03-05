@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -57,13 +58,14 @@ public class Registration {
 				}			
 			}
 			
-			//System.out.println(errorCode);
-			
+			// Benutzer in Datenbank eintragen.
 			if(errorCode == 0) {
-				//SELECT last_insert_rowid()
-				String sqlCommand = "INSERT INTO Users (Password,Email,Username) VALUES('" +password+ "', '"+ email +"','" + username + "')";
+				String sqlCommand = "INSERT INTO Users (Password,Email,Username,Vorname,Nachname,[Alter],Beruf)"
+						+ " VALUES('" +password+ "', '"+ email +"','" + username + "','" + firstname + "', '" + lastname + "'"
+								+ "," + age + ", '" + profession + "')";
 				Database.executeQuery(sqlCommand);
 				
+				// Neue ID des Benutzers über die Email.
 				sqlCommand = "SELECT id FROM Users WHERE EMail='" + email + "'";
 				ResultSet rs = Database.executeSql(sqlCommand);
 				
@@ -76,9 +78,25 @@ public class Registration {
 					sqlCommand = "INSERT INTO UserBoards (User,Board) VALUES(" + id + ",0)";
 					Database.executeQuery(sqlCommand);
 					rs.close();
+					
+					// Willkommens-Post auf die Zentrale Anzeige
+					sqlCommand = "Insert INTO Posts (Content,Date,User,Post) VALUES('" + firstname + ", " + lastname + " just joined!','"
+								 + new Date().toString() + "'," + id + ",0)";
+					Database.executeQuery(sqlCommand);
+							
+					// ID des Posts aus der Datenbank auslesen.
+					sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
+					rs = Database.executeSql(sqlCommand);
+					rs.next();
+					int postID = rs.getInt(1);
+					// Post in die zentrale Anzeigetafel schreiben.
+					sqlCommand = "INSERT INTO BoardPosts (Board,Post) VALUES(0," + postID + ")";
+					Database.executeQuery(sqlCommand);
+					
+					rs.close();
 					Database.closeConnection();
 					// Senden der BoardsPage.
-					return HTMLBuilder.buildBoardsPage(id, 0, Permission.Admin);
+					return HTMLBuilder.buildBoardsPage(id, 0, Permission.User);
 				}			
 			}
 		return HTMLBuilder.buildFailedRegistration(errorCode);

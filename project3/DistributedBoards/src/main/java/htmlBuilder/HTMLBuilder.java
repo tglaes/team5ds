@@ -61,7 +61,6 @@ public class HTMLBuilder {
 		String[] page;
 		// Die neue Seite.
 		String newPage;
-		System.out.println(boardID);
 		// Einfügen der Boardliste
 		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
 		String boardListHTML = getBoardsListForUser(userID);
@@ -74,7 +73,7 @@ public class HTMLBuilder {
 
 		// Einfügen der Posts und Kommentare
 		page = splitStringPageAtMarker(boardPostsMarker, newPage);
-		String postListHTML = getPosts(boardID);
+		String postListHTML = getPosts(boardID,p);
 		newPage = page[0] + postListHTML + page[1];
 	
 		
@@ -101,6 +100,10 @@ public class HTMLBuilder {
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if(p == Permission.Admin) {		
@@ -110,8 +113,7 @@ public class HTMLBuilder {
 		} else {
 			newPage = page[0] + page[1];
 		}
-			
-			
+				
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 	
@@ -237,7 +239,7 @@ public class HTMLBuilder {
 	}
 
 	private static String getNumberOfComments(int userID) throws SQLException {
-		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post=0";
+		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post>0";
 		ResultSet rs = Database.executeSql(sqlCommand);
 		if(rs.next()) {
 			String numberOfComments = String.valueOf(rs.getInt(1));
@@ -249,7 +251,7 @@ public class HTMLBuilder {
 	}
 
 	private static String getNumberOfPosts(int userID) throws SQLException {
-		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post>0";
+		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post=0";
 		ResultSet rs = Database.executeSql(sqlCommand);
 		if(rs.next()) {
 			String numberOfPosts = String.valueOf(rs.getInt(1));
@@ -262,15 +264,24 @@ public class HTMLBuilder {
 	}
 
 	private static String getNumberOfBoards(int userID) throws SQLException {
+		// Alle Boards des Benutzers (ohne Boards auf denen er Admin ist)
+		int numberBoards = 0;
 		String sqlCommand = "SELECT COUNT(*) FROM UserBoards WHERE User=" + userID;
 		ResultSet rs = Database.executeSql(sqlCommand);
-		if(rs.next()) {
-			String numberOfBoards = String.valueOf(rs.getInt(1));
-			Database.closeConnection();				
-			return numberOfBoards;
+		if(rs.next()) {					
+			numberBoards = rs.getInt(1);
 		} else {
-			return "0";
+			numberBoards = 0;
 		}
+		
+		// Alle Boards auf denen der Benutzer Admin ist.
+		sqlCommand = "SELECT COUNT(*) FROM Boards WHERE Admin=" + userID;
+		rs = Database.executeSql(sqlCommand);
+		if(rs.next()) {
+			numberBoards += rs.getInt(1);
+		}
+		return String.valueOf(numberBoards);
+		
 	}
 
 	private static String getUserListForBoard(int boardID,Permission p) throws SQLException {
@@ -303,7 +314,7 @@ public class HTMLBuilder {
 		return "";
 	}
 
-	private static String getPosts(int boardID) throws SQLException {
+	private static String getPosts(int boardID, Permission p) throws SQLException {
 
 		String noPosts = "<br><br><h1>No Posts yet! <h1>";
 		String posts = "";
@@ -320,11 +331,15 @@ public class HTMLBuilder {
 					"<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>" + 
 					"</div>" + 
 					"<div class='media-body'>" +
-					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i> " + rs.getString(2) + "</i>" +
-					"<a href='#' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
-					"<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + 
-					"</a>"+
-				    "</small></h4><p>" + rs.getString(4) + "</p>" +
+					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i> " + rs.getString(2) + "</i>";
+					
+					if(p == Permission.Admin) {
+						posts += "<a href='#' onclick='editModal(" + rs.getInt(3) + ",\"" + rs.getString(4) + "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
+								"<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + 
+								"</a>";
+					}
+					
+					posts += "</small></h4><p>" + rs.getString(4) + "</p>" +
 					"<div class='btn-group'>" + 
 					"<a href='#' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
 					"<span class='glyphicon glyphicon-thumbs-up'></span> Like" + 

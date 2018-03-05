@@ -12,6 +12,29 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function editModal(postID, postContent){
+			
+			// Einfügen des Posttextes in das Modal
+			var modalTextArea = document.getElementById("editPostModalText")
+			modalTextArea.innerHTML = postContent
+			
+			// Die ID des Posts in die Url der Form einfügen.
+			var editModalForm = document.getElementById("editPostModalForm")
+			var actionAtt = editModalForm.getAttribute("action")
+			actionAtt += "&post=" + postID
+			editModalForm.setAttribute("action", actionAtt)
+			
+			// Passe die Url des Onclick Attributes für den ausgewählten Post an.
+			var deleteButton = document.getElementById("editPostDeleteButton")
+			var onclickAtt = deleteButton.getAttribute("onclick")
+			var n = onclickAtt.lastIndexOf("=");
+			onclickAtt = onclickAtt.substring(0,n+1)
+			onclickAtt += postID + "'"
+			deleteButton.setAttribute("onclick", onclickAtt)
+		}
+	
+	</script>
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -284,22 +307,21 @@ footer {
 <!-- Edit Post -->
 <div class="modal fade" id="editPost-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; margin-top: 70px;">
   <div class="container" style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
-  	<h3>Comment!</h3>
+  	<h3>Edit Post!</h3>
     <div class="widget-area no-padding blank">
     	<div class="status-upload">
-    		<form action="/DistributedBoards/Boards/editPost" method="POST">
-    		<input placeholder="Your post text should be here." name="postText"></input>
+    		<form id="editPostModalForm" action="/DistributedBoards/Boards/editPost?board=###boardID###" method="POST">
+    		<textarea id="editPostModalText" rows="3" cols="52" name="postText">test</textarea>
     		<br/>
     		<br/>
     		<button class="btn btn-success" type="submit">Edit the post</button>
     		<button class="btn btn-warning" type="button" data-dismiss="modal">Cancel edit</button>
-    		<button class="btn btn-danger" type="button" data-dismiss="modal">Delete the post</button>
+    		<button onclick="window.location.href='/DistributedBoards/Boards/deletePost?board=###boardID###&post=" id="editPostDeleteButton" class="btn btn-danger" type="button" data-dismiss="modal">Delete the post</button>
     		</form>
     	</div><!-- Status Upload  -->
     </div><!-- Widget Area -->
   </div>
 </div>
-
 
 	<!----------------------------------- Footer --------------------------------->
 	<!--
