@@ -120,8 +120,11 @@ public class Boards {
 			//TODO: Überprüfen ob User Admin ist.
 			
 			// Löschen des Boards.
-			System.out.println("Lösche Board mit ID: " + boardID);
+			//System.out.println("Lösche Board mit ID: " + boardID);
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
+			Database.executeQuery(sqlCommand);
+			// User Board Abhängigkeiten löschen.
+			sqlCommand = "DELETE FROM UserBoards WHERE board=" + boardID;
 			Database.executeQuery(sqlCommand);
 			Database.closeConnection();
 
@@ -165,7 +168,13 @@ public class Boards {
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else {
+		} else if(boardID==0){
+			
+			// Niemand darf direkte Posts auf das zentrale Board posten.
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+					
+		}else {
 			
 			//TODO: Überprufen ob der User im Board ist.
 			
@@ -209,7 +218,16 @@ public class Boards {
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
-
+   
+	/***
+	 * 
+	 * @param boardID
+	 * @param postID
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/deletePost")
 	@Produces(MediaType.TEXT_HTML)

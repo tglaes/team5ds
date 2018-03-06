@@ -43,6 +43,7 @@ public class HTMLBuilder {
 	private static final String profileFullnameMarker = "###fullname###";
 	private static final String profileIDMarker = "###profileID###";
 	private static final String profileEditButtonMarker = "###profileEditButton###";
+	private static final String postButtonMarker = "###newPostButton###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -71,6 +72,16 @@ public class HTMLBuilder {
 		String boardNameHTML = getBoardName(boardID);
 		newPage = page[0] + boardNameHTML + page[1];
 
+		//Einfügen des Postbuttons
+		page = splitStringPageAtMarker(postButtonMarker, newPage);
+		String postButtonHTML = "";
+		if(boardID != 0) {
+			postButtonHTML = "<a href='#' data-toggle='modal' data-target='#post-modal' class='btn btn-lg' style='height: 69px; background-color: #F1F1F1; color: black; float: right;'>" + 
+					"<span class='glyphicon' style='float: right; margin-top: 15px;'>&#x2b; Post</span>" + 
+					"</a>";		
+		}	
+		newPage = page[0] + postButtonHTML + page[1];
+		
 		// Einfügen der Posts und Kommentare
 		page = splitStringPageAtMarker(boardPostsMarker, newPage);
 		String postListHTML = getPosts(boardID,p);
