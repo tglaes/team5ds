@@ -41,7 +41,7 @@ public class Boards {
 	@Produces(MediaType.TEXT_HTML)
 	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
-		//System.out.println(boardID);
+		// System.out.println(boardID);
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
@@ -52,10 +52,10 @@ public class Boards {
 	}
 
 	private static InputStream createPage(Permission p, int userID, int boardID) throws IOException, SQLException {
-		
-		//TODO: gibt es das Board, falls nicht Page not found anzeigen.
-				
-		//System.out.println(boardID);
+
+		// TODO: gibt es das Board, falls nicht Page not found anzeigen.
+
+		// System.out.println(boardID);
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
@@ -116,11 +116,11 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			
-			//TODO: Überprüfen ob User Admin ist.
-			
+
+			// TODO: Überprüfen ob User Admin ist.
+
 			// Löschen des Boards.
-			//System.out.println("Lösche Board mit ID: " + boardID);
+			// System.out.println("Lösche Board mit ID: " + boardID);
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
 			Database.executeQuery(sqlCommand);
 			// User Board Abhängigkeiten löschen.
@@ -131,26 +131,116 @@ public class Boards {
 			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
 		}
 	}
-	
+
 	@GET
 	@Path("/removeUser")
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream deleteBoard(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID ,@Context HttpServletRequest request)
+	public static InputStream deleteBoard(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+
+			// TODO: Überprüfen ob User Admin ist.
+
+			// Lösche den Benutzer
+			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
+			Database.executeQuery(sql);
+			Database.closeConnection();
+
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+	}
+
+	@GET
+	@Path("/markPost")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream markPost(@QueryParam("board") int boardID, @QueryParam("post") int postID,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
+				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
+
+			// Erstelle Markierung für Post
+			String sqlCommand = "INSERT INTO PostMarks (User,Post) VALUES(" + userID + "," + postID + ")";
+			Database.executeQuery(sqlCommand);
+
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+
+	}
+
+	@GET
+	@Path("/pushPost")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream markPost(@QueryParam("push") int push, @QueryParam("board") int boardID,
+			@QueryParam("post") int postID, @Context HttpServletRequest request) throws IOException, SQLException {
+
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+
+			// Post soll auf das Zentrale Board (PUSH)
+			if (push == 1) {
+
+				String sqlCommand = "INSERT INTO BoardPosts (Board,Post) VALUES(0," + postID + ")";
+				Database.executeQuery(sqlCommand);
+				// Gehe auf das Zentrale Board.
+				return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
+				
+				// Markierungen werden gelöscht/ignoriert (DISMISS)
+			} else if (push == 0) {
+
+				// Lösche alle Markierungen des Posts.
+				String sqlCommand = "DELETE FROM PostMarks WHERE post=" + postID;
+				Database.executeQuery(sqlCommand);
+				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+				// push Parameter ist falsch.
+			} else {
+				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/404.html"));
+				return new ByteArrayInputStream(pageBytes);
+			}
+		
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+
+	}
+
+	@POST
+	@Path("/newComment")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream newComment(@QueryParam("board") int boardID, @QueryParam("post") int postID,
+			@FormParam("commentText") String commentText, @Context HttpServletRequest request)
 			throws IOException, SQLException {
 
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else if(Permissions.isAuthorized(userID, boardID) == Permission.Admin){
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
+				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
-			//TODO: Überprüfen ob User Admin ist.
-			
-			//Lösche den Benutzer
-			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
-			Database.executeQuery(sql);
-			Database.closeConnection();
-			
+			// Erstelle das Kommentar
+			String sqlCommand = "INSERT INTO Posts (Content, Date, Post, User) VALUES('" + commentText + "', DATETIME('now')," + postID + " ," + userID + ")";
+			Database.executeQuery(sqlCommand);
+
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		} else {
 			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
@@ -168,21 +258,20 @@ public class Boards {
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else if(boardID==0){
-			
+		} else if (boardID == 0) {
+
 			// Niemand darf direkte Posts auf das zentrale Board posten.
 			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 			return new ByteArrayInputStream(pageBytes);
-					
-		}else {
-			
-			//TODO: Überprufen ob der User im Board ist.
-			
+
+		} else {
+
+			// TODO: Überprufen ob der User im Board ist.
+
 			// Post in die Datenbank eintragen.
-			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText + "', '"
-					+ new Date().toString() + "',0," + userID + ")";
+			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText + "', DATETIME('now'),0," + userID + ")";
 			Database.executeQuery(sqlCommand);
-			
+
 			// Letzte hinzugefügte ID aus der Datenbank auslesen.
 			sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
 			ResultSet rs = Database.executeSql(sqlCommand);
@@ -218,7 +307,7 @@ public class Boards {
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
-   
+
 	/***
 	 * 
 	 * @param boardID
@@ -239,8 +328,8 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			
-			if(Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+
+			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 				// Löschen der Zuordnung zum Board.
 				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
@@ -257,7 +346,7 @@ public class Boards {
 				// User ist nicht berechtigt.
 				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 				return new ByteArrayInputStream(pageBytes);
-			}		
+			}
 		}
 	}
 

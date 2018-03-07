@@ -44,6 +44,7 @@ public class HTMLBuilder {
 	private static final String profileIDMarker = "###profileID###";
 	private static final String profileEditButtonMarker = "###profileEditButton###";
 	private static final String postButtonMarker = "###newPostButton###";
+	private static final String profileNumberLikes = "###NumberLikes###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -105,6 +106,10 @@ public class HTMLBuilder {
 		newPage = page[0] + linkToUserProfile + page[1];		
 		
 		// Einfügen der boardID
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
@@ -246,7 +251,24 @@ public class HTMLBuilder {
 		String numberComments = getNumberOfComments(profileID);
 		newPage = page[0] + numberComments + page[1];
 		
+		page = splitStringPageAtMarker(profileNumberLikes, newPage);
+		String numberLikes = getNumberOfLikes(profileID);
+		newPage = page[0] + numberLikes + page[1];
+		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
+	}
+	
+	private static String getNumberOfLikes(int userID) throws SQLException {
+		
+		String sqlCommand = "SELECT COUNT(*) FROM PostMarks WHERE User=" + userID;
+		ResultSet rs = Database.executeSql(sqlCommand);
+		if(rs.next()) {
+			String numberOfLikes = String.valueOf(rs.getInt(1));
+			Database.closeConnection();
+			return numberOfLikes;
+		} else {
+			return "0";
+		}
 	}
 
 	private static String getNumberOfComments(int userID) throws SQLException {
@@ -335,6 +357,12 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 
 		while (rs.next()) {
+			String sqlCommand2 = "SELECT COUNT(*) FROM PostMarks WHERE post=" + rs.getInt(3);
+			ResultSet rs2 = Database.executeSql(sqlCommand2);
+			rs2.next();
+			int postMarks = rs2.getInt(1);
+			rs2.close();
+			
 			postsFound = true;
 			posts += "<div class='post'>" + 
 					"<hr>" + 
@@ -344,42 +372,58 @@ public class HTMLBuilder {
 					"<div class='media-body'>" +
 					"<h4 class='media-heading'>" + rs.getString(1) + "<small><i> " + rs.getString(2) + "</i>";
 					
+					// Nur der Admin kann Posts bearbeiten oder löschen.
 					if(p == Permission.Admin) {
-						posts += "<a href='#' onclick='editModal(" + rs.getInt(3) + ",\"" + rs.getString(4) + "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
+						posts += "<a href='#' onclick='editPostModal(" + rs.getInt(3) + ",\"" + rs.getString(4) + "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
 								"<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + 
 								"</a>";
 					}
 					
 					posts += "</small></h4><p>" + rs.getString(4) + "</p>" +
-					"<div class='btn-group'>" + 
-					"<a href='#' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
-					"<span class='glyphicon glyphicon-thumbs-up'></span> Like" + 
-					"</a>" + 
-					"<a href='#' data-toggle='modal' data-target='#comment-modal' class='btn btn-md'>" + 
+					"<div class='btn-group'>"; 
+					if(p == Permission.Admin) {
+						posts += "<a href='#' onclick='editPushPostModal(" + rs.getInt(3) + ")' data-toggle='modal' data-target='#push-modal' class='btn btn-md'>" + 
+								"<span class='glyphicon glyphicon-thumbs-up'></span> Push" + 
+								"</a>";
+					}
+					 posts += "<a href='#' onclick='editCommentModal(" + rs.getInt(3) + ",\"" + rs.getString(4) + "\")' data-toggle='modal' data-target='#comment-modal' class='btn btn-md'>" + 
 					"<span class='glyphicon glyphicon-edit'></span> Comment" + 
-					"</a>" + 
-					"<a href='' data-toggle='modal' data-target='#???????-modal' class='btn btn-md'>" + 
-					"<span class='glyphicon glyphicon-bookmark'></span> Mark" + 
-					"</a>" + 
-					"</div>";
-							
-			String sqlCommand2 = "SELECT p.ID,p.Content,p.Date,u.Username FROM Posts AS p JOIN Users AS u ON p.User=u.ID WHERE Post=" + rs.getInt(3) + " ORDER BY Date";
-			ResultSet rs2 = Database.executeSql(sqlCommand2);
-			while(rs2.next()) {
+					"</a>";
+					 
+					 // Der Admin sieht nur die Anzahl der Markierungen.
+					if(p== Permission.Admin) {
+						 posts += "<a class='btn btn-md'>" + 
+									"<span class='glyphicon glyphicon-bookmark'></span>"+ postMarks + 
+									"</a></div>";
+						 // Marks werden auf dem Zentralen Board als Likes angezeigt.
+					} else if(boardID == 0){
+						posts += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3) + "' class='btn btn-md'>" + 
+								"<span class='glyphicon glyphicon-thumbs-up'></span>" + postMarks  + 
+								"</a></div>";
+						// Markierungen werden auf den normalen Boards angezeigt.
+					} else {
+						posts += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3) + "' class='btn btn-md'>" + 
+								"<span class='glyphicon glyphicon-bookmark'></span> Mark Post(" + postMarks + ")" + 
+								"</a></div>";
+					}
+											
+			String sqlCommand3 = "SELECT p.ID,p.Content,p.Date,u.Username FROM Posts AS p JOIN Users AS u ON p.User=u.ID WHERE Post=" + rs.getInt(3) + " ORDER BY Date";
+			ResultSet rs3 = Database.executeSql(sqlCommand3);
+			while(rs3.next()) {
 				
 				posts += "<div class='media'>" + 
 						"<div class='media-left'>" + 
 						"<img src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object' style='width:45px'></div>" + 
 						"<div class='media-body'>" + 
-						"<h4 class='media-heading'>" + rs2.getString(4) + "<small><i> " + rs2.getString(3) + "</i></small></h4>" + 
-						"<p>" + rs2.getString(2) + "</p></div></div>";
+						"<h4 class='media-heading'>" + rs3.getString(4) + "<small><i> " + rs3.getString(3) + "</i></small></h4>" + 
+						"<p>" + rs3.getString(2) + "</p></div></div>";
 				
-			}
-							
+			}						
 			posts += "</div></div></div>";
 			
 		}
-
+		
+		Database.closeConnection();
 		if (postsFound) {
 			return posts;
 		} else {

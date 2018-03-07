@@ -289,12 +289,13 @@ label {
 	<p id='hiddenNumberBoards' hidden='true'>###NumberBoards###</p>
 	<p id='hiddenNumberPosts' hidden='true'>###NumberPosts###</p>
 	<p id='hiddenNumberComments' hidden='true'>###NumberComments###</p>
+	<p id='hiddenNumberLikes' hidden='true'>###NumberLikes###</p>
 	<script type="text/javascript">
 	
 	var boards = Number(document.getElementById('hiddenNumberBoards').innerText)
 	var posts = Number(document.getElementById('hiddenNumberPosts').innerText)
 	var comments = Number(document.getElementById('hiddenNumberComments').innerText)
-	var likes = 5
+	var likes = Number(document.getElementById('hiddenNumberLikes').innerText)
 	var Piedata = {
 	    linecolor: "Random",
 	    title: "Profit",
