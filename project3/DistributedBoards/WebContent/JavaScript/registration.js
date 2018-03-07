@@ -79,9 +79,11 @@ function checkFormData() {
 
         function checkUsername(username) {
             if (username && !checkForWhiteSpace(username)) {
-                var v = document.getElementById("benutzername")
-                v.className = "form-control is-valid"
-                return true
+            	if(!username.includes("@")){
+            		var v = document.getElementById("benutzername")
+            		v.className = "form-control is-valid"
+            			return true
+            	}
             }
             var v = document.getElementById("benutzername")
             v.className = "form-control is-invalid"

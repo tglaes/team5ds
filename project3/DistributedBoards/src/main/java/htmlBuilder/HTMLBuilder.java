@@ -23,7 +23,7 @@ public class HTMLBuilder {
 	private static final String boardListMarker = "###BoardsList###";
 	private static final String boardNameMarker = "###BoardName###";
 	private static final String boardPostsMarker = "###BoardPosts###";
-	private static final String userNameMarker = "###UserName###";
+	//private static final String userNameMarker = "###UserName###";
 	private static final String boardAdminMarker = "###BoardAdmin###";
 	private static final String boardUserListMarker = "###BoardUsers###";
 	private static final String loginFailedMarker = "###LoginFailed###";
@@ -88,8 +88,6 @@ public class HTMLBuilder {
 		String postListHTML = getPosts(boardID,p);
 		newPage = page[0] + postListHTML + page[1];
 	
-		
-		// TODO: Anderes Zeug anzeigen wenn Tafel Zentrale Tafel.
 		// Einfügen des Admins des Boards in Sidebar
 		page = splitStringPageAtMarker(boardAdminMarker, newPage);
 		String adminHTML = getAdminForBoard(boardID);
@@ -142,7 +140,7 @@ public class HTMLBuilder {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static InputStream buildProfilePage(Integer userID, Integer profileID, boolean editable) throws IOException, SQLException {
+	public static InputStream buildProfilePage(Integer userID, Integer profileID) throws IOException, SQLException {
 		
 		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
 		String[] page;
@@ -225,7 +223,7 @@ public class HTMLBuilder {
 			
 			String buttonHTML = "";	
 			page = splitStringPageAtMarker(profileEditButtonMarker, newPage);
-			if(editable) {
+			if(userID == profileID) {
 				buttonHTML = "<a href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>" + 
 					"<span class='glyphicon glyphicon-pencil'></span> Edit" + 
 					"</a>";

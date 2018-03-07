@@ -35,12 +35,13 @@ public class Profile {
 		if (userID == null) {
 			// Benutzer ist nicht angemeldet.
 			return Resources.getResource("Login.html", "html");
-		} else if(profileID == userID) {
-			// Benutzer schaut sein eigenes Profil an.
-			return HTMLBuilder.buildProfilePage(userID, profileID, true);
 		} else {
-			// Eine Benutzer schaut das Profil eines anderen Benutzers an.
-			return HTMLBuilder.buildProfilePage(userID,  profileID,false);
+			if(profileID == 0) {
+				return HTMLBuilder.buildProfilePage(userID, userID);
+			} else {
+				return HTMLBuilder.buildProfilePage(userID, profileID);
+			}
+			
 		}
 	}
 	
@@ -73,7 +74,7 @@ public class Profile {
 			Database.executeQuery(sqlCommand);
 			Database.closeConnection();
 			
-			return HTMLBuilder.buildProfilePage(userID,profileID,true);
+			return HTMLBuilder.buildProfilePage(userID,profileID);
 		} else {
 			// User ist nicht berechtigt.
 			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));

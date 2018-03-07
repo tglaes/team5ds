@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -41,7 +40,6 @@ public class Boards {
 	@Produces(MediaType.TEXT_HTML)
 	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
-		// System.out.println(boardID);
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
@@ -53,9 +51,6 @@ public class Boards {
 
 	private static InputStream createPage(Permission p, int userID, int boardID) throws IOException, SQLException {
 
-		// TODO: gibt es das Board, falls nicht Page not found anzeigen.
-
-		// System.out.println(boardID);
 		InputStream ret = null;
 		switch (p) {
 		case Admin:
@@ -115,12 +110,9 @@ public class Boards {
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else {
-
-			// TODO: Überprüfen ob User Admin ist.
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
 			// Löschen des Boards.
-			// System.out.println("Lösche Board mit ID: " + boardID);
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
 			Database.executeQuery(sqlCommand);
 			// User Board Abhängigkeiten löschen.
@@ -129,6 +121,10 @@ public class Boards {
 			Database.closeConnection();
 
 			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
+		} else {
+			// Keine Berechtigung
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
 		}
 	}
 
@@ -143,8 +139,6 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
-
-			// TODO: Überprüfen ob User Admin ist.
 
 			// Lösche den Benutzer
 			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
@@ -202,7 +196,7 @@ public class Boards {
 				Database.executeQuery(sqlCommand);
 				// Gehe auf das Zentrale Board.
 				return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
-				
+
 				// Markierungen werden gelöscht/ignoriert (DISMISS)
 			} else if (push == 0) {
 
@@ -215,7 +209,7 @@ public class Boards {
 				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/404.html"));
 				return new ByteArrayInputStream(pageBytes);
 			}
-		
+
 		} else {
 			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 			return new ByteArrayInputStream(pageBytes);
@@ -238,7 +232,8 @@ public class Boards {
 				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
 			// Erstelle das Kommentar
-			String sqlCommand = "INSERT INTO Posts (Content, Date, Post, User) VALUES('" + commentText + "', DATETIME('now')," + postID + " ," + userID + ")";
+			String sqlCommand = "INSERT INTO Posts (Content, Date, Post, User) VALUES('" + commentText
+					+ "', DATETIME('now')," + postID + " ," + userID + ")";
 			Database.executeQuery(sqlCommand);
 
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
@@ -264,12 +259,12 @@ public class Boards {
 			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 			return new ByteArrayInputStream(pageBytes);
 
-		} else {
-
-			// TODO: Überprufen ob der User im Board ist.
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
+				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
 			// Post in die Datenbank eintragen.
-			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText + "', DATETIME('now'),0," + userID + ")";
+			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText
+					+ "', DATETIME('now'),0," + userID + ")";
 			Database.executeQuery(sqlCommand);
 
 			// Letzte hinzugefügte ID aus der Datenbank auslesen.
@@ -284,6 +279,10 @@ public class Boards {
 			Database.closeConnection();
 
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		} else {
+			// User ist nicht berechtigt.
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
 		}
 	}
 
@@ -298,13 +297,17 @@ public class Boards {
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else {
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
 			String sqlCommand = "UPDATE Posts SET content='" + postText + "' WHERE ID=" + postID;
 			Database.executeQuery(sqlCommand);
 			Database.closeConnection();
 
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+		} else {
+			// User ist nicht berechtigt.
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
 		}
 	}
 
@@ -328,7 +331,6 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-
 			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 				// Löschen der Zuordnung zum Board.
 				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
@@ -403,4 +405,49 @@ public class Boards {
 		byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 		return new ByteArrayInputStream(pageBytes);
 	}
+	
+	@POST
+	@Path("/search")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream search(@FormParam("searchInput") String searchInput,
+			 @Context HttpServletRequest request) throws SQLException, IOException {
+		
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else {
+			
+			int profileID = 0;
+			String sqlCommand;
+			ResultSet rs;
+			
+			// Input ist Email
+			if(searchInput.contains("@")) {
+				
+				sqlCommand = "SELECT ID FROM Users WHERE EMail='" + searchInput + "'";
+				Database.executeQuery(sqlCommand);
+				rs = Database.executeSql(sqlCommand);
+				
+				// Input ist Benutzername
+			} else {
+				sqlCommand = "SELECT ID FROM Users WHERE Username='" + searchInput + "'";
+				Database.executeQuery(sqlCommand);
+				rs = Database.executeSql(sqlCommand);
+			}	
+			
+			// Benutzer gefunden.
+			if(rs.next()) {
+				profileID = rs.getInt(1);
+				Database.closeConnection();
+				return HTMLBuilder.buildProfilePage(userID, profileID);
+				
+				// Benutzer nicht gefunden.
+			} else {
+				Database.closeConnection();			
+				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/userNotFound.html"));
+				return new ByteArrayInputStream(pageBytes);
+			}		
+		}
+	}	
 }
