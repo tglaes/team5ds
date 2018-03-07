@@ -231,6 +231,11 @@ public class Boards {
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
 				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
+			// Begrenze den Inhalt des Kommentars auf 500 Zeichen
+			if (commentText.length() > 250) {
+				commentText = commentText.substring(0, 250);
+			}
+
 			// Erstelle das Kommentar
 			String sqlCommand = "INSERT INTO Posts (Content, Date, Post, User) VALUES('" + commentText
 					+ "', DATETIME('now')," + postID + " ," + userID + ")";
@@ -261,6 +266,11 @@ public class Boards {
 
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
 				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
+
+			// Begrenze den Inhalt des Posts auf 500 Zeichen
+			if (postText.length() > 500) {
+				postText = postText.substring(0, 500);
+			}
 
 			// Post in die Datenbank eintragen.
 			String sqlCommand = "INSERT INTO Posts (Content,Date,Post,User) VALUES('" + postText
@@ -298,6 +308,11 @@ public class Boards {
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+
+			// Begrenze den Inhalt des Posts auf 500 Zeichen
+			if (postText.length() > 500) {
+				postText = postText.substring(0, 500);
+			}
 
 			String sqlCommand = "UPDATE Posts SET content='" + postText + "' WHERE ID=" + postID;
 			Database.executeQuery(sqlCommand);
@@ -405,49 +420,49 @@ public class Boards {
 		byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
 		return new ByteArrayInputStream(pageBytes);
 	}
-	
+
 	@POST
 	@Path("/search")
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream search(@FormParam("searchInput") String searchInput,
-			 @Context HttpServletRequest request) throws SQLException, IOException {
-		
+	public static InputStream search(@FormParam("searchInput") String searchInput, @Context HttpServletRequest request)
+			throws SQLException, IOException {
+
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			
+
 			int profileID = 0;
 			String sqlCommand;
 			ResultSet rs;
-			
+
 			// Input ist Email
-			if(searchInput.contains("@")) {
-				
+			if (searchInput.contains("@")) {
+
 				sqlCommand = "SELECT ID FROM Users WHERE EMail='" + searchInput + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
-				
+
 				// Input ist Benutzername
 			} else {
 				sqlCommand = "SELECT ID FROM Users WHERE Username='" + searchInput + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
-			}	
-			
+			}
+
 			// Benutzer gefunden.
-			if(rs.next()) {
+			if (rs.next()) {
 				profileID = rs.getInt(1);
 				Database.closeConnection();
 				return HTMLBuilder.buildProfilePage(userID, profileID);
-				
+
 				// Benutzer nicht gefunden.
 			} else {
-				Database.closeConnection();			
+				Database.closeConnection();
 				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/userNotFound.html"));
 				return new ByteArrayInputStream(pageBytes);
-			}		
+			}
 		}
-	}	
+	}
 }

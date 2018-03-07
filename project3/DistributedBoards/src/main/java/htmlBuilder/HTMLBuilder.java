@@ -45,6 +45,7 @@ public class HTMLBuilder {
 	private static final String profileEditButtonMarker = "###profileEditButton###";
 	private static final String postButtonMarker = "###newPostButton###";
 	private static final String profileNumberLikes = "###NumberLikes###";
+	private static final String profilePictureMarker = "###profilePicture###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -142,6 +143,11 @@ public class HTMLBuilder {
 	 */
 	public static InputStream buildProfilePage(Integer userID, Integer profileID) throws IOException, SQLException {
 		
+		// Der Benutzer kann über die profileID 0 auf sein eigenes Profil kommen. 
+		if(profileID == 0) {
+			profileID = userID;
+		}
+		
 		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
@@ -152,16 +158,23 @@ public class HTMLBuilder {
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 		
-		//Einfügen des Links zum eigenden Profil.
+		// Einfügen des Links zum eigenen Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 		
-		// Informationen des Benutzers	
+		// Einfügen des Links zum Profilbild
+		// Konvention des Namens des Profilbildes ist UserID
+		page = splitStringPageAtMarker(profilePictureMarker, newPage);
+		newPage = page[0] + profileID + page[1];
+		
+		// ProfilId des Benutzers einfügen.	
+		page = splitStringPageAtMarker(profileIDMarker, newPage);
+		newPage = page[0] + profileID + page[1];
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
 		newPage = page[0] + profileID + page[1];
 		
-		
+		// Information des Benutzers auslesen und einfügen.
 		String sqlCommand = "SELECT * FROM Users WHERE ID=" + profileID;
 		ResultSet rs = Database.executeSql(sqlCommand);		
 		

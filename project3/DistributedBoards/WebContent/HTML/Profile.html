@@ -165,35 +165,16 @@ label {
 
 							<div class="box-body">
 								<div class="col-sm-6">
+								<img src="/DistributedBoards/Resources?resourceName=###profilePicture###&resourceType=img" alt="Failed TO LOAD" height="300" width="250">						
+								<form action="/DistributedBoards/Profile/uploadProfilePicture?profile=###profileID###" method="post" enctype="multipart/form-data">
+  									<input class="form-control" type="file" name="file">
+  									<button class="btn btn-primary form-control" type="submit">Save</button>
+								</form>
 
-									<a href="#" class="profile-pic">
-										<div class="profile-pic"
-											style="background-image: url('https://s3-eu-west-1.amazonaws.com/lynks-blog/wp-content/uploads/2016/10/11153439/rsz_1shutterstock_325243652.jpg')">
-											<!--<input id="profile-image-upload" class="hidden" type="file">-->
-											<div type="file" id="main-input"
-												class="form-control form-input form-style-base">
-												<input type="file" id="main-input"
-													class="form-control form-input form-style-base"> <span
-													class="glyphicon glyphicon-camera"></span> <span>
-													Change Image</span>
-											</div>
-										</div>
-									</a>
-
-
-									<!--<div align="center"> <img alt="User Pic" src="Meris2.png" id="profile-image1" class="img-circle img-responsive">
-                    <input id="profile-image-upload" class="hidden" type="file">
-                    <div style="color:#999;">click here to change profile image</div>
-                    Upload Image Js And Css
-                  </div>-->
-
-									<br>
-
-									<!-- /input-group -->
 								</div>
 								<div class="col-sm-6">
-									<span><h4 style="color: #00b1b1;" class="text-left">###fullname###</h4></span>
-									<span><p class="text-left">###profession###</p></span>
+									<h4 style="color: #00b1b1;" class="text-left">###fullname###</h4>
+									<p class="text-left">###profession###</p>
 									###profileEditButton###
 								</div>
 								<div class="clearfix"></div>
