@@ -307,7 +307,8 @@ public class Boards {
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
-		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
+				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
 			// Begrenze den Inhalt des Posts auf 500 Zeichen
 			if (postText.length() > 500) {
@@ -465,4 +466,51 @@ public class Boards {
 			}
 		}
 	}
+
+	@GET
+	@Path("/deleteComment")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream deleteComment(@QueryParam("comment") int commentID, @QueryParam("board") int boardID,
+			@Context HttpServletRequest request) throws IOException, SQLException {
+
+		System.out.println(boardID);
+		
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+
+			// Lösche Kommentar
+			String sqlCommand = "DELETE FROM Posts WHERE ID=" + commentID;
+			Database.executeQuery(sqlCommand);
+			
+			// Dem Benutzer wieder das Board schicken.
+			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.User) {
+
+			// Ist der Kommentar dem Benutzer
+			String sqlCommand = "SELECT User FROM Posts WHERE ID=" + commentID;
+			ResultSet rs = Database.executeSql(sqlCommand);
+			rs.next();
+			if (rs.getInt(1) == userID) {
+
+				// Lösche Kommentar
+				String sqlCommand2 = "DELETE FROM Posts WHERE ID=" + commentID;
+				Database.executeQuery(sqlCommand2);
+				
+				// Dem Benutzer wieder das Board schicken.
+				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
+			} else {
+				byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+				return new ByteArrayInputStream(pageBytes);
+			}
+
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+	}
+
 }
