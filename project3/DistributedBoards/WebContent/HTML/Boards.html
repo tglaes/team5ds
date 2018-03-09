@@ -14,56 +14,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-		function editPostModal(postID, postContent){
-			
-			// Einfügen des Posttextes in das Modal
-			var modalTextArea = document.getElementById("editPostModalText")
-			modalTextArea.innerHTML = postContent
-			
-			// Die ID des Posts in das action Attribute der Form einfügen.
-			var editModalForm = document.getElementById("editPostModalForm")
-			var actionAtt = editModalForm.getAttribute("action")
-			var n = actionAtt.lastIndexOf("=")
-			actionAtt = actionAtt.substring(0, n+1)
-			actionAtt += postID
-			editModalForm.setAttribute("action", actionAtt)
-			
-			// Passe die Url des Onclick Attributes für den ausgewählten Post an.
-			var deleteButton = document.getElementById("editPostDeleteButton")
-			var onclickAtt = deleteButton.getAttribute("onclick")
-			var n = onclickAtt.lastIndexOf("=")
-			onclickAtt = onclickAtt.substring(0,n+1)
-			onclickAtt += postID + "'"
-			deleteButton.setAttribute("onclick", onclickAtt)
-		}
-	
-		function editCommentModal(postID){
-			
-			// Passe action Attribute des Modals an
-			var commentModalForm = document.getElementById("commentModalForm")
-			var actionAtt = commentModalForm.getAttribute("action")
-			var n = actionAtt.lastIndexOf("=")
-			actionAtt = actionAtt.substring(0,n + 1)
-			actionAtt += postID
-			commentModalForm.setAttribute("action",actionAtt)
-		}
-		
-		function editPushPostModal(postID){
-			var pushButton = document.getElementById("pushModalPush")
-			var onclickAtt = pushButton.getAttribute("onclick")
-			var n = onclickAtt.lastIndexOf("=")
-			onclickAtt = onclickAtt.substring(0,n + 1)
-			pushButton.setAttribute("onclick", onclickAtt + postID + "'")
-			
-			var dismissButton = document.getElementById("pushModalDismiss")
-			var onclickAtt2 = dismissButton.getAttribute("onclick")
-			var n2 = onclickAtt2.lastIndexOf("=")
-			onclickAtt2 = onclickAtt2.substring(0,n2 + 1)
-			dismissButton.setAttribute("onclick", onclickAtt2 + postID + "'")
-		}
-		
-	</script>
+<script type="text/javascript"
+	src="/DistributedBoards/Resources?resourceName=board.js&resourceType=js"></script>
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -133,10 +85,11 @@ label {
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<form class="navbar-form navbar-left" action="/DistributedBoards/Boards/search" method="POST">
+							<form class="navbar-form navbar-left"
+								action="/DistributedBoards/Boards/search" method="POST">
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Username or Email"
-										name="searchInput">
+									<input type="text" class="form-control"
+										placeholder="Username or Email" name="searchInput">
 									<div class="input-group-btn">
 										<button class="btn btn-default" type="submit">
 											<i class="glyphicon glyphicon-search"></i>
@@ -161,7 +114,8 @@ label {
 				###BoardsList### <a href="#" data-toggle="modal"
 					data-target="#board-modal" class="btn btn-lg"
 					style="background-color: #F1F1F1; color: black; float: right;">
-					<span class="glyphicon" style="margin-top: 15px;">&#x2b;</span>
+					<span class="glyphicon" style="margin-top: 15px;">&#x2b;
+						Board</span>
 				</a>
 			</div>
 
@@ -315,8 +269,7 @@ label {
 								</button>
 							</div>
 						</div>
-						<br />
-						<br />
+						<br /> <br />
 						<button class="btn btn-success" type="submit">Add User</button>
 						<button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
 					</form>
@@ -360,11 +313,16 @@ label {
 			<h3>Comment!</h3>
 			<div class="widget-area no-padding blank">
 				<div class="status-upload">
-					<form id="commentModalForm" action="/DistributedBoards/Boards/newComment?board=###boardID###&post=" method="POST">
+					<form id="commentModalForm"
+						action="/DistributedBoards/Boards/newComment?board=###boardID###&post="
+						method="POST">
 						<br />
-						<textarea rows="4" cols="52" placeholder="Type a comment!" name="commentText"></textarea>
-						<input style="width: 201.5px;" type="submit" class="btn btn-success" value="Comment">
-						<input style="width: 201.5px;" type="button" data-dismiss="modal" class="btn btn-danger" value="Cancel">
+						<textarea rows="4" cols="52" placeholder="Type a comment!"
+							name="commentText"></textarea>
+						<input style="width: 201.5px;" type="submit"
+							class="btn btn-success" value="Comment"> <input
+							style="width: 201.5px;" type="button" data-dismiss="modal"
+							class="btn btn-danger" value="Cancel">
 					</form>
 				</div>
 				<!-- Status Upload  -->
@@ -372,7 +330,7 @@ label {
 			<!-- Widget Area -->
 		</div>
 	</div>
-	
+
 	<!-- Push-Post -->
 	<div class="modal fade" id="push-modal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true"
@@ -383,8 +341,14 @@ label {
 			<br>
 			<div class="widget-area no-padding blank">
 				<div class="status-upload">
-					<button onclick="window.location.href='/DistributedBoards/Boards/pushPost?push=1&board=###boardID###&post=" id="pushModalPush" type="button" data-dismiss="modal" class="btn btn-success">Push</button>
-					<button onclick="window.location.href='/DistributedBoards/Boards/pushPost?push=0&board=###boardID###&post=" id="pushModalDismiss" type="button" data-dismiss="modal" class="btn btn-danger">Dismiss</button>
+					<button
+						onclick="window.location.href='/DistributedBoards/Boards/pushPost?push=1&board=###boardID###&post="
+						id="pushModalPush" type="button" data-dismiss="modal"
+						class="btn btn-success">Push</button>
+					<button
+						onclick="window.location.href='/DistributedBoards/Boards/pushPost?push=0&board=###boardID###&post="
+						id="pushModalDismiss" type="button" data-dismiss="modal"
+						class="btn btn-danger">Dismiss</button>
 					<button type="button" data-dismiss="modal" class="btn btn-warning">Cancel</button>
 				</div>
 				<!-- Status Upload  -->

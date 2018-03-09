@@ -6,28 +6,46 @@ import java.util.HashMap;
 
 import database.Database;
 
+/**
+ * 
+ * @author Tristan Glaes
+ * @version 09.03.2018
+ */
 public final class Permissions {
 
-	// Put a default value for a user and localhost. So no login is required.
+	// Hashmap, die IP,ID Paare beinhaltet (Eingeloggten Benutzern)
 	private static HashMap<String, Integer> sessionMap = new HashMap<String, Integer>();
 
 	private Permissions() {
 	}
 
-	
+	/**
+	 * Erstellt eine Session für einen Benutzer.
+	 * 
+	 * @param ip
+	 *            Die IP des Benutzers.
+	 * @param ID
+	 *            DIe userID des Benutzers.
+	 */
 	public static void createSession(String ip, Integer ID) {
 		sessionMap.put(ip, ID);
 	}
-	
+
+	/**
+	 * Löst eine Session auf.
+	 * 
+	 * @param ip
+	 *            Die IP des Benutzers.
+	 */
 	public static void destroySession(String ip) {
 		sessionMap.remove(ip);
 	}
-	
+
 	/**
 	 * 
 	 * @param ip
-	 *            The ip adress of the client.
-	 * @return The userID if a session is present, null otherwise.
+	 *            Die IP des Benutzers
+	 * @return Die userID des Benutzers
 	 */
 	public static Integer hasSession(String ip) {
 		return sessionMap.get(ip);
@@ -36,10 +54,10 @@ public final class Permissions {
 	/**
 	 * 
 	 * @param userID
-	 *            The ID of the user that wants to access the board.
+	 *            Die ID des Benutzers.
 	 * @param boardID
-	 *            The ID of the board that the user wants to access.
-	 * @return The enum type that represents his access rights to this board.
+	 *            Die boardID Boards.
+	 * @return Die Berechtigung, die der Benutzer auf dem Board hat.
 	 */
 	public static Permission isAuthorized(Integer userID, Integer boardID) {
 		try {

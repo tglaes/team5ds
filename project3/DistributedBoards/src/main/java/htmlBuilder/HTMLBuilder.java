@@ -13,10 +13,9 @@ import database.Database;
 import util.Permission;
 
 /**
- * Die Klasse fügt die benutzerspezifischen Daten in die jeweilige Seite ein.
  * 
  * @author Tristan Glaes
- *
+ * @version 09.03.2018
  */
 public class HTMLBuilder {
 
@@ -118,6 +117,9 @@ public class HTMLBuilder {
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
+
 
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if (p == Permission.Admin) {

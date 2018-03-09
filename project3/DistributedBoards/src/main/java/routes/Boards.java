@@ -24,14 +24,22 @@ import htmlBuilder.HTMLBuilder;
 import util.Permissions;
 import util.Permission;
 
+/**
+ * 
+ * @author Tristan Glaes
+ * @version 09.03.2018
+ */
 @Path("/Boards")
 public class Boards {
 
 	/***
 	 * 
-	 * @param boardID Die ID des angefragten Boards.
-	 * @param request HTTP Request
-	 * @return Die Login Seite, wenn der Benutzer nicht eingeloggt ist, sonst die Boardseite mit id boardID.
+	 * @param boardID
+	 *            Die ID des angefragten Boards.
+	 * @param request
+	 *            HTTP Request
+	 * @return Die Login Seite, wenn der Benutzer nicht eingeloggt ist, sonst die
+	 *         Boardseite mit id boardID.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -50,10 +58,14 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param p Die Berechtigung, die der Benutzer auf dem Board hat.
-	 * @param userID Die ID des Benutzers.
-	 * @param boardID Die ID des Boards.
-	 * @return Die Board Seite für Admin oder User, wenn der Benutzer eingeloggt ist, sonst 403.
+	 * @param p
+	 *            Die Berechtigung, die der Benutzer auf dem Board hat.
+	 * @param userID
+	 *            Die ID des Benutzers.
+	 * @param boardID
+	 *            Die ID des Boards.
+	 * @return Die Board Seite für Admin oder User, wenn der Benutzer eingeloggt
+	 *         ist, sonst 403.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -78,8 +90,10 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param boardName Der Name des neuen Boards
-	 * @param request Der HTTP request
+	 * @param boardName
+	 *            Der Name des neuen Boards
+	 * @param request
+	 *            Der HTTP request
 	 * @return Die Seite des neu erstellten Boards.
 	 * @throws IOException
 	 * @throws SQLException
@@ -118,8 +132,10 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param boardID Die Board Id des Boards, dass zu löschen ist.
-	 * @param request Der HTTP Request.
+	 * @param boardID
+	 *            Die Board Id des Boards, dass zu löschen ist.
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Zentrale Anzeigetafeln.
 	 * @throws IOException
 	 * @throws SQLException
@@ -154,9 +170,13 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param boardID Die Board ID, von dem Board, von dem Der Benutzer entfernt werden soll.
-	 * @param removeUserID Die ID des Benutzers der entfernt werden soll.
-	 * @param request Der HTTP Request.
+	 * @param boardID
+	 *            Die Board ID, von dem Board, von dem Der Benutzer entfernt werden
+	 *            soll.
+	 * @param removeUserID
+	 *            Die ID des Benutzers der entfernt werden soll.
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -187,9 +207,12 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param boardID Die ID des Boards.
-	 * @param postID Die ID des Posts.
-	 * @param request Der Http Request.
+	 * @param boardID
+	 *            Die ID des Boards.
+	 * @param postID
+	 *            Die ID des Posts.
+	 * @param request
+	 *            Der Http Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -221,11 +244,17 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param push 1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 für ignorieren.
-	 * @param boardID Die BoardID
-	 * @param postID Die PostID
-	 * @param request Der HTTP Request.
-	 * @return Das zentrale Board, wenn der Post gepusht wird, sonst wieder die Boardseite.
+	 * @param push
+	 *            1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 für
+	 *            ignorieren.
+	 * @param boardID
+	 *            Die BoardID
+	 * @param postID
+	 *            Die PostID
+	 * @param request
+	 *            Der HTTP Request.
+	 * @return Das zentrale Board, wenn der Post gepusht wird, sonst wieder die
+	 *         Boardseite.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -271,10 +300,14 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param boardID Die BoardID
-	 * @param postID Die PostID
-	 * @param commentText Der Inhalt des Kommentars
-	 * @param request Der HTTP Request.
+	 * @param boardID
+	 *            Die BoardID
+	 * @param postID
+	 *            Die PostID
+	 * @param commentText
+	 *            Der Inhalt des Kommentars
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Board Seite
 	 * @throws IOException
 	 * @throws SQLException
@@ -312,9 +345,12 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param boardID Die BoardID.
-	 * @param postText Inhalt des Posts
-	 * @param request HTTP Request.
+	 * @param boardID
+	 *            Die BoardID.
+	 * @param postText
+	 *            Inhalt des Posts
+	 * @param request
+	 *            HTTP Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -369,10 +405,14 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param boardID Die BoardID.
-	 * @param postID Die PostID.
-	 * @param postText Der neue Text des Posts.
-	 * @param request Der HTTP Request.
+	 * @param boardID
+	 *            Die BoardID.
+	 * @param postID
+	 *            Die PostID.
+	 * @param postText
+	 *            Der neue Text des Posts.
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -410,9 +450,12 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param boardID Die BoardID.
-	 * @param postID Die ID des Posts, der gelöscht werden soll.
-	 * @param request Der HTTP Request.
+	 * @param boardID
+	 *            Die BoardID.
+	 * @param postID
+	 *            Die ID des Posts, der gelöscht werden soll.
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -423,12 +466,19 @@ public class Boards {
 	public static InputStream deletePost(@QueryParam("board") int boardID, @QueryParam("post") int postID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
 
+		// Den Besitzer des Posts suchen.
+		String sqlCommand1 = "SELECT User FROM Posts WHERE ID=" + postID;
+		ResultSet rs = Database.executeSql(sqlCommand1);
+		rs.next();
+		int postOwner = rs.getInt(1);
+		Database.closeConnection();
+
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
-			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin || userID == postOwner) {
 				// Löschen der Zuordnung zum Board.
 				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
@@ -451,9 +501,12 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param userNameOrEmail Die Email oder der Username des Benutzers.
-	 * @param boardID Die BoardID.
-	 * @param request Der Http Request.
+	 * @param userNameOrEmail
+	 *            Die Email oder der Username des Benutzers.
+	 * @param boardID
+	 *            Die BoardID.
+	 * @param request
+	 *            Der Http Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -514,9 +567,12 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param searchInput Email oder Benutzername, nachdem gesucht werden soll.
-	 * @param request Der HTTP Request.
-	 * @return Das Profil des Benutzers, wenn er existiert, sonst Benutzer nicht gefunden Seite.
+	 * @param searchInput
+	 *            Email oder Benutzername, nachdem gesucht werden soll.
+	 * @param request
+	 *            Der HTTP Request.
+	 * @return Das Profil des Benutzers, wenn er existiert, sonst Benutzer nicht
+	 *         gefunden Seite.
 	 * @throws SQLException
 	 * @throws IOException
 	 */
@@ -567,9 +623,12 @@ public class Boards {
 
 	/**
 	 * 
-	 * @param commentID Die ID des Kommentars, das gelöscht werden soll.
-	 * @param boardID Die ID des Boards.
-	 * @param request Der HTTP Request.
+	 * @param commentID
+	 *            Die ID des Kommentars, das gelöscht werden soll.
+	 * @param boardID
+	 *            Die ID des Boards.
+	 * @param request
+	 *            Der HTTP Request.
 	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
@@ -581,7 +640,7 @@ public class Boards {
 			@Context HttpServletRequest request) throws IOException, SQLException {
 
 		System.out.println(boardID);
-		
+
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {
@@ -591,7 +650,7 @@ public class Boards {
 			// Lösche Kommentar
 			String sqlCommand = "DELETE FROM Posts WHERE ID=" + commentID;
 			Database.executeQuery(sqlCommand);
-			
+
 			// Dem Benutzer wieder das Board schicken.
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 
@@ -606,7 +665,7 @@ public class Boards {
 				// Lösche Kommentar
 				String sqlCommand2 = "DELETE FROM Posts WHERE ID=" + commentID;
 				Database.executeQuery(sqlCommand2);
-				
+
 				// Dem Benutzer wieder das Board schicken.
 				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 			} else {

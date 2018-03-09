@@ -21,45 +21,56 @@ import htmlBuilder.HTMLBuilder;
 import util.Permissions;
 
 /**
- * The class is used to check if a user has a current session.
  * 
  * @author Tristan Glaes
- *
+ * @version 09.03.2018
  */
 @Path("/{route:Login|login|}")
 public class Login {
 
 	/**
 	 * 
-	 * @return
-	 * @throws FileNotFoundException 
+	 * @return Die Loginseite
+	 * @throws FileNotFoundException
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public InputStream sendLoginPage() throws FileNotFoundException {
-		
+
 		return Resources.getResource("Login.html", "html");
 	}
-	
+
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @param request
+	 *            Der HTTP Request
+	 * @return Das Zentrale Board falls der Login korrekt ist, sonst die Loginseite
+	 *         mit Fehlermeldung.
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-    public InputStream getLoginData(@FormParam("username") String username, @FormParam("password") String password, @Context HttpServletRequest request) throws SQLException, IOException {
-        
-		String sqlCommand = "SELECT * FROM Users WHERE Username='" + username + "' AND Password='" + password +"'";
+	public InputStream getLoginData(@FormParam("username") String username, @FormParam("password") String password,
+			@Context HttpServletRequest request) throws SQLException, IOException {
+
+		String sqlCommand = "SELECT * FROM Users WHERE Username='" + username + "' AND Password='" + password + "'";
 		ResultSet rs = Database.executeSql(sqlCommand);
-		
-		if(rs.next()) {
-			
+
+		if (rs.next()) {
+
 			Integer userID = rs.getInt(1);
 			String ip = request.getRemoteAddr();
-			
+
 			Permissions.createSession(ip, userID);
 			Database.closeConnection();
 			return Boards.sendBoardsPage(0, request);
-			
+
 		} else {
 			return HTMLBuilder.buildFailedLogin();
 		}
-    }
+	}
 }

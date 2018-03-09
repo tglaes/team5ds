@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * The class is used to access the database.
  * 
  * @author Tristan Glaes
- *
+ * @version 09.03.2018
  */
 public final class Database {
 
@@ -20,7 +19,8 @@ public final class Database {
 	}
 
 	/**
-	 * Connects to the database when no connection was estabilshed yet.
+	 * Baut eine Verbindung zur Datenbank auf, wenn noch keine besteht. Benutzt die
+	 * statische Variable connection.
 	 */
 	private static void connect() {
 		try {
@@ -39,15 +39,15 @@ public final class Database {
 	}
 
 	/**
-	 * Executes the sqlCommand and only return true or false.
+	 * Führt das SQL Statement aus und gibt true bei erfolg zurück, sonst false.
 	 * 
 	 * @param sqlCommand
-	 *            The SQL command you want to execute.
-	 * @return true when the execution was successful, false otherwise.
+	 *            Das SQL Statement
+	 * @return true, wenn erfolgreich, false sonst
 	 * @throws SQLException
 	 */
 	public static boolean executeQuery(String sqlCommand) throws SQLException {
-		//System.out.println(sqlCommand);
+		// System.out.println(sqlCommand);
 		connect();
 
 		try {
@@ -63,16 +63,16 @@ public final class Database {
 	}
 
 	/**
-	 * Executes the sqlCommand and returns the result.
+	 * Führt das SQL Statement aus und gibt das Ergebnis zurück
 	 * 
 	 * @param sqlCommand
-	 *            The SQL command you want to execute.
-	 * @return The ResultSet of the command.
+	 *            Das SQL Statement
+	 * @return Das ResultSet mit den Ergebnissen.
 	 * @throws SQLException
 	 */
 	public static ResultSet executeSql(String sqlCommand) throws SQLException {
 
-		//System.out.println(sqlCommand);
+		// System.out.println(sqlCommand);
 		connect();
 		ResultSet rs = null;
 
@@ -86,21 +86,30 @@ public final class Database {
 
 		return rs;
 	}
-	
+
+	/**
+	 * 
+	 * @return Die letzte eingefügte ID der Datenbank.
+	 * @throws SQLException
+	 */
 	public static int getlastID() throws SQLException {
 		connect();
 
 		String sql = "SELECT last_insert_rowid()";
 		Statement stmt = connection.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
-		
-		if(rs.next()) {
+
+		if (rs.next()) {
 			return rs.getInt(1);
 		}
-	    return 0;
+		return 0;
 	}
-	
 
+	/**
+	 * Schließt die Datenbankverbindung.
+	 * 
+	 * @throws SQLException
+	 */
 	public static void closeConnection() throws SQLException {
 		if (!(connection == null)) {
 			if (!connection.isClosed()) {

@@ -1,7 +1,8 @@
-; (function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
     var pluginName = "SimpleChart";
     var defaults = {
-        ChartType: "Line", //Area, Scattered, Bar, Hybrid, Pie, Stacked, Stacked Hybrid
+        ChartType: "Line", // Area, Scattered, Bar, Hybrid, Pie, Stacked,
+							// Stacked Hybrid
         xPadding: 60,
         yPadding: 50,
         topmargin: 25,
@@ -60,7 +61,7 @@
                     break;
             }
 
-            //show legend
+            // show legend
             if (config.showlegends) {
                 that.drawLegends(graph);
             }

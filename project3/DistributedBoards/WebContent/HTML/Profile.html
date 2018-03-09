@@ -19,37 +19,8 @@
 	src="/DistributedBoards/Resources?resourceName=SimpleChart.js&resourceType=js"></script>
 
 
-<script>
-	function changeStats() {
-		$("canvas").css("margin-left", "30px");
-	}
-	
-	function checkPassword(){
-		
-		var pwd = document.getElementById("pwd")
-		var pwd_rep = document.getElementById("pwd-rep")
-		var pwdDiv = document.getElementById("pwdDiv")
-		var pwd_repDiv = document.getElementById("pwd_repDiv")
-		
-		if(pwd.value != pwd_rep.value){	
-			pwdDiv.setAttribute("class", "form-group has-error")
-			pwd_repDiv.setAttribute("class", "form-group has-error")
-		} else {
-			if(pwd){
-				pwdDiv.setAttribute("class", "form-group")
-				pwd_repDiv.setAttribute("class", "form-group")
-			} else {
-				pwdDiv.setAttribute("class", "form-group has-error")
-				pwd_repDiv.setAttribute("class", "form-group has-error")
-			}		
-		}	
-	}
-	
-	function checkUsername(){
-		
-		
-	}
-</script>
+<script type="text/javascript"
+	src="/DistributedBoards/Resources?resourceName=profile.js&resourceType=js"></script>
 <!-- ###################### PIE CHART DATEN EINFUEGEN -->
 
 <style>
@@ -191,11 +162,15 @@ label {
 
 							<div class="box-body">
 								<div class="col-sm-6">
-								<img src="/DistributedBoards/Resources?resourceName=###profilePicture###&resourceType=img" alt="Failed TO LOAD" height="300" width="250">						
-								<form action="/DistributedBoards/Profile/uploadProfilePicture?profile=###profileID###" method="post" enctype="multipart/form-data">
-  									<input class="form-control" type="file" name="file" size="50">
-  									<button class="btn btn-primary form-control" type="submit">Save</button>
-								</form>
+									<img
+										src="/DistributedBoards/Resources?resourceName=###profilePicture###&resourceType=img"
+										alt="Failed TO LOAD" height="300" width="250">
+									<form
+										action="/DistributedBoards/Profile/uploadProfilePicture?profile=###profileID###"
+										method="post" enctype="multipart/form-data">
+										<input class="form-control" type="file" name="file" size="50">
+										<button class="btn btn-primary form-control" type="submit">Save</button>
+									</form>
 
 								</div>
 								<div class="col-sm-6">
@@ -270,17 +245,18 @@ label {
 								name="email" value="###email###">
 						</div>
 						<div class="form-group" id="pwdDiv">
-							<label>Password:</label> <input onkeyup="checkPassword()" type="password"
-								class="form-control" id="pwd" name="pwd" value="###password###">
+							<label>Password:</label> <input onkeyup="checkPassword()"
+								type="password" class="form-control" id="pwd" name="pwd"
+								value="###password###">
 						</div>
 						<div class="form-group" id="pwd_repDiv">
-							<label>Repeat Password:</label> <input onkeyup="checkPassword()" type="password"
-								class="form-control" id="pwd-rep" name="pwd"
+							<label>Repeat Password:</label> <input onkeyup="checkPassword()"
+								type="password" class="form-control" id="pwd-rep" name="pwd"
 								placeholder="Repeat Password" value="">
 						</div>
 						<div class="form-group">
-							<label>Firstname:</label> <input type="text"
-								class="form-control" name="firstname" value="###firstname###">
+							<label>Firstname:</label> <input type="text" class="form-control"
+								name="firstname" value="###firstname###">
 						</div>
 						<div class="form-group">
 							<label>Lastname:</label> <input type="text" class="form-control"
@@ -365,7 +341,5 @@ label {
 			});
 		});
 	</script>
-
 </body>
-
 </html>
