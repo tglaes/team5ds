@@ -27,14 +27,13 @@ import util.Permission;
 @Path("/Boards")
 public class Boards {
 
-	/**
-	 * Route is requested when DistributedBoards/Boards?board=xxx is called.
+	/***
 	 * 
-	 * @param user
-	 * @param request
-	 * @return
-	 * @throws SQLException
+	 * @param boardID Die ID des angefragten Boards.
+	 * @param request HTTP Request
+	 * @return Die Login Seite, wenn der Benutzer nicht eingeloggt ist, sonst die Boardseite mit id boardID.
 	 * @throws IOException
+	 * @throws SQLException
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -49,6 +48,15 @@ public class Boards {
 		}
 	}
 
+	/***
+	 * 
+	 * @param p Die Berechtigung, die der Benutzer auf dem Board hat.
+	 * @param userID Die ID des Benutzers.
+	 * @param boardID Die ID des Boards.
+	 * @return Die Board Seite für Admin oder User, wenn der Benutzer eingeloggt ist, sonst 403.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	private static InputStream createPage(Permission p, int userID, int boardID) throws IOException, SQLException {
 
 		InputStream ret = null;
@@ -68,6 +76,14 @@ public class Boards {
 		return ret;
 	}
 
+	/***
+	 * 
+	 * @param boardName Der Name des neuen Boards
+	 * @param request Der HTTP request
+	 * @return Die Seite des neu erstellten Boards.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@POST
 	@Path("/newBoard")
 	@Produces(MediaType.TEXT_HTML)
@@ -100,6 +116,14 @@ public class Boards {
 		}
 	}
 
+	/***
+	 * 
+	 * @param boardID Die Board Id des Boards, dass zu löschen ist.
+	 * @param request Der HTTP Request.
+	 * @return Die Zentrale Anzeigetafeln.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/deleteBoard")
 	@Produces(MediaType.TEXT_HTML)
@@ -128,6 +152,15 @@ public class Boards {
 		}
 	}
 
+	/***
+	 * 
+	 * @param boardID Die Board ID, von dem Board, von dem Der Benutzer entfernt werden soll.
+	 * @param removeUserID Die ID des Benutzers der entfernt werden soll.
+	 * @param request Der HTTP Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/removeUser")
 	@Produces(MediaType.TEXT_HTML)
@@ -152,6 +185,15 @@ public class Boards {
 		}
 	}
 
+	/**
+	 * 
+	 * @param boardID Die ID des Boards.
+	 * @param postID Die ID des Posts.
+	 * @param request Der Http Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/markPost")
 	@Produces(MediaType.TEXT_HTML)
@@ -177,6 +219,16 @@ public class Boards {
 
 	}
 
+	/**
+	 * 
+	 * @param push 1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 für ignorieren.
+	 * @param boardID Die BoardID
+	 * @param postID Die PostID
+	 * @param request Der HTTP Request.
+	 * @return Das zentrale Board, wenn der Post gepusht wird, sonst wieder die Boardseite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/pushPost")
 	@Produces(MediaType.TEXT_HTML)
@@ -217,6 +269,16 @@ public class Boards {
 
 	}
 
+	/**
+	 * 
+	 * @param boardID Die BoardID
+	 * @param postID Die PostID
+	 * @param commentText Der Inhalt des Kommentars
+	 * @param request Der HTTP Request.
+	 * @return Die Board Seite
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@POST
 	@Path("/newComment")
 	@Produces(MediaType.TEXT_HTML)
@@ -248,6 +310,15 @@ public class Boards {
 		}
 	}
 
+	/**
+	 * 
+	 * @param boardID Die BoardID.
+	 * @param postText Inhalt des Posts
+	 * @param request HTTP Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@POST
 	@Path("/newPost")
 	@Produces(MediaType.TEXT_HTML)
@@ -296,6 +367,16 @@ public class Boards {
 		}
 	}
 
+	/**
+	 * 
+	 * @param boardID Die BoardID.
+	 * @param postID Die PostID.
+	 * @param postText Der neue Text des Posts.
+	 * @param request Der HTTP Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@POST
 	@Path("/editPost")
 	@Produces(MediaType.TEXT_HTML)
@@ -329,10 +410,10 @@ public class Boards {
 
 	/***
 	 * 
-	 * @param boardID
-	 * @param postID
-	 * @param request
-	 * @return
+	 * @param boardID Die BoardID.
+	 * @param postID Die ID des Posts, der gelöscht werden soll.
+	 * @param request Der HTTP Request.
+	 * @return Die Board Seite.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -368,6 +449,15 @@ public class Boards {
 		}
 	}
 
+	/**
+	 * 
+	 * @param userNameOrEmail Die Email oder der Username des Benutzers.
+	 * @param boardID Die BoardID.
+	 * @param request Der Http Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@POST
 	@Path("/addUser")
 	@Produces(MediaType.TEXT_HTML)
@@ -422,6 +512,14 @@ public class Boards {
 		return new ByteArrayInputStream(pageBytes);
 	}
 
+	/**
+	 * 
+	 * @param searchInput Email oder Benutzername, nachdem gesucht werden soll.
+	 * @param request Der HTTP Request.
+	 * @return Das Profil des Benutzers, wenn er existiert, sonst Benutzer nicht gefunden Seite.
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	@POST
 	@Path("/search")
 	@Produces(MediaType.TEXT_HTML)
@@ -467,6 +565,15 @@ public class Boards {
 		}
 	}
 
+	/**
+	 * 
+	 * @param commentID Die ID des Kommentars, das gelöscht werden soll.
+	 * @param boardID Die ID des Boards.
+	 * @param request Der HTTP Request.
+	 * @return Die Board Seite.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("/deleteComment")
 	@Produces(MediaType.TEXT_HTML)
@@ -512,5 +619,4 @@ public class Boards {
 			return new ByteArrayInputStream(pageBytes);
 		}
 	}
-
 }

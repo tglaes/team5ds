@@ -23,6 +23,32 @@
 	function changeStats() {
 		$("canvas").css("margin-left", "30px");
 	}
+	
+	function checkPassword(){
+		
+		var pwd = document.getElementById("pwd")
+		var pwd_rep = document.getElementById("pwd-rep")
+		var pwdDiv = document.getElementById("pwdDiv")
+		var pwd_repDiv = document.getElementById("pwd_repDiv")
+		
+		if(pwd.value != pwd_rep.value){	
+			pwdDiv.setAttribute("class", "form-group has-error")
+			pwd_repDiv.setAttribute("class", "form-group has-error")
+		} else {
+			if(pwd){
+				pwdDiv.setAttribute("class", "form-group")
+				pwd_repDiv.setAttribute("class", "form-group")
+			} else {
+				pwdDiv.setAttribute("class", "form-group has-error")
+				pwd_repDiv.setAttribute("class", "form-group has-error")
+			}		
+		}	
+	}
+	
+	function checkUsername(){
+		
+		
+	}
 </script>
 <!-- ###################### PIE CHART DATEN EINFUEGEN -->
 
@@ -243,12 +269,12 @@ label {
 							<label>Email:</label> <input type="text" class="form-control"
 								name="email" value="###email###">
 						</div>
-						<div class="form-group">
-							<label>Password:</label> <input type="password"
+						<div class="form-group" id="pwdDiv">
+							<label>Password:</label> <input onkeyup="checkPassword()" type="password"
 								class="form-control" id="pwd" name="pwd" value="###password###">
 						</div>
-						<div class="form-group">
-							<label>Repeat Password:</label> <input type="password"
+						<div class="form-group" id="pwd_repDiv">
+							<label>Repeat Password:</label> <input onkeyup="checkPassword()" type="password"
 								class="form-control" id="pwd-rep" name="pwd"
 								placeholder="Repeat Password" value="">
 						</div>

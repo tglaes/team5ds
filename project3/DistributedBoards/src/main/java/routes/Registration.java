@@ -25,12 +25,31 @@ import util.Permissions;
 @Path("/Registration")
 public class Registration {
 
+	/**
+	 * 
+	 * @return Die Registrieren Seite.
+	 * @throws FileNotFoundException
+	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public InputStream sendRegistrationPage() throws FileNotFoundException {
 		return Resources.getResource("Registrieren_new.html", "html");
 	}
 
+	/**
+	 * 
+	 * @param firstname
+	 * @param lastname
+	 * @param email
+	 * @param password
+	 * @param username
+	 * @param profession
+	 * @param age
+	 * @param request
+	 * @return Die Seite mit dem Zentralen Board bei Erfolg, FailedRegistration sonst.
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
@@ -100,6 +119,12 @@ public class Registration {
 		return HTMLBuilder.buildFailedRegistration(errorCode);
 	}
 	
+	/**
+	 * 
+	 * @param u Benutzername
+	 * @return True falls der benutzername noch nicht vergeben ist, false sonst.
+	 * @throws SQLException
+	 */
 	private boolean checkUserName(String u) throws SQLException {
 		
 		String sqlCommand = "SELECT Username FROM Users";
@@ -116,6 +141,12 @@ public class Registration {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param e Email
+	 * @return True, wenn die Email noch nicht vergeben ist, false sonst.
+	 * @throws SQLException
+	 */
 	private boolean checkEmail(String e) throws SQLException {
 		String sqlCommand = "SELECT EMail FROM Users";
 		ResultSet rs = Database.executeSql(sqlCommand);

@@ -49,12 +49,12 @@ public class HTMLBuilder {
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
-	 * Baut die HTML Seite für eine Benutzer zusammen indem die definierten Marken
-	 * im Template mit HTML Code ersetzt wird.
+	 * Erstellt, die Boardseite für den Benutzer.
 	 * 
-	 * @param userID
-	 *            Die ID des Benutzers der die Seite besucht.
-	 * @return Einen InputStream, der die HTML Seite enthält.
+	 * @param userID Die ID des Benutzers.
+	 * @param boardID Die ID des Boards.
+	 * @param p Die Berechtigung
+	 * @return Die Boardseite für den Benutzer( mit den entsprechenden Berechtigungen.)
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -133,14 +133,11 @@ public class HTMLBuilder {
 	}
 
 	/**
+	 * Erstellt die Profilseite.
 	 * 
-	 * @param userID
-	 *            ID des Benutzers der eingeloggt ist.
-	 * @param profileID
-	 *            ID des Profiles
-	 * @param editable
-	 *            ist das Profil für den Benutzer editierbar.
-	 * @return
+	 * @param userID Die ID des Benutzers.
+	 * @param profileID Die ID des Profils
+	 * @return Die Profilseite.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -270,6 +267,12 @@ public class HTMLBuilder {
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 
+	/**
+	 * 
+	 * @param userID
+	 * @return Die Anzahl der Likes (Marks)
+	 * @throws SQLException
+	 */
 	private static String getNumberOfLikes(int userID) throws SQLException {
 
 		String sqlCommand = "SELECT COUNT(*) FROM PostMarks WHERE User=" + userID;
@@ -283,6 +286,12 @@ public class HTMLBuilder {
 		}
 	}
 
+	/**
+	 * 
+	 * @param userID
+	 * @return Die Anzahl der Kommentare des Benutzers.
+	 * @throws SQLException
+	 */
 	private static String getNumberOfComments(int userID) throws SQLException {
 		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post>0";
 		ResultSet rs = Database.executeSql(sqlCommand);
@@ -295,6 +304,12 @@ public class HTMLBuilder {
 		}
 	}
 
+	/**
+	 * 
+	 * @param userID
+	 * @return Die Anzahl der Posts.
+	 * @throws SQLException
+	 */
 	private static String getNumberOfPosts(int userID) throws SQLException {
 		String sqlCommand = "SELECT COUNT(*) FROM Posts WHERE User=" + userID + " AND Post=0";
 		ResultSet rs = Database.executeSql(sqlCommand);
@@ -308,6 +323,12 @@ public class HTMLBuilder {
 
 	}
 
+	/**
+	 * 
+	 * @param userID
+	 * @return Die Anzahl der Boards, Admin und normaler User.
+	 * @throws SQLException
+	 */
 	private static String getNumberOfBoards(int userID) throws SQLException {
 		// Alle Boards des Benutzers (ohne Boards auf denen er Admin ist)
 		int numberBoards = 0;
@@ -329,6 +350,13 @@ public class HTMLBuilder {
 
 	}
 
+	/**
+	 * 
+	 * @param boardID
+	 * @param p Die Berechtigung.
+	 * @return Eine HTML Liste von Benutzern mit Remove, Add Button für Admin.
+	 * @throws SQLException
+	 */
 	private static String getUserListForBoard(int boardID, Permission p) throws SQLException {
 		String sqlCommand = "SELECT u.Username,u.ID FROM UserBoards as ub JOIN Users as u ON ub.User=u.ID  WHERE Board="
 				+ boardID;
@@ -351,6 +379,12 @@ public class HTMLBuilder {
 		return userListForBoardHTML;
 	}
 
+	/**
+	 * 
+	 * @param boardID
+	 * @return HTML Tag mit Link zum Profil des Admins.
+	 * @throws SQLException
+	 */
 	private static String getAdminForBoard(int boardID) throws SQLException {
 
 		String sqlCommand = "SELECT u.Username,u.ID FROM Boards as b JOIN Users as u ON b.Admin=u.ID WHERE b.ID="
@@ -361,10 +395,17 @@ public class HTMLBuilder {
 			return "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile=" + rs.getString(2) + "'>"
 					+ rs.getString(1) + "</a></p>";
 		}
-
 		return "";
 	}
 
+	/**
+	 * 
+	 * @param boardID
+	 * @param p
+	 * @param userID
+	 * @return Die Posts mit Kommentaren des Boards, mit Remove, Edit Buttons
+	 * @throws SQLException
+	 */
 	private static String getPosts(int boardID, Permission p, int userID) throws SQLException {
 
 		String noPosts = "<br><br><h1>No Posts yet! <h1>";
@@ -450,6 +491,12 @@ public class HTMLBuilder {
 		}
 	}
 
+	/**
+	 * 
+	 * @param boardID
+	 * @return HTML Darstellung des Namens des Boards.
+	 * @throws SQLException
+	 */
 	private static String getBoardName(int boardID) throws SQLException {
 
 		String sqlCommand = "SELECT name FROM Boards WHERE ID=" + boardID;
@@ -465,9 +512,7 @@ public class HTMLBuilder {
 	/**
 	 * 
 	 * @param userID
-	 *            Die ID des Benutzers der die Seite besucht.
-	 * @return Gibt die HTML Repräsentation der Tafel, die dem Benutzer zugeordnet
-	 *         sind, zurück.
+	 * @return HTML Darstellung der Liste der Boards des Benutzers.
 	 * @throws SQLException
 	 */
 	private static String getBoardsListForUser(int userID) throws SQLException {
@@ -528,6 +573,12 @@ public class HTMLBuilder {
 
 	}
 
+	/**
+	 * 
+	 * @param marker Die Markierung an der der neue Inhalt eingefügt werden soll.
+	 * @param page String der die HTML Seite darstellt.
+	 * @return Ein Array mit den zwei Hälften.
+	 */
 	private static String[] splitStringPageAtMarker(String marker, String page) {
 
 		// Index der Marke
@@ -540,6 +591,11 @@ public class HTMLBuilder {
 
 	}
 
+	/**
+	 * 
+	 * @return Die Loginseite, mit einer Fehleranzeige.
+	 * @throws IOException
+	 */
 	public static InputStream buildFailedLogin() throws IOException {
 
 		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent\\HTML\\Login.html");
@@ -551,14 +607,18 @@ public class HTMLBuilder {
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 
+	/**
+	 * 
+	 * @param errorCode ErrorCode 0->kein Fehler, 1->Benutzername falsch, 2->Email falsch, 3->Email und Username falsch
+	 * @return Die Registrierenseite mit einer Fehleranzeigen.
+	 * @throws IOException
+	 */
 	public static InputStream buildFailedRegistration(int errorCode) throws IOException {
 
 		// Remove the hidden attribute form the error display.
 		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren_new.html");
 		String newPage = page[0] + "" + page[1];
-
-		// Mark the fields that are not correct.
-
+		
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 }
