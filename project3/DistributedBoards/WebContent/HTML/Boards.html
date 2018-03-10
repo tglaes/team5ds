@@ -388,6 +388,24 @@ label {
 		</div>
 	</div>
 
+<!-- Delete Board -->
+	<div class="modal fade" id="delete-board-board-modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none; margin-top: 70px;">
+		<div class="container"
+			style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+			<h3>Do you really want to delete the board?</h3>
+			<div class="widget-area no-padding blank">
+				<div class="status-upload">
+						<button onclick="window.location.href='/DistributedBoards/Boards/deleteBoard?board=###boardID###'" data-dismiss="modal" class="btn btn-success" type="button">Delete</button>
+						<button class="btn btn-warning" type="button" data-dismiss="modal">Cancel</button>
+				</div>
+				<!-- Status Upload  -->
+			</div>
+			<!-- Widget Area -->
+		</div>
+	</div>
+
 	<!----------------------------------- Footer --------------------------------->
 	<!--
 <footer class="container-fluid text-center">

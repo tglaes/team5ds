@@ -148,7 +148,13 @@ label {
 			<!-- Tafel-Navigation -->
 			<!-- ### Wird einfach aus der DB nach dem Login geladen! ### -->
 			<div class="col-sm-2 sidenav" style="min-height: calc(100vh - 52px);">
-				###BoardsList###</div>
+				###BoardsList###
+				<a href="#" data-toggle="modal"
+					data-target="#board-modal" class="btn btn-lg"
+					style="background-color: #F1F1F1; color: black; float: right;">
+					<span class="glyphicon" style="margin-top: 15px;">&#x2b;
+						Board</span>
+				</a></div>
 
 			<!-- User-Profile -->
 			<div class="col-md-5 " style="margin-top: 50px">
@@ -341,5 +347,42 @@ label {
 			});
 		});
 	</script>
+	<!-- Add Board -->
+	<div class="modal fade" id="board-modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none; margin-top: 70px;">
+		<div class="container"
+			style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+			<h3>Add a new Board</h3>
+			<div class="widget-area no-padding blank">
+				<div class="status-upload">
+					<form action="/DistributedBoards/Boards/newBoard" method="POST">
+						<br /> <input placeholder="Boardname" name="boardName"></input>
+						<button class="btn btn-success" type="submit">Add the
+							board</button>
+						<button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+					</form>
+				</div>
+				<!-- Status Upload  -->
+			</div>
+			<!-- Widget Area -->
+		</div>
+	</div>
+	
+	<!-- Delete Profile -->
+	<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="display: none; margin-top: 70px;">
+		<div class="container"
+			style="background-color: #F1F1F1; max-width: 450px; padding: 20px 20px 20px 20px;">
+			<h3>Do you want to delete your profile?</h3>
+			<div class="widget-area no-padding blank">
+				<div class="status-upload">
+						<button onclick="window.location.href='/DistributedBoards/Profile/deleteProfile'" class="btn btn-success" type="button" data-dismiss="modal">Yes,delete!</button>
+						<button class="btn btn-danger" type="button" data-dismiss="modal">No don't delete!</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

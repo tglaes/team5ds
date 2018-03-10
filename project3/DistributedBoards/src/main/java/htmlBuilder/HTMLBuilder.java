@@ -119,14 +119,15 @@ public class HTMLBuilder {
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
+		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = page[0] + boardID + page[1];
 
 
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if (p == Permission.Admin) {
 			newPage = page[0]
 					+ "<div><button href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>Add User</button><br>"
-					+ "<button onclick=\"window.location.href='/DistributedBoards/Boards/deleteBoard?board=" + boardID
-					+ "'\" class='btn btn-danger'> Board Löschen</button></div>" + page[1];
+					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board Löschen</button></div>" + page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
@@ -238,9 +239,15 @@ public class HTMLBuilder {
 
 			String buttonHTML = "";
 			page = splitStringPageAtMarker(profileEditButtonMarker, newPage);
-			if (userID == profileID) {
-				buttonHTML = "<a href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>"
-						+ "<span class='glyphicon glyphicon-pencil'></span> Edit" + "</a>";
+			if (userID == profileID) {			
+				// Delete Button
+				buttonHTML = "<a href='#' data-toggle='modal' data-target='#delete-modal' class='btn btn-lg' style='background-color: #990000; color: black; float: right;'>"
+						+ "<span class='glyphicon glyphicon-remove'></span> Delete </a>";				
+				// Edit Button
+				buttonHTML += "<a href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>"
+						+ "<span class='glyphicon glyphicon-pencil'></span> Edit </a>";
+				
+				
 			}
 			newPage = page[0] + buttonHTML + page[1];
 
@@ -618,7 +625,7 @@ public class HTMLBuilder {
 	public static InputStream buildFailedRegistration(int errorCode) throws IOException {
 
 		// Remove the hidden attribute form the error display.
-		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren_new.html");
+		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren.html");
 		String newPage = page[0] + "" + page[1];
 		
 		return new ByteArrayInputStream(newPage.getBytes(charset));

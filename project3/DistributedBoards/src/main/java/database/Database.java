@@ -61,6 +61,26 @@ public final class Database {
 		}
 		return true;
 	}
+	
+	/**
+	 * Wie executeQuery schließt die Verbindung zur Datenbank aber nicht.
+	 * @param sqlCommand
+	 * @return true, wenn erfolgreich, false sonst
+	 * @throws SQLException
+	 */
+	public static boolean executeQueryWithOutClose(String sqlCommand)throws SQLException {
+		connect();
+
+		try {
+			Statement stmt = connection.createStatement();
+			stmt.execute(sqlCommand);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 
 	/**
 	 * Führt das SQL Statement aus und gibt das Ergebnis zurück
