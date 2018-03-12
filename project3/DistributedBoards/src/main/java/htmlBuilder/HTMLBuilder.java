@@ -103,7 +103,8 @@ public class HTMLBuilder {
 		newPage = page[0] + linkToUserProfile + page[1];
 
 		// Einfügen der boardID
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
+		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
+				/*splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
@@ -120,7 +121,7 @@ public class HTMLBuilder {
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
 		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
+		newPage = page[0] + boardID + page[1];*/
 
 
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
@@ -580,6 +581,28 @@ public class HTMLBuilder {
 		pageParts[1] = pageTemplate.substring(index + marker.length());
 		return pageParts;
 
+	}
+	
+	/**
+	 * 
+	 * @param page Die HTML Seite in der die Werte ersetzt werden sollen.
+	 * @param mark Die Marke die durch den Wert ersetzt werden soll.
+	 * @param value Der Wert, der an der Stelle der Marke eingesetzt werden soll.
+	 * @return
+	 */
+	private static String insertIntoHtml(String page, String marker, String value) {
+		
+		int index = page.indexOf(marker);
+		
+		while(index > 0) {
+			
+			String[] pageParts = new String[2];
+			pageParts[0] = page.substring(0, index);
+			pageParts[1] = page.substring(index + marker.length());
+			page = pageParts[0] + value + pageParts[1];
+			index = page.indexOf(marker);
+		}
+		return page;
 	}
 
 	/**
