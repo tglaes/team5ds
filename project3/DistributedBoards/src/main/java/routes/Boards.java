@@ -639,8 +639,6 @@ public class Boards {
 	public static InputStream deleteComment(@QueryParam("comment") int commentID, @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
 
-		System.out.println(boardID);
-
 		String ip = request.getRemoteAddr();
 		Integer userID = Permissions.hasSession(ip);
 		if (userID == null) {

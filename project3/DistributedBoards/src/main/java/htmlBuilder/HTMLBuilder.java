@@ -167,10 +167,10 @@ public class HTMLBuilder {
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		// Einfügen des Links zum Profilbild
+		/*// Einfügen des Links zum Profilbild
 		// Konvention des Namens des Profilbildes ist UserID
 		page = splitStringPageAtMarker(profilePictureMarker, newPage);
-		newPage = page[0] + profileID + page[1];
+		newPage = page[0] + profileID + page[1];*/
 
 		// ProfilId des Benutzers einfügen.
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
