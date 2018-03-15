@@ -44,14 +44,20 @@ public class Boards {
 	 * @throws SQLException
 	 */
 	@GET
+	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
 	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
+		
+		// IP aus dem HTTP Request extrahieren.
 		String ip = request.getRemoteAddr();
+		// 
 		Integer userID = Permissions.hasSession(ip);
+		// Benutzer hat keine Session.
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
+			// Benutzer ist angemeldet.
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
