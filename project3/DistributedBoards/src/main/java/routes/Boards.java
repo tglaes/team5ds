@@ -184,7 +184,7 @@ public class Boards {
 	@GET
 	@Path("/removeUser")
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream deleteBoard(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID,
+	public static InputStream removeUser(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
 
 		String ip = request.getRemoteAddr();
