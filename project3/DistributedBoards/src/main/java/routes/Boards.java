@@ -620,6 +620,40 @@ public class Boards {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param boardID Die Id des Board was verlassen werden soll.
+	 * @param request Der HTTP Request
+	 * @return Das Zentrale Board
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	@GET
+	@Path("/leaveBoard")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream leaveBoard(@QueryParam("board") int boardID,@Context HttpServletRequest request) throws IOException, SQLException {
+		
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.User) {
+			
+			String sqlCommand = "DELETE FROM UserBoards WHERE User=" + userID + " AND Board=" + boardID;
+			Database.executeQuery(sqlCommand);
+			
+			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
+			
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/404.html"));
+			return new ByteArrayInputStream(pageBytes);
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+	}
+	
 
 	/**
 	 * 

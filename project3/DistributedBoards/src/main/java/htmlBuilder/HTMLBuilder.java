@@ -44,7 +44,7 @@ public class HTMLBuilder {
 	private static final String profileEditButtonMarker = "###profileEditButton###";
 	private static final String postButtonMarker = "###newPostButton###";
 	private static final String profileNumberLikes = "###NumberLikes###";
-	private static final String profilePictureMarker = "###profilePicture###";
+	//private static final String profilePictureMarker = "###profilePicture###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -102,37 +102,21 @@ public class HTMLBuilder {
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		// Einfügen der boardID
-		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
-				/*splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];*/
-
-
+		// Füge Button zum Löschen des Boards und zum hinzufügen von Benutzern hinzu.
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if (p == Permission.Admin) {
 			newPage = page[0]
 					+ "<div><button href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>Add User</button><br>"
 					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board Löschen</button></div>" + page[1];
+		} else if(boardID != 0){
+			// Füge eine leaveBoard Button für den Benutzer hinzu.
+			newPage = page[0]+ "<button class='btn btn-danger' onclick=\"window.location.href='/DistributedBoards/Boards/leaveBoard?board=###boardID###'\">Leave Board</button>" + page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
 
+		// Einfügen der boardID
+		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 
