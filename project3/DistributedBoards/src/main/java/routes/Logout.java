@@ -21,7 +21,7 @@ import util.Permissions;
 public class Logout {
 
 	/**
-	 * Löst die Session auf.
+	 * Lï¿½st die Session auf.
 	 * 
 	 * @param request Der HTTP Request.
 	 * @return Die Loginseite
@@ -32,6 +32,7 @@ public class Logout {
 		
 		String ip = request.getRemoteAddr();
 		Permissions.destroySession(ip);
-		return new FileInputStream(new File("WebContent\\HTML\\Login.html"));
+//		return new FileInputStream(new File("WebContent\\HTML\\Login.html"));
+		return new FileInputStream(new File("WebContent/HTML/Login.html"));
 	}
 }

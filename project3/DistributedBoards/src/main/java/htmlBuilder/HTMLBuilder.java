@@ -48,32 +48,33 @@ public class HTMLBuilder {
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
-	 * Erstellt, die Boardseite für den Benutzer.
+	 * Erstellt, die Boardseite fï¿½r den Benutzer.
 	 * 
 	 * @param userID Die ID des Benutzers.
 	 * @param boardID Die ID des Boards.
 	 * @param p Die Berechtigung
-	 * @return Die Boardseite für den Benutzer( mit den entsprechenden Berechtigungen.)
+	 * @return Die Boardseite fï¿½r den Benutzer( mit den entsprechenden Berechtigungen.)
 	 * @throws IOException
 	 * @throws SQLException
 	 */
 	public static InputStream buildBoardsPage(int userID, int boardID, Permission p) throws IOException, SQLException {
 
-		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
+		// String Array der Grï¿½ï¿½e 2, die die 2 Hï¿½lften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
 		String newPage;
-		// Einfügen der Boardliste
-		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
+		// Einfï¿½gen der Boardliste
+		//page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
+		page = splitHTMLPageAtMarker(boardListMarker, "WebContent/HTML/Boards.html");
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 
-		// Einfügen des Board Names.
+		// Einfï¿½gen des Board Names.
 		page = splitStringPageAtMarker(boardNameMarker, newPage);
 		String boardNameHTML = getBoardName(boardID);
 		newPage = page[0] + boardNameHTML + page[1];
 
-		// Einfügen des Postbuttons
+		// Einfï¿½gen des Postbuttons
 		page = splitStringPageAtMarker(postButtonMarker, newPage);
 		String postButtonHTML = "";
 		if (boardID != 0) {
@@ -82,27 +83,27 @@ public class HTMLBuilder {
 		}
 		newPage = page[0] + postButtonHTML + page[1];
 
-		// Einfügen der Posts und Kommentare
+		// Einfï¿½gen der Posts und Kommentare
 		page = splitStringPageAtMarker(boardPostsMarker, newPage);
 		String postListHTML = getPosts(boardID, p, userID);
 		newPage = page[0] + postListHTML + page[1];
 
-		// Einfügen des Admins des Boards in Sidebar
+		// Einfï¿½gen des Admins des Boards in Sidebar
 		page = splitStringPageAtMarker(boardAdminMarker, newPage);
 		String adminHTML = getAdminForBoard(boardID);
 		newPage = page[0] + adminHTML + page[1];
 
-		// Einfügen der Benutzer
+		// Einfï¿½gen der Benutzer
 		page = splitStringPageAtMarker(boardUserListMarker, newPage);
 		String userListHTML = getUserListForBoard(boardID, p);
 		newPage = page[0] + userListHTML + page[1];
 
-		// Einfügen des Links zum eigenden Profil.
+		// Einfï¿½gen des Links zum eigenden Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		// Einfügen der boardID
+		// Einfï¿½gen der boardID
 		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
 				/*splitStringPageAtMarker(boardIDMarker, newPage);
 		newPage = page[0] + boardID + page[1];
@@ -128,7 +129,7 @@ public class HTMLBuilder {
 		if (p == Permission.Admin) {
 			newPage = page[0]
 					+ "<div><button href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>Add User</button><br>"
-					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board Löschen</button></div>" + page[1];
+					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board Lï¿½schen</button></div>" + page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
@@ -147,38 +148,39 @@ public class HTMLBuilder {
 	 */
 	public static InputStream buildProfilePage(Integer userID, Integer profileID) throws IOException, SQLException {
 
-		// Der Benutzer kann über die profileID 0 auf sein eigenes Profil kommen.
+		// Der Benutzer kann ï¿½ber die profileID 0 auf sein eigenes Profil kommen.
 		if (profileID == 0) {
 			profileID = userID;
 		}
 
-		// String Array der Größe 2, die die 2 Hälften der Seite beinhaltet.
+		// String Array der Grï¿½ï¿½e 2, die die 2 Hï¿½lften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
 		String newPage;
 
-		// Einfügen der Boardliste
-		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Profile.html");
+		// Einfï¿½gen der Boardliste
+//		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Profile.html");
+		page = splitHTMLPageAtMarker(boardListMarker, "WebContent/HTML/Profile.html");
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 
-		// Einfügen des Links zum eigenen Profil.
+		// Einfï¿½gen des Links zum eigenen Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		/*// Einfügen des Links zum Profilbild
+		/*// Einfï¿½gen des Links zum Profilbild
 		// Konvention des Namens des Profilbildes ist UserID
 		page = splitStringPageAtMarker(profilePictureMarker, newPage);
 		newPage = page[0] + profileID + page[1];*/
 
-		// ProfilId des Benutzers einfügen.
+		// ProfilId des Benutzers einfï¿½gen.
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
 		newPage = page[0] + profileID + page[1];
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
 		newPage = page[0] + profileID + page[1];
 
-		// Information des Benutzers auslesen und einfügen.
+		// Information des Benutzers auslesen und einfï¿½gen.
 		String sqlCommand = "SELECT * FROM Users WHERE ID=" + profileID;
 		ResultSet rs = Database.executeSql(sqlCommand);
 
@@ -364,7 +366,7 @@ public class HTMLBuilder {
 	 * 
 	 * @param boardID
 	 * @param p Die Berechtigung.
-	 * @return Eine HTML Liste von Benutzern mit Remove, Add Button für Admin.
+	 * @return Eine HTML Liste von Benutzern mit Remove, Add Button fï¿½r Admin.
 	 * @throws SQLException
 	 */
 	private static String getUserListForBoard(int boardID, Permission p) throws SQLException {
@@ -377,7 +379,7 @@ public class HTMLBuilder {
 			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile="
 					+ rs.getString(2) + "'>" + rs.getString(1) + "</a>";
 
-			// Füge den Benutzer entfernen Button hinzu.
+			// Fï¿½ge den Benutzer entfernen Button hinzu.
 			if (p == Permission.Admin) {
 				userListForBoardHTML += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
 						+ boardID + "&user=" + rs.getString(2)
@@ -452,10 +454,8 @@ public class HTMLBuilder {
 						+ ")' data-toggle='modal' data-target='#push-modal' class='btn btn-md'>"
 						+ "<span class='glyphicon glyphicon-thumbs-up'></span> Push" + "</a>";
 			}
-			posts += "<a href='#' onclick='editCommentModal(" + rs.getInt(3) + ",\"" + rs.getString(4)
-					+ "\")' data-toggle='modal' data-target='#comment-modal' class='btn btn-md'>"
-					+ "<span class='glyphicon glyphicon-edit'></span> Comment" + "</a>";
-
+			posts += "<a href='#' onclick='editCommentModal(" + rs.getInt(3) + ",\"" + rs.getString(4)+ "\")' data-toggle='modal' data-target='#comment-modal' class='btn btn-md'>"+ "<span class='glyphicon glyphicon-edit'></span> Comment" + "</a>";
+					
 			// Der Admin sieht nur die Anzahl der Markierungen.
 			if (p == Permission.Admin) {
 				posts += "<a class='btn btn-md'>" + "<span class='glyphicon glyphicon-bookmark'></span>" + postMarks
@@ -537,7 +537,7 @@ public class HTMLBuilder {
 			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2)
 					+ "</a></p>";
 
-			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingefügt.
+			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingefï¿½gt.
 			if (rs.getInt(1) == 0) {
 				boardsListHTML += "<hr noshade style=\"width:100%; height:0px; text-align:left; border:3px solid rgb(34, 34, 34);\">";
 			}
@@ -551,17 +551,17 @@ public class HTMLBuilder {
 			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2)
 					+ "</a></p>";
 		}
-		// Schließen der Datenbankverbindung
+		// Schlieï¿½en der Datenbankverbindung
 		Database.closeConnection();
 
 		return boardsListHTML;
 	}
 
 	/**
-	 * Entfernt die Markierung aus der Seite und gibt die 2 Hälften zurück.
+	 * Entfernt die Markierung aus der Seite und gibt die 2 Hï¿½lften zurï¿½ck.
 	 * 
 	 * @param marker
-	 *            Die Markierung an der der neue Inhalt eingefügt werden soll.
+	 *            Die Markierung an der der neue Inhalt eingefï¿½gt werden soll.
 	 * @param path
 	 *            Der relative Pfad zur Resource.
 	 * @return Ein String Array mit den zwei Seiten.
@@ -607,9 +607,9 @@ public class HTMLBuilder {
 
 	/**
 	 * 
-	 * @param marker Die Markierung an der der neue Inhalt eingefügt werden soll.
+	 * @param marker Die Markierung an der der neue Inhalt eingefï¿½gt werden soll.
 	 * @param page String der die HTML Seite darstellt.
-	 * @return Ein Array mit den zwei Hälften.
+	 * @return Ein Array mit den zwei Hï¿½lften.
 	 */
 	private static String[] splitStringPageAtMarker(String marker, String page) {
 
@@ -630,7 +630,8 @@ public class HTMLBuilder {
 	 */
 	public static InputStream buildFailedLogin() throws IOException {
 
-		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent\\HTML\\Login.html");
+//		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent\\HTML\\Login.html");
+		String[] page = splitHTMLPageAtMarker(loginFailedMarker, "WebContent/HTML/Login.html");
 		String loginFailedAlert = "<div class='alert alert-danger' role='alert'>"
 				+ "<strong>LOGIN FAILED!</strong></div>";
 		String newPage = page[0] + loginFailedAlert + page[1];
@@ -648,7 +649,8 @@ public class HTMLBuilder {
 	public static InputStream buildFailedRegistration(int errorCode) throws IOException {
 
 		// Remove the hidden attribute form the error display.
-		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren.html");
+//		String[] page = splitHTMLPageAtMarker("hidden", "WebContent\\HTML\\Registrieren.html");
+		String[] page = splitHTMLPageAtMarker("hidden", "WebContent/HTML/Registrieren.html");
 		String newPage = page[0] + "" + page[1];
 		
 		return new ByteArrayInputStream(newPage.getBytes(charset));

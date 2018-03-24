@@ -53,7 +53,7 @@ public class Resources {
 	 */
 	@Produces("text/css")
 	private static InputStream getCSS(String resource) throws FileNotFoundException {
-		return new FileInputStream(new File("WebContent\\CSS\\" + resource));
+		return new FileInputStream(new File("WebContent/CSS/" + resource));
 		// return new FileInputStream(new File("WebContent/CSS/" + resource));
 	}
 
@@ -66,7 +66,7 @@ public class Resources {
 	 */
 	@Produces("image")
 	private static InputStream getImage(String resource) throws FileNotFoundException {
-		return new FileInputStream(new File("WebContent\\Images\\" + resource));
+		return new FileInputStream(new File("WebContent/Images/" + resource));
 		// return new FileInputStream(new File("WebContent/Images/" + resource));
 	}
 
@@ -79,7 +79,7 @@ public class Resources {
 	 */
 	@Produces("text/javascript")
 	private static InputStream getJavascript(String resource) throws FileNotFoundException {
-		return new FileInputStream(new File("WebContent\\Javascript\\" + resource));
+		return new FileInputStream(new File("WebContent/JavaScript/" + resource));
 		// return new FileInputStream(new File("WebContent/JavaScript/" + resource));
 	}
 
@@ -92,7 +92,7 @@ public class Resources {
 	 */
 	@Produces("text/html")
 	private static InputStream getHTML(String resource) throws FileNotFoundException {
-		return new FileInputStream(new File("WebContent\\HTML\\" + resource));
+		return new FileInputStream(new File("WebContent/HTML/" + resource));
 		// return new FileInputStream(new File("WebContent/HTML/" + resource));
 	}
 }
