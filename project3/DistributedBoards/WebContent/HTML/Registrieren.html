@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <!-- Required meta tags -->
+<title>D-Boards</title>
+<meta name="author" content="Meris Krupic, Tristan Glaes, Iurie Golovencic, Vadim Khablov">
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,14 +24,16 @@
 	src="/DistributedBoards/Resources?resourceName=registration.js&resourceType=js"></script>
 </head>
 <body>
-	<!-- Backgroundimage -->
-	<img id="bg-img"
-		src="/DistributedBoards/Resources?resourceName=bg-img-3.jpg&resourceType=img">
+
+	<!-------------------------------- Backgroundimage ------------------------------>
+	<img id="bg-img" src="/DistributedBoards/Resources?resourceName=bg-img-3.jpg&resourceType=img">
 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7 offset-md-2">
 				<div class="jumbotron">
+				
+					<!------------------------- Form to edit --------------------------->
 					<div hidden id="errorDiv" class="alert alert-danger" role="alert">The
 						Form data was not correct!</div>
 					<h1>Registrieren</h1>
@@ -70,8 +74,12 @@
 								class="form-control" name="age" id="alter" placeholder="Alter">
 						</div>
 					</form>
+					
+					<!------------------------ Data validation -------------------->
+					<hr>
 					<button type="button" class="btn btn-primary"
 						onclick="checkFormData()">Registrieren</button>
+					<hr>
 					<button type="button"
 						onclick="window.location.href='/DistributedBoards/Login'"
 						class="btn btn-info">Login</button>
@@ -79,6 +87,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

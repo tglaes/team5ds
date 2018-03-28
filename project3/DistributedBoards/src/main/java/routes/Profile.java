@@ -32,7 +32,7 @@ import util.Permissions;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 @Path("/Profile")
@@ -136,33 +136,33 @@ public class Profile {
 			String sqlCommand;
 			ResultSet rs;
 			
-			// Löschen des Profils.
+			// Lï¿½schen des Profils.
 			sqlCommand = "DELETE FROM Users WHERE ID=" + userID;
 			Database.executeQuery(sqlCommand);
 			
-			// Löschen aller Posts,Kommentare und Marks/Likes.
+			// Lï¿½schen aller Posts,Kommentare und Marks/Likes.
 			sqlCommand = "SELECT ID FROM Posts WHERE User=" + userID;
 			rs = Database.executeSql(sqlCommand);
 			while(rs.next()) {
 				
-				// Löschen der Marks/Likes
+				// Lï¿½schen der Marks/Likes
 				sqlCommand = "DELETE FROM PostMarks WHERE Post=" + rs.getInt(1);
 				Database.executeQueryWithOutClose(sqlCommand);
 				
-				// Löschen der Zuordnung zum Board.
+				// Lï¿½schen der Zuordnung zum Board.
 				sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + rs.getInt(1);
 				Database.executeQueryWithOutClose(sqlCommand);
 				
-				// Löschen der Kommentare des Posts
+				// Lï¿½schen der Kommentare des Posts
 				sqlCommand = "DELETE FROM Posts WHERE Post=" + rs.getInt(1);
 				Database.executeQueryWithOutClose(sqlCommand);
 				
-				// Löschen des Posts
+				// Lï¿½schen des Posts
 				sqlCommand = "DELETE FROM Posts WHERE ID=" + rs.getInt(1);
 				Database.executeQueryWithOutClose(sqlCommand);
 			}
 				
-			// Löschen der Zugehörigkeiten zu den Boards.
+			// Lï¿½schen der Zugehï¿½rigkeiten zu den Boards.
 			sqlCommand = "DELETE FROM UserBoards WHERE User=" + userID;
 			Database.executeQuery(sqlCommand);
 			
@@ -179,23 +179,23 @@ public class Profile {
 				sqlCommand = "DELETE FROM Boards WHERE Admin=" + userID;
 				Database.executeQueryWithOutClose(sqlCommand);
 				
-				//Lösche alle Posts von dem Board
+				//Lï¿½sche alle Posts von dem Board
 				sqlCommand = "SELECT Post FROM BoardPosts WHERE Board=" + rs.getInt(1);
 				ResultSet rs2 = Database.executeSql(sqlCommand);
 				while(rs2.next()) {
-					// Löschen der Marks/Likes
+					// Lï¿½schen der Marks/Likes
 					sqlCommand = "DELETE FROM PostMarks WHERE Post=" + rs2.getInt(1);
 					Database.executeQueryWithOutClose(sqlCommand);
 					
-					// Löschen der Zuordnung zum Board.
+					// Lï¿½schen der Zuordnung zum Board.
 					sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + rs2.getInt(1);
 					Database.executeQueryWithOutClose(sqlCommand);
 					
-					// Löschen der Kommentare des Posts
+					// Lï¿½schen der Kommentare des Posts
 					sqlCommand = "DELETE FROM Posts WHERE Post=" + rs2.getInt(1);
 					Database.executeQueryWithOutClose(sqlCommand);
 					
-					// Löschen des Posts
+					// Lï¿½schen des Posts
 					sqlCommand = "DELETE FROM Posts WHERE ID=" + rs2.getInt(1);
 					Database.executeQueryWithOutClose(sqlCommand);
 				}		

@@ -14,7 +14,7 @@ import util.Permission;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 public class HTMLBuilder {
@@ -44,7 +44,7 @@ public class HTMLBuilder {
 	private static final String profileEditButtonMarker = "###profileEditButton###";
 	private static final String postButtonMarker = "###newPostButton###";
 	private static final String profileNumberLikes = "###NumberLikes###";
-	private static final String profilePictureMarker = "###profilePicture###";
+	//private static final String profilePictureMarker = "###profilePicture###";
 	private static final String charset = StandardCharsets.UTF_8.name();
 
 	/**
@@ -103,37 +103,23 @@ public class HTMLBuilder {
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		// Einf�gen der boardID
-		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
-				/*splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];
-		page = splitStringPageAtMarker(boardIDMarker, newPage);
-		newPage = page[0] + boardID + page[1];*/
 
-
+		// F�ge Button zum L�schen des Boards und zum hinzuf�gen von Benutzern hinzu.
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if (p == Permission.Admin) {
 			newPage = page[0]
-					+ "<div><button href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>Add User</button><br>"
+					+ "<div><button style='height: 40px; font-size: 18px; background-color: lightblue; border-color: lightblue; color: black; width: 100%;' href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>"
+					+ "<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span><b> User</b></button><br>"
 					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board L�schen</button></div>" + page[1];
+		} else if(boardID != 0){
+			// F�ge eine leaveBoard Button f�r den Benutzer hinzu.
+			newPage = page[0]+ "<button class='btn btn-danger' onclick=\"window.location.href='/DistributedBoards/Boards/leaveBoard?board=###boardID###'\">Leave Board</button>" + page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
 
+		// Einf�gen der boardID
+		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
 
@@ -381,9 +367,15 @@ public class HTMLBuilder {
 
 			// F�ge den Benutzer entfernen Button hinzu.
 			if (p == Permission.Admin) {
-				userListForBoardHTML += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
+				userListForBoardHTML += "<a onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
 						+ boardID + "&user=" + rs.getString(2)
-						+ "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>";
+						+ "'\" class='btn btn-md' style='padding: 0 0 0 0; color: red; float:right;'><span class='glyphicon glyphicon-remove'></span></a>";
+				
+				/*
+				 * += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
+						+ boardID + "&user=" + rs.getString(2)
+						+ "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>"
+				 * */
 			}
 			userListForBoardHTML += "</p>";
 		}
@@ -443,7 +435,7 @@ public class HTMLBuilder {
 			// Bearbeiten des Posts
 			if (p == Permission.Admin || rs.getInt(5) == userID) {
 				posts += "<a href='#' onclick='editPostModal(" + rs.getInt(3) + ",\"" + rs.getString(4)
-						+ "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>"
+						+ "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: white; color: black; float: right;'>"
 						+ "<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + "</a>";
 			}
 
@@ -539,7 +531,13 @@ public class HTMLBuilder {
 
 			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingef�gt.
 			if (rs.getInt(1) == 0) {
-				boardsListHTML += "<hr noshade style=\"width:100%; height:0px; text-align:left; border:3px solid rgb(34, 34, 34);\">";
+				boardsListHTML += "<hr noshade style=\"width:100%; height:0px; text-align:left; border:3px solid rgb(34, 34, 34);\">"
+			
+							   + "<a id='plusBoardLink' href='#' data-toggle='modal'" + 
+					"					data-target='#board-modal' class='btn btn-lg'>" + 
+					"					<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span>" + 
+					"					<b>Board</b>" +
+					"			</a><hr>";
 			}
 		}
 

@@ -11,7 +11,7 @@ import javax.ws.rs.QueryParam;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 @Path("/Resources/")

@@ -14,7 +14,7 @@ import util.Permissions;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 @Path("Logout")

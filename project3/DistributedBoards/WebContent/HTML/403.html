@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <title>D-Boards</title>
+<meta name="author" content="Meris Krupic, Tristan Glaes, Iurie Golovencic, Vadim Khablov">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon"
@@ -14,74 +15,38 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
-/* Remove the navbar's default margin-bottom and rounded borders */
-.navbar {
-	margin-bottom: 0;
-	border-radius: 0;
-}
-/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {
-	height: 450px
-}
-/* Set gray background color and 100% height */
-.sidenav {
-	padding-top: 20px;
-	background-color: #f1f1f1;
-	height: 100%;
-}
-/* Set black background color, white text and some padding */
-footer {
-	background-color: #555;
-	color: white;
-	padding: 15px;
-}
-/* On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 767px) {
-	.sidenav {
-		height: auto;
-		padding: 15px;
-	}
-	.row.content {
-		height: auto;
-	}
-}
-
-@media screen and (min-width: 768px) {
-	label {
-		width: 150px;
-		margin-bottom: 20px;
-	}
-}
-
-label {
-	text-align: left;
-}
-</style>
+<link rel="stylesheet" type="text/css"
+	href="/DistributedBoards/Resources?resourceName=Structure.css&resourceType=css">
+<link rel="stylesheet" type="text/css"
+	href="/DistributedBoards/Resources?resourceName=403404.css&resourceType=css">
 </head>
-<body style="background-color: rgb(100, 100, 100);">
+<body>
 
 	<!----------------------------------- Nav-Bar (Header) --------------------------------->
 	<div class="nav-bar">
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
+					<!----------------------------- Hamburger-Menu ----------------------->
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
 						data-target="#myNavbar">
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
+					<!-------------------------------- Logo ------------------------------>
 					<a class="" href="/DistributedBoards/Boards?board=0"> <img
+						id="logo"
 						alt="logo"
-						src="/DistributedBoards/Resources?resourceName=logo.png&resourceType=img"
-						style="margin-top: 6px; margin-right: 20px;">
+						src="/DistributedBoards/Resources?resourceName=logo.png&resourceType=img">
 					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
+						<!--------------------------- Profile ---------------------------->
 						<li><a href="/DistributedBoards/Profile?profile=0">Profile</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<!---------------------------- Search ---------------------------->
 						<li>
 							<form class="navbar-form navbar-left"
 								action="/DistributedBoards/Boards/search" method="POST">
@@ -96,6 +61,7 @@ label {
 								</div>
 							</form>
 						</li>
+						<!---------------------------- Logout ---------------------------->
 						<li><a href="/DistributedBoards/Logout"><span
 								class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
@@ -105,16 +71,15 @@ label {
 	</div>
 	<!----------------------------------- Center  --------------------------------->
 	<div class="container-fluid text-center">
+		<!-- Faultpage, no permission -->
 		<div class="row content" style="margin-top: 70px;">
-
 			<img alt="sad"
-				src="/DistributedBoards/Resources?resourceName=stop.png&resourceType=img"
-				style="width: auto; height: 300px;">
-			<p style="color: white; font-size: 150px; margin-top: 30px;">403</p>
-			<p style="color: white; font-size: 15px; margin-top: 10px;">ACCESS
-				DENIED</p>
-			<p style="color: white; font-size: 10px; margin-top: 10px;">(You
-				do not have the permission for this action!)</p>
+				id="stop"
+				src="/DistributedBoards/Resources?resourceName=stop.png&resourceType=img">
+			<p id="403">403</p>
+			<p id="accessDenied">ACCESS DENIED</p>
+			<p id="noPermission">(You do not have the permission for this action!)</p>
+			<!-- button to get back -->
 			<button onclick="window.history.back()" type="button"
 				class="btn btn-primary">GO BACK</button>
 		</div>

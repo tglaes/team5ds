@@ -26,7 +26,7 @@ import util.Permission;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 @Path("/Boards")
@@ -44,14 +44,20 @@ public class Boards {
 	 * @throws SQLException
 	 */
 	@GET
+	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
 	public static InputStream sendBoardsPage(@DefaultValue("0") @QueryParam("board") int boardID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
+		
+		// IP aus dem HTTP Request extrahieren.
 		String ip = request.getRemoteAddr();
+		// 
 		Integer userID = Permissions.hasSession(ip);
+		// Benutzer hat keine Session.
 		if (userID == null) {
 			return Resources.getResource("Login.html", "html");
 		} else {
+			// Benutzer ist angemeldet.
 			return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
 		}
 	}
@@ -64,7 +70,7 @@ public class Boards {
 	 *            Die ID des Benutzers.
 	 * @param boardID
 	 *            Die ID des Boards.
-	 * @return Die Board Seite für Admin oder User, wenn der Benutzer eingeloggt
+	 * @return Die Board Seite fï¿½r Admin oder User, wenn der Benutzer eingeloggt
 	 *         ist, sonst 403.
 	 * @throws IOException
 	 * @throws SQLException
@@ -113,7 +119,7 @@ public class Boards {
 			// Create the new board and send the Boards page showing the new board.
 			int boardID = 0;
 
-			// Board in DB einfügen.
+			// Board in DB einfï¿½gen.
 			String sqlCommand = "INSERT INTO Boards (Admin,Name) VALUES('" + userID + "', '" + boardName + "')";
 			Database.executeQuery(sqlCommand);
 
@@ -133,7 +139,7 @@ public class Boards {
 	/***
 	 * 
 	 * @param boardID
-	 *            Die Board Id des Boards, dass zu löschen ist.
+	 *            Die Board Id des Boards, dass zu lï¿½schen ist.
 	 * @param request
 	 *            Der HTTP Request.
 	 * @return Die Zentrale Anzeigetafeln.
@@ -152,10 +158,10 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// Löschen des Boards.
+			// Lï¿½schen des Boards.
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
 			Database.executeQuery(sqlCommand);
-			// User Board Abhängigkeiten löschen.
+			// User Board Abhï¿½ngigkeiten lï¿½schen.
 			sqlCommand = "DELETE FROM UserBoards WHERE board=" + boardID;
 			Database.executeQuery(sqlCommand);
 			Database.closeConnection();
@@ -184,7 +190,7 @@ public class Boards {
 	@GET
 	@Path("/removeUser")
 	@Produces(MediaType.TEXT_HTML)
-	public static InputStream deleteBoard(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID,
+	public static InputStream removeUser(@QueryParam("board") int boardID, @QueryParam("user") int removeUserID,
 			@Context HttpServletRequest request) throws IOException, SQLException {
 
 		String ip = request.getRemoteAddr();
@@ -193,7 +199,7 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// Lösche den Benutzer
+			// Lï¿½sche den Benutzer
 			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
 			Database.executeQuery(sql);
 			Database.closeConnection();
@@ -230,7 +236,7 @@ public class Boards {
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
 				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
-			// Erstelle Markierung für Post
+			// Erstelle Markierung fï¿½r Post
 			String sqlCommand = "INSERT INTO PostMarks (User,Post) VALUES(" + userID + "," + postID + ")";
 			Database.executeQuery(sqlCommand);
 
@@ -245,7 +251,7 @@ public class Boards {
 	/**
 	 * 
 	 * @param push
-	 *            1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 für
+	 *            1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 fï¿½r
 	 *            ignorieren.
 	 * @param boardID
 	 *            Die BoardID
@@ -278,10 +284,10 @@ public class Boards {
 				// Gehe auf das Zentrale Board.
 				return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
 
-				// Markierungen werden gelöscht/ignoriert (DISMISS)
+				// Markierungen werden gelï¿½scht/ignoriert (DISMISS)
 			} else if (push == 0) {
 
-				// Lösche alle Markierungen des Posts.
+				// Lï¿½sche alle Markierungen des Posts.
 				String sqlCommand = "DELETE FROM PostMarks WHERE post=" + postID;
 				Database.executeQuery(sqlCommand);
 				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
@@ -384,7 +390,7 @@ public class Boards {
 					+ "', DATETIME('now'),0," + userID + ")";
 			Database.executeQuery(sqlCommand);
 
-			// Letzte hinzugefügte ID aus der Datenbank auslesen.
+			// Letzte hinzugefï¿½gte ID aus der Datenbank auslesen.
 			sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
 			ResultSet rs = Database.executeSql(sqlCommand);
 			rs.next();
@@ -453,7 +459,7 @@ public class Boards {
 	 * @param boardID
 	 *            Die BoardID.
 	 * @param postID
-	 *            Die ID des Posts, der gelöscht werden soll.
+	 *            Die ID des Posts, der gelï¿½scht werden soll.
 	 * @param request
 	 *            Der HTTP Request.
 	 * @return Die Board Seite.
@@ -479,13 +485,13 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else {
 			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin || userID == postOwner) {
-				// Löschen der Zuordnung zum Board.
+				// Lï¿½schen der Zuordnung zum Board.
 				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
-				// Löschen des Posts
+				// Lï¿½schen des Posts
 				sqlCommand = "DELETE FROM Posts WHERE ID=" + postID;
 				Database.executeQuery(sqlCommand);
-				// Löschen der Kommentare
+				// Lï¿½schen der Kommentare
 				sqlCommand = "DELETE FROM Posts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
 				Database.closeConnection();
@@ -526,17 +532,17 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID).equals(Permission.Admin)) {
 
-			// Prüfen ob Email oder Benutzername.
+			// Prï¿½fen ob Email oder Benutzername.
 			if (userNameOrEmail.contains("@")) {
 				// Email
-				// Prüfen ob die Email einem Benutzer zugeordnet werden kann.
+				// Prï¿½fen ob die Email einem Benutzer zugeordnet werden kann.
 				sqlCommand = "SELECT ID FROM Users WHERE EMail='" + userNameOrEmail + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
 
 			} else {
 				// Benutzername
-				// Prüfen ob der Benutzer existiert.
+				// Prï¿½fen ob der Benutzer existiert.
 				sqlCommand = "SELECT ID FROM Users WHERE Username='" + userNameOrEmail + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
@@ -545,13 +551,13 @@ public class Boards {
 			if (rs.next()) {
 
 				String newUserID = rs.getString(1);
-				// Prüfen ob Benutzer schon Mitglied des Boardes ist.
+				// Prï¿½fen ob Benutzer schon Mitglied des Boardes ist.
 				sqlCommand = "SELECT * FROM UserBoards WHERE User=" + newUserID + " AND Board=" + boardID;
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
 				// Benutzer ist noch nicht Mitglied.
 				if (!rs.next()) {
-					// Füge den Benutzer dem Board hinzu.
+					// Fï¿½ge den Benutzer dem Board hinzu.
 					sqlCommand = "INSERT INTO UserBoards (User,Board) VALUES(" + newUserID + "," + boardID + ")";
 					Database.executeQuery(sqlCommand);
 					Database.closeConnection();
@@ -620,11 +626,45 @@ public class Boards {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param boardID Die Id des Board was verlassen werden soll.
+	 * @param request Der HTTP Request
+	 * @return Das Zentrale Board
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	@GET
+	@Path("/leaveBoard")
+	@Produces(MediaType.TEXT_HTML)
+	public static InputStream leaveBoard(@QueryParam("board") int boardID,@Context HttpServletRequest request) throws IOException, SQLException {
+		
+		String ip = request.getRemoteAddr();
+		Integer userID = Permissions.hasSession(ip);
+		if (userID == null) {
+			return Resources.getResource("Login.html", "html");
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.User) {
+			
+			String sqlCommand = "DELETE FROM UserBoards WHERE User=" + userID + " AND Board=" + boardID;
+			Database.executeQuery(sqlCommand);
+			
+			return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
+			
+		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/404.html"));
+			return new ByteArrayInputStream(pageBytes);
+		} else {
+			byte[] pageBytes = Files.readAllBytes(Paths.get("WebContent/HTML/403.html"));
+			return new ByteArrayInputStream(pageBytes);
+		}
+	}
+	
 
 	/**
 	 * 
 	 * @param commentID
-	 *            Die ID des Kommentars, das gelöscht werden soll.
+	 *            Die ID des Kommentars, das gelï¿½scht werden soll.
 	 * @param boardID
 	 *            Die ID des Boards.
 	 * @param request
@@ -645,7 +685,7 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// Lösche Kommentar
+			// Lï¿½sche Kommentar
 			String sqlCommand = "DELETE FROM Posts WHERE ID=" + commentID;
 			Database.executeQuery(sqlCommand);
 
@@ -660,7 +700,7 @@ public class Boards {
 			rs.next();
 			if (rs.getInt(1) == userID) {
 
-				// Lösche Kommentar
+				// Lï¿½sche Kommentar
 				String sqlCommand2 = "DELETE FROM Posts WHERE ID=" + commentID;
 				Database.executeQuery(sqlCommand2);
 

@@ -23,7 +23,7 @@ import util.Permissions;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
  * @version 09.03.2018
  */
 @Path("/Registration")
@@ -87,7 +87,7 @@ public class Registration {
 					+ "'" + "," + age + ", '" + profession + "')";
 			Database.executeQuery(sqlCommand);
 
-			// Neue ID des Benutzers über die Email.
+			// Neue ID des Benutzers ï¿½ber die Email.
 			sqlCommand = "SELECT id FROM Users WHERE EMail='" + email + "'";
 			ResultSet rs = Database.executeSql(sqlCommand);
 
@@ -96,7 +96,7 @@ public class Registration {
 
 				// Eintrag in SessionMap
 				Permissions.createSession(request.getRemoteAddr(), id);
-				// Eintrag für die zentrale Anzeigetafel.
+				// Eintrag fï¿½r die zentrale Anzeigetafel.
 				sqlCommand = "INSERT INTO UserBoards (User,Board) VALUES(" + id + ",0)";
 				Database.executeQuery(sqlCommand);
 				rs.close();

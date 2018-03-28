@@ -2,6 +2,7 @@ function changeStats() {
 	$("canvas").css("margin-left", "30px");
 }
 
+/* Password validation */
 function checkPassword() {
 
 	var pwd = document.getElementById("pwd")

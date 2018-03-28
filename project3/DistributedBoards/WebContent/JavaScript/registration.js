@@ -1,5 +1,5 @@
 /**
- * 
+ * checking all inputs
  */
 function checkFormData() {
 
@@ -30,7 +30,8 @@ function checkFormData() {
 		showError()
 	}
 }
-
+  
+/* checking firstname */
 function checkFirstName(firstname) {
 	if (firstname && !checkForWhiteSpace(firstname)) {
 		var v = document.getElementById("vorname")
@@ -42,6 +43,7 @@ function checkFirstName(firstname) {
 	return false
 }
 
+/* checking lastname */
 function checkLastName(lastname) {
 	if (lastname && !checkForWhiteSpace(lastname)) {
 		var v = document.getElementById("nachname")
@@ -53,6 +55,7 @@ function checkLastName(lastname) {
 	return false
 }
 
+/* checking email */
 function checkEmail(email) {
 	if (email && !checkForWhiteSpace(email)) {
 		var re = /\S+@\S+\.\S+/;
@@ -67,6 +70,7 @@ function checkEmail(email) {
 	return false
 }
 
+/* checking password */
 function checkPassword(password) {
 	if (password && !checkForWhiteSpace(password)) {
 		var v = document.getElementById("password")
@@ -78,6 +82,7 @@ function checkPassword(password) {
 	return false
 }
 
+/* checking username */
 function checkUsername(username) {
 	if (username && !checkForWhiteSpace(username)) {
 		if (!username.includes("@")) {
@@ -91,6 +96,7 @@ function checkUsername(username) {
 	return false
 }
 
+/* checking profession */
 function checkProfession(profession) {
 	if (profession) {
 		var v = document.getElementById("beruf")
@@ -102,6 +108,7 @@ function checkProfession(profession) {
 	return false
 }
 
+/* checking age */
 function checkAge(age) {
 	if (age && !checkForWhiteSpace(age)) {
 		if (/^\d+$/.test(age)) {
@@ -115,6 +122,7 @@ function checkAge(age) {
 	return false
 }
 
+/* checking whitespace */
 function checkForWhiteSpace(string) {
 	return string.indexOf(' ') >= 0;
 }
