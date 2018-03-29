@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Tom Scholer, Peter Hennen
  * @version 09.03.2018
  */
 public final class Database {
@@ -39,7 +39,7 @@ public final class Database {
 	}
 
 	/**
-	 * Führt das SQL Statement aus und gibt true bei erfolg zurück, sonst false.
+	 * Faehrt das SQL Statement aus und gibt true bei erfolg zurueck, sonst false.
 	 * 
 	 * @param sqlCommand
 	 *            Das SQL Statement
@@ -63,7 +63,7 @@ public final class Database {
 	}
 	
 	/**
-	 * Wie executeQuery schließt die Verbindung zur Datenbank aber nicht.
+	 * Wie executeQuery schliesst die Verbindung zur Datenbank aber nicht.
 	 * @param sqlCommand
 	 * @return true, wenn erfolgreich, false sonst
 	 * @throws SQLException
@@ -83,7 +83,7 @@ public final class Database {
 	
 
 	/**
-	 * Führt das SQL Statement aus und gibt das Ergebnis zurück
+	 * Faehrt das SQL Statement aus und gibt das Ergebnis zurueck
 	 * 
 	 * @param sqlCommand
 	 *            Das SQL Statement
@@ -109,7 +109,7 @@ public final class Database {
 
 	/**
 	 * 
-	 * @return Die letzte eingefügte ID der Datenbank.
+	 * @return Die letzte eingefuegte ID der Datenbank.
 	 * @throws SQLException
 	 */
 	public static int getlastID() throws SQLException {
@@ -126,7 +126,7 @@ public final class Database {
 	}
 
 	/**
-	 * Schließt die Datenbankverbindung.
+	 * Schliesst die Datenbankverbindung.
 	 * 
 	 * @throws SQLException
 	 */

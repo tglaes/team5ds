@@ -23,7 +23,7 @@ import util.Permissions;
 /**
  * 
  * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
- * @version 09.03.2018
+ * @version 29.03.2018
  */
 @Path("/{route:Login|login|}")
 public class Login {

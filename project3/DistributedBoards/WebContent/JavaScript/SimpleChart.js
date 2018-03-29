@@ -42,7 +42,7 @@
 
             var that = this,
            config = that.options;
-            var graph = $(that.element).addClass("SimpleChart").addClass(config.ChartType).append("<canvas class='SimpleChartcanvas'></canvas>").find('canvas').css({
+            var graph = $(that.element).addClass("SimpleChart").addClass(config.ChartType).append("<div style='width:100%'></div><canvas class='SimpleChartcanvas'></canvas>").find('canvas').css({
                 float: (config.legendposition == 'right' || config.legendposition == 'left') ? 'left' : '',
                 'margin-top': config.topmargin,
                 'margin-right': config.rightmargin

@@ -21,7 +21,7 @@ import util.Permissions;
 public class Logout {
 
 	/**
-	 * L�st die Session auf.
+	 * Loest die Session auf.
 	 * 
 	 * @param request Der HTTP Request.
 	 * @return Die Loginseite

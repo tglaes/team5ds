@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author Tristan Glaes
+ * @author Tristan Glaes, Tom Scholer, Peter Hennen
  *
  */
 package database;
