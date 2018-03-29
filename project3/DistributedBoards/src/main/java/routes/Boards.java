@@ -26,7 +26,7 @@ import util.Permission;
 
 /**
  * 
- * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov
+ * @author Tristan Glaes, Meris Krupic, Iurie Golovencic, Vadim Khablov, Tom Scholer, Peter Hennen
  * @version 09.03.2018
  */
 @Path("/Boards")
@@ -70,7 +70,7 @@ public class Boards {
 	 *            Die ID des Benutzers.
 	 * @param boardID
 	 *            Die ID des Boards.
-	 * @return Die Board Seite f�r Admin oder User, wenn der Benutzer eingeloggt
+	 * @return Die Board Seite fuer Admin oder User, wenn der Benutzer eingeloggt
 	 *         ist, sonst 403.
 	 * @throws IOException
 	 * @throws SQLException
@@ -119,7 +119,7 @@ public class Boards {
 			// Create the new board and send the Boards page showing the new board.
 			int boardID = 0;
 
-			// Board in DB einf�gen.
+			// Board in DB einfuegen.
 			String sqlCommand = "INSERT INTO Boards (Admin,Name) VALUES('" + userID + "', '" + boardName + "')";
 			Database.executeQuery(sqlCommand);
 
@@ -158,10 +158,10 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// L�schen des Boards.
+			// Loeschen des Boards.
 			String sqlCommand = "DELETE FROM Boards WHERE ID=" + boardID;
 			Database.executeQuery(sqlCommand);
-			// User Board Abh�ngigkeiten l�schen.
+			// User Board Abh�ngigkeiten loeschen.
 			sqlCommand = "DELETE FROM UserBoards WHERE board=" + boardID;
 			Database.executeQuery(sqlCommand);
 			Database.closeConnection();
@@ -199,7 +199,7 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// L�sche den Benutzer
+			// Loesche den Benutzer
 			String sql = "DELETE FROM UserBoards WHERE User=" + removeUserID + " AND Board=" + boardID;
 			Database.executeQuery(sql);
 			Database.closeConnection();
@@ -236,7 +236,7 @@ public class Boards {
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin
 				|| Permissions.isAuthorized(userID, boardID) == Permission.User) {
 
-			// Erstelle Markierung f�r Post
+			// Erstelle Markierung fuer Post
 			String sqlCommand = "INSERT INTO PostMarks (User,Post) VALUES(" + userID + "," + postID + ")";
 			Database.executeQuery(sqlCommand);
 
@@ -251,7 +251,7 @@ public class Boards {
 	/**
 	 * 
 	 * @param push
-	 *            1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 f�r
+	 *            1 wenn der Post auf die Zentrale Anzeigetafel soll, 0 fuer
 	 *            ignorieren.
 	 * @param boardID
 	 *            Die BoardID
@@ -284,10 +284,10 @@ public class Boards {
 				// Gehe auf das Zentrale Board.
 				return createPage(Permissions.isAuthorized(userID, 0), userID, 0);
 
-				// Markierungen werden gel�scht/ignoriert (DISMISS)
+				// Markierungen werden geloescht/ignoriert (DISMISS)
 			} else if (push == 0) {
 
-				// L�sche alle Markierungen des Posts.
+				// Loesche alle Markierungen des Posts.
 				String sqlCommand = "DELETE FROM PostMarks WHERE post=" + postID;
 				Database.executeQuery(sqlCommand);
 				return createPage(Permissions.isAuthorized(userID, boardID), userID, boardID);
@@ -390,7 +390,7 @@ public class Boards {
 					+ "', DATETIME('now'),0," + userID + ")";
 			Database.executeQuery(sqlCommand);
 
-			// Letzte hinzugef�gte ID aus der Datenbank auslesen.
+			// Letzte hinzugefuegte ID aus der Datenbank auslesen.
 			sqlCommand = "SELECT ID FROM Posts ORDER BY ID DESC LIMIT 1";
 			ResultSet rs = Database.executeSql(sqlCommand);
 			rs.next();
@@ -485,13 +485,13 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else {
 			if (Permissions.isAuthorized(userID, boardID) == Permission.Admin || userID == postOwner) {
-				// L�schen der Zuordnung zum Board.
+				// Loeschen der Zuordnung zum Board.
 				String sqlCommand = "DELETE FROM BoardPosts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
-				// L�schen des Posts
+				// Loeschen des Posts
 				sqlCommand = "DELETE FROM Posts WHERE ID=" + postID;
 				Database.executeQuery(sqlCommand);
-				// L�schen der Kommentare
+				// Loeschen der Kommentare
 				sqlCommand = "DELETE FROM Posts WHERE Post=" + postID;
 				Database.executeQuery(sqlCommand);
 				Database.closeConnection();
@@ -532,17 +532,17 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID).equals(Permission.Admin)) {
 
-			// Pr�fen ob Email oder Benutzername.
+			// Pruefen ob Email oder Benutzername.
 			if (userNameOrEmail.contains("@")) {
 				// Email
-				// Pr�fen ob die Email einem Benutzer zugeordnet werden kann.
+				// Pruefen ob die Email einem Benutzer zugeordnet werden kann.
 				sqlCommand = "SELECT ID FROM Users WHERE EMail='" + userNameOrEmail + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
 
 			} else {
 				// Benutzername
-				// Pr�fen ob der Benutzer existiert.
+				// Pruefen ob der Benutzer existiert.
 				sqlCommand = "SELECT ID FROM Users WHERE Username='" + userNameOrEmail + "'";
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
@@ -551,13 +551,13 @@ public class Boards {
 			if (rs.next()) {
 
 				String newUserID = rs.getString(1);
-				// Pr�fen ob Benutzer schon Mitglied des Boardes ist.
+				// Pruefen ob Benutzer schon Mitglied des Boardes ist.
 				sqlCommand = "SELECT * FROM UserBoards WHERE User=" + newUserID + " AND Board=" + boardID;
 				Database.executeQuery(sqlCommand);
 				rs = Database.executeSql(sqlCommand);
 				// Benutzer ist noch nicht Mitglied.
 				if (!rs.next()) {
-					// F�ge den Benutzer dem Board hinzu.
+					// Fuege den Benutzer dem Board hinzu.
 					sqlCommand = "INSERT INTO UserBoards (User,Board) VALUES(" + newUserID + "," + boardID + ")";
 					Database.executeQuery(sqlCommand);
 					Database.closeConnection();
@@ -685,7 +685,7 @@ public class Boards {
 			return Resources.getResource("Login.html", "html");
 		} else if (Permissions.isAuthorized(userID, boardID) == Permission.Admin) {
 
-			// L�sche Kommentar
+			// Loesche Kommentar
 			String sqlCommand = "DELETE FROM Posts WHERE ID=" + commentID;
 			Database.executeQuery(sqlCommand);
 
@@ -700,7 +700,7 @@ public class Boards {
 			rs.next();
 			if (rs.getInt(1) == userID) {
 
-				// L�sche Kommentar
+				// Loesche Kommentar
 				String sqlCommand2 = "DELETE FROM Posts WHERE ID=" + commentID;
 				Database.executeQuery(sqlCommand2);
 

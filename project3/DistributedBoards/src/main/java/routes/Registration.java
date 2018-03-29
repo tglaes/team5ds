@@ -87,7 +87,7 @@ public class Registration {
 					+ "'" + "," + age + ", '" + profession + "')";
 			Database.executeQuery(sqlCommand);
 
-			// Neue ID des Benutzers �ber die Email.
+			// Neue ID des Benutzers ueber die Email.
 			sqlCommand = "SELECT id FROM Users WHERE EMail='" + email + "'";
 			ResultSet rs = Database.executeSql(sqlCommand);
 
@@ -96,7 +96,7 @@ public class Registration {
 
 				// Eintrag in SessionMap
 				Permissions.createSession(request.getRemoteAddr(), id);
-				// Eintrag f�r die zentrale Anzeigetafel.
+				// Eintrag fuer die zentrale Anzeigetafel.
 				sqlCommand = "INSERT INTO UserBoards (User,Board) VALUES(" + id + ",0)";
 				Database.executeQuery(sqlCommand);
 				rs.close();

@@ -8,7 +8,7 @@ import database.Database;
 
 /**
  * 
- * @author Tristan Glaes
+ * @author Tristan Glaes, Meris Krupic, Vadim Khablov, Iurie Golovencic
  * @version 09.03.2018
  */
 public final class Permissions {
@@ -20,7 +20,7 @@ public final class Permissions {
 	}
 
 	/**
-	 * Erstellt eine Session für einen Benutzer.
+	 * Erstellt eine Session fuer einen Benutzer.
 	 * 
 	 * @param ip
 	 *            Die IP des Benutzers.
@@ -32,7 +32,7 @@ public final class Permissions {
 	}
 
 	/**
-	 * Löst eine Session auf.
+	 * Loest eine Session auf.
 	 * 
 	 * @param ip
 	 *            Die IP des Benutzers.

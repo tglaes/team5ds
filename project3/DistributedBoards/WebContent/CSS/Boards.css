@@ -7,10 +7,6 @@
     margin-bottom: 15px;
 }
 
-#plusBoardSpan {
-	
-}
-
 #tafelInhalt {
 	overflow: auto;
 	height: calc(100vh - 52px);
@@ -19,8 +15,9 @@
 #boardName {
 	background-color: #F1F1F1;
 	position: fixed;
-	width: calc(100% - 37%);
+	/*width: calc(100% - 37%);*/
 	border-radius: 0px 0px 10px 10px;
+	width: 64.5%;
 }
 
 #boardPosts {
@@ -52,4 +49,85 @@
 
 #btnComment, #btnCommentCancel {
 	width: 201.5px;
+}
+
+#jAddPost {
+	padding: 8px 11px; 
+	position: relative; 
+	margin-top: 14px; 
+	margin-right: 12px; 
+	height: 40px; 
+	background-color: #4CAF50; 
+	color: black; 
+	float: right;
+}
+
+#jAddUser {
+	height: 40px; 
+	font-size: 18px; 
+	background-color: lightblue; 
+	border-color: lightblue; 
+	color: black; 
+	width: 100%;
+}
+
+#jDeleteBoard {
+	position: relative; 
+	float: right; 
+	color: black; 
+	background-color: #d9534f; 
+	width: 100%; 
+	margin-top:10px; 
+	margin-bottom: 14px;
+	height: 40px;
+}
+
+#jLeaveBoard {
+	position: relative; 
+	float: right; 
+	color: black; 
+	background-color: #d9534f; 
+	width: 100%; 
+	margin-top:10px; 
+	margin-bottom: 14px; height: 40px;
+}
+
+#jRemoveUser {
+	padding: 0 0 0 0; 
+	color: red; 
+	float:right;
+}
+
+#jPostImg {
+	width:45px;
+}
+
+#jPostEdit {
+	background-color: white; 
+	color: black; 
+	float: right;
+}
+
+#jIconCog {
+	margin-top: 15px;
+}
+
+#jCommentImg {
+	width:45px;
+}
+
+#jCommentRemove{
+	color: red; 
+	float: right;
+}
+
+#jBoardName {
+	margin-left: 10px;
+}
+
+#jBoardSeperator {
+	width:100%; 
+	height:0px; 
+	text-align:left; 
+	border:3px solid rgb(34, 34, 34);
 }

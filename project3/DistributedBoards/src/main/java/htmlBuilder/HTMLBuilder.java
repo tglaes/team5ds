@@ -59,66 +59,77 @@ public class HTMLBuilder {
 	 */
 	public static InputStream buildBoardsPage(int userID, int boardID, Permission p) throws IOException, SQLException {
 
-		// String Array der Gr��e 2, die die 2 H�lften der Seite beinhaltet.
+		// String Array der Groesse 2, die die 2 Haelften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
 		String newPage;
-		// Einf�gen der Boardliste
+		// Einfuegen der Boardliste
 		//page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Boards.html");
 		page = splitHTMLPageAtMarker(boardListMarker, "WebContent/HTML/Boards.html");
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 
-		// Einf�gen des Board Names.
+		// Einfuegen des Board Names.
 		page = splitStringPageAtMarker(boardNameMarker, newPage);
 		String boardNameHTML = getBoardName(boardID);
 		newPage = page[0] + boardNameHTML + page[1];
 
-		// Einf�gen des Postbuttons
+		// Einfuegen des Postbuttons
 		page = splitStringPageAtMarker(postButtonMarker, newPage);
 		String postButtonHTML = "";
 		if (boardID != 0) {
-			postButtonHTML = "<a href='#' data-toggle='modal' data-target='#post-modal' class='btn btn-lg' style='height: 69px; background-color: #F1F1F1; color: black; float: right;'>"
-					+ "<span class='glyphicon' style='float: right; margin-top: 15px;'>&#x2b; Post</span>" + "</a>";
+			postButtonHTML =  "<a id='jAddPost' href='#' data-toggle='modal' data-target='#post-modal' class='btn btn-lg'>"
+							+ "		<span class='glyphicon'>&#x2b;</span><b> Post</b>" 
+							+ "</a>";
+		
 		}
 		newPage = page[0] + postButtonHTML + page[1];
 
-		// Einf�gen der Posts und Kommentare
+		// Einfuegen der Posts und Kommentare
 		page = splitStringPageAtMarker(boardPostsMarker, newPage);
 		String postListHTML = getPosts(boardID, p, userID);
 		newPage = page[0] + postListHTML + page[1];
 
-		// Einf�gen des Admins des Boards in Sidebar
+		// Einfuegen des Admins des Boards in Sidebar
 		page = splitStringPageAtMarker(boardAdminMarker, newPage);
 		String adminHTML = getAdminForBoard(boardID);
 		newPage = page[0] + adminHTML + page[1];
 
-		// Einf�gen der Benutzer
+		// Einfuegen der Benutzer
 		page = splitStringPageAtMarker(boardUserListMarker, newPage);
 		String userListHTML = getUserListForBoard(boardID, p);
 		newPage = page[0] + userListHTML + page[1];
 
-		// Einf�gen des Links zum eigenden Profil.
+		// Einfuegen des Links zum eigenden Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
 
-		// F�ge Button zum L�schen des Boards und zum hinzuf�gen von Benutzern hinzu.
+		// Fuege Button zum Loeschen des Boards und zum hinzufuegen von Benutzern hinzu.
 		page = splitStringPageAtMarker(boardDeleteButtonNewUserMarker, newPage);
 		if (p == Permission.Admin) {
 			newPage = page[0]
-					+ "<div><button style='height: 40px; font-size: 18px; background-color: lightblue; border-color: lightblue; color: black; width: 100%;' href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>"
-					+ "<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span><b> User</b></button><br>"
-					+ "<button href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'> Board L�schen</button></div>" + page[1];
+					+ "<div>"
+					+ "	<button id='jAddUser' href='#' data-toggle='modal' data-target='#add-user-board-modal' class='btn btn-primary'>"
+					+ "		<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span>"
+					+ "		<b> User</b>"
+					+ "	</button><br>"
+					+ "	<button id='jDeleteBoard' href='#' data-toggle='modal' data-target='#delete-board-board-modal' class='btn btn-danger'>"
+					+ "		<span class='glyphicon'>&#xe020;</span>"
+					+ "		<b> Board</b>"
+					+ "	</button>"
+					+ "</div>" + page[1];
 		} else if(boardID != 0){
-			// F�ge eine leaveBoard Button f�r den Benutzer hinzu.
-			newPage = page[0]+ "<button class='btn btn-danger' onclick=\"window.location.href='/DistributedBoards/Boards/leaveBoard?board=###boardID###'\">Leave Board</button>" + page[1];
+			// Fuege eine leaveBoard Button fuer den Benutzer hinzu.
+			newPage = page[0]	+ "<button id='jLeaveBoard' class='btn btn-danger' onclick=\"window.location.href='/DistributedBoards/Boards/leaveBoard?board=###boardID###'\">"
+								+ "	<b>Leave Board</b>"
+								+ "</button>" + page[1];
 		} else {
 			newPage = page[0] + page[1];
 		}
 
-		// Einf�gen der boardID
+		// Einfuegen der boardID
 		newPage = insertIntoHtml(newPage,boardIDMarker, String.valueOf(boardID));
 		return new ByteArrayInputStream(newPage.getBytes(charset));
 	}
@@ -134,39 +145,39 @@ public class HTMLBuilder {
 	 */
 	public static InputStream buildProfilePage(Integer userID, Integer profileID) throws IOException, SQLException {
 
-		// Der Benutzer kann �ber die profileID 0 auf sein eigenes Profil kommen.
+		// Der Benutzer kann ueber die profileID 0 auf sein eigenes Profil kommen.
 		if (profileID == 0) {
 			profileID = userID;
 		}
 
-		// String Array der Gr��e 2, die die 2 H�lften der Seite beinhaltet.
+		// String Array der Gruesse 2, die die 2 Haelften der Seite beinhaltet.
 		String[] page;
 		// Die neue Seite.
 		String newPage;
 
-		// Einf�gen der Boardliste
+		// Einfuegen der Boardliste
 //		page = splitHTMLPageAtMarker(boardListMarker, "WebContent\\HTML\\Profile.html");
 		page = splitHTMLPageAtMarker(boardListMarker, "WebContent/HTML/Profile.html");
 		String boardListHTML = getBoardsListForUser(userID);
 		newPage = page[0] + boardListHTML + page[1];
 
-		// Einf�gen des Links zum eigenen Profil.
+		// Einfuegen des Links zum eigenen Profil.
 		page = splitStringPageAtMarker(profileLinkMarker, newPage);
 		String linkToUserProfile = "/DistributedBoards/Profile?profile=" + userID;
 		newPage = page[0] + linkToUserProfile + page[1];
 
-		/*// Einf�gen des Links zum Profilbild
+		/*// Einfuegen des Links zum Profilbild
 		// Konvention des Namens des Profilbildes ist UserID
 		page = splitStringPageAtMarker(profilePictureMarker, newPage);
 		newPage = page[0] + profileID + page[1];*/
 
-		// ProfilId des Benutzers einf�gen.
+		// ProfilId des Benutzers einfuegen.
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
 		newPage = page[0] + profileID + page[1];
 		page = splitStringPageAtMarker(profileIDMarker, newPage);
 		newPage = page[0] + profileID + page[1];
 
-		// Information des Benutzers auslesen und einf�gen.
+		// Information des Benutzers auslesen und einfuegen.
 		String sqlCommand = "SELECT * FROM Users WHERE ID=" + profileID;
 		ResultSet rs = Database.executeSql(sqlCommand);
 
@@ -230,11 +241,15 @@ public class HTMLBuilder {
 			page = splitStringPageAtMarker(profileEditButtonMarker, newPage);
 			if (userID == profileID) {			
 				// Delete Button
-				buttonHTML = "<a href='#' data-toggle='modal' data-target='#delete-modal' class='btn btn-lg' style='background-color: #990000; color: black; float: right;'>"
-						+ "<span class='glyphicon glyphicon-remove'></span> Delete </a>";				
+				buttonHTML  = "<a id='jProfileDeleteUser' href='#' data-toggle='modal' data-target='#delete-modal' class='btn btn-lg'>"
+							+ "	<span class='glyphicon glyphicon-remove'></span>"
+							+ "	<b> Delete</b> "
+							+ "</a>";				
 				// Edit Button
-				buttonHTML += "<a href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg' style='background-color: #F1F1F1; color: black; float: right;'>"
-						+ "<span class='glyphicon glyphicon-pencil'></span> Edit </a>";
+				buttonHTML += "<a id='jProfileEditUser' href='#' data-toggle='modal' data-target='#profile-modal' class='btn btn-lg'>"
+							+ "	<span class='glyphicon glyphicon-pencil'></span>"
+							+ "	<b> Edit </b>"
+							+ "</a>";
 				
 				
 			}
@@ -365,17 +380,12 @@ public class HTMLBuilder {
 			userListForBoardHTML += "<p class='list-group-item'><a href='/DistributedBoards/Profile?profile="
 					+ rs.getString(2) + "'>" + rs.getString(1) + "</a>";
 
-			// F�ge den Benutzer entfernen Button hinzu.
+			// Fuege den Benutzer entfernen Button hinzu.
 			if (p == Permission.Admin) {
-				userListForBoardHTML += "<a onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
-						+ boardID + "&user=" + rs.getString(2)
-						+ "'\" class='btn btn-md' style='padding: 0 0 0 0; color: red; float:right;'><span class='glyphicon glyphicon-remove'></span></a>";
-				
-				/*
-				 * += "<button onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board="
-						+ boardID + "&user=" + rs.getString(2)
-						+ "'\" class='btn btn-xs btn-danger' style='float:right'>Remove</button>"
-				 * */
+				userListForBoardHTML += "<a id='jRemoveUser' onclick=\"window.location.href='/DistributedBoards/Boards/removeUser?board=" + boardID 
+									+ "	&user=" + rs.getString(2) + "'\" class='btn btn-md'>"
+									+ "		<span class='glyphicon glyphicon-remove'></span>"
+									+ "	</a>";
 			}
 			userListForBoardHTML += "</p>";
 		}
@@ -427,41 +437,41 @@ public class HTMLBuilder {
 			rs2.close();
 
 			postsFound = true;
-			posts += "<div class='post'>" + "<hr>" + "<div class='media'><div class='media-left'>"
-					+ "<img src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object' style='width:45px'>"
-					+ "</div>" + "<div class='media-body'>" + "<h4 class='media-heading'>" + rs.getString(1)
-					+ "<small><i> " + rs.getString(2) + "</i>";
+			posts +=  "<div class='post'>" + "<hr>" + "<div class='media'><div class='media-left'>"
+					+ "	<img id='jPostImg' src='/DistributedBoards/Resources?resourceName=Meris.jpg&resourceType=img' class='media-object'>"
+					+ "</div>" 
+					+ "<div class='media-body'>" + "<h4 class='media-heading'>" + rs.getString(1)
+					+ "	<small><i> " + rs.getString(2) + "</i>";
 
 			// Bearbeiten des Posts
 			if (p == Permission.Admin || rs.getInt(5) == userID) {
-				posts += "<a href='#' onclick='editPostModal(" + rs.getInt(3) + ",\"" + rs.getString(4)
-						+ "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg' style='background-color: white; color: black; float: right;'>"
-						+ "<span class='glyphicon glyphicon-cog' style='margin-top: 15px;'></span>" + "</a>";
+				posts += "<a id='jPostEdit' href='#' onclick='editPostModal(" + rs.getInt(3) + ",\"" + rs.getString(4) + "\")' data-toggle='modal' data-target='#editPost-modal' class='btn btn-lg'>"
+						+ "	<span id='jIconCog' class='glyphicon glyphicon-cog'></span>" 
+						+ "</a>";
 			}
 
 			posts += "</small></h4><p>" + rs.getString(4) + "</p>" + "<div class='btn-group'>";
 			// Push button
 			if (p == Permission.Admin) {
-				posts += "<a href='#' onclick='editPushPostModal(" + rs.getInt(3)
-						+ ")' data-toggle='modal' data-target='#push-modal' class='btn btn-md'>"
+				posts += "<a href='#' onclick='editPushPostModal(" + rs.getInt(3) + ")' data-toggle='modal' data-target='#push-modal' class='btn btn-md'>"
 						+ "<span class='glyphicon glyphicon-thumbs-up'></span> Push" + "</a>";
 			}
-			posts += "<a href='#' onclick='editCommentModal(" + rs.getInt(3) + ",\"" + rs.getString(4)+ "\")' data-toggle='modal' data-target='#comment-modal' class='btn btn-md'>"+ "<span class='glyphicon glyphicon-edit'></span> Comment" + "</a>";
+			posts += "<a href='#' onclick='editCommentModal(" + rs.getInt(3) + ",\"" + rs.getString(4)+ "\")' data-toggle='modal' data-target='#comment-modal' "
+				   + "	class='btn btn-md'>"+ "<span class='glyphicon glyphicon-edit'></span> Comment" + "</a>";
 					
 			// Der Admin sieht nur die Anzahl der Markierungen.
 			if (p == Permission.Admin) {
 				posts += "<a class='btn btn-md'>" + "<span class='glyphicon glyphicon-bookmark'></span>" + postMarks
-						+ "</a></div>";
+					   + "</a></div>";
 				// Marks werden auf dem Zentralen Board als Likes angezeigt.
 			} else if (boardID == 0) {
-				posts += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3)
-						+ "' class='btn btn-md'>" + "<span class='glyphicon glyphicon-thumbs-up'></span>" + postMarks
+				posts  += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3) + "' class='btn btn-md'>" 
+						+ "	<span class='glyphicon glyphicon-thumbs-up'></span>" + postMarks
 						+ "</a></div>";
 				// Markierungen werden auf den normalen Boards angezeigt.
 			} else {
-				posts += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3)
-						+ "' class='btn btn-md'>" + "<span class='glyphicon glyphicon-bookmark'></span> Mark Post("
-						+ postMarks + ")" + "</a></div>";
+				posts  += "<a href='/DistributedBoards/Boards/markPost?board=" + boardID + "&post=" + rs.getInt(3) + "' class='btn btn-md'>" 
+						+ "	<span class='glyphicon glyphicon-bookmark'></span> Mark Post(" + postMarks + ")" + "</a></div>";
 			}
 
 			// Kommentare
@@ -470,13 +480,16 @@ public class HTMLBuilder {
 			ResultSet rs3 = Database.executeSql(sqlCommand3);
 			while (rs3.next()) {
 
-				posts += "<div class='media'>" + "<div class='media-left'>"
-						+ "<img src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object' style='width:45px'></div>"
-						+ "<div class='media-body'>" + "<h4 class='media-heading'>" + rs3.getString(4) + "<small><i> "
+				posts  += "<div class='media'>" 
+						+ "	<div class='media-left'>"
+						+ "		<img id='jCommentImg' src='/DistributedBoards/Resources?resourceName=Boyka.jpg&resourceType=img' class='media-object'>"
+						+ "	</div>"
+						+ "	<div class='media-body'>" + "<h4 class='media-heading'>" + rs3.getString(4) + "<small><i> "
 						+ rs3.getString(3) + "</i></small></h4>";
 				if (p == Permission.Admin || rs3.getInt(5) == userID) {
-					posts += "<a href='/DistributedBoards/Boards/deleteComment?board="+ boardID +"&comment=" + rs3.getInt(1) + "' class='btn btn-md' style='color: red; float: right;'>"
-							+ "<span class='glyphicon glyphicon-remove'></span>" + "</a>";
+					posts  += "<a id='jCommentRemove' href='/DistributedBoards/Boards/deleteComment?board="+ boardID +"&comment=" + rs3.getInt(1) + "' class='btn btn-md'>"
+							+ "	<span class='glyphicon glyphicon-remove'></span>" 
+							+ "</a>";
 				}
 				posts += "<p>" + rs3.getString(2) + "</p></div></div>";
 
@@ -505,7 +518,7 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 
 		if (rs.next()) {
-			return "<h1 style='margin-left: 10px;' class='tafel-name'>" + rs.getString(1) + "</h1>";
+			return "<h1 id='jBoardName' class='tafel-name'>" + rs.getString(1) + "</h1>";
 		} else {
 			return null;
 		}
@@ -526,18 +539,17 @@ public class HTMLBuilder {
 		ResultSet rs = Database.executeSql(sqlCommand);
 
 		while (rs.next()) {
-			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2)
-					+ "</a></p>";
+			boardsListHTML += "<p>"
+							+ "	<a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a>"
+							+ "</p>";
 
-			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingef�gt.
+			// Nach der Zentralen Anzeigetafeln wird ein Seperator eingefuegt.
 			if (rs.getInt(1) == 0) {
-				boardsListHTML += "<hr noshade style=\"width:100%; height:0px; text-align:left; border:3px solid rgb(34, 34, 34);\">"
-			
-							   + "<a id='plusBoardLink' href='#' data-toggle='modal'" + 
-					"					data-target='#board-modal' class='btn btn-lg'>" + 
-					"					<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span>" + 
-					"					<b>Board</b>" +
-					"			</a><hr>";
+				boardsListHTML += "<hr noshade id='jBoardSeperator'>"
+							   + "<a id='plusBoardLink' href='#' data-toggle='modal' data-target='#board-modal' class='btn btn-lg'>" 
+					           + "	<span id='plusBoardSpan' class='glyphicon'>&#x2b;</span>" 
+							   + "	<b>Board</b>"
+							   + "</a><hr>";
 			}
 		}
 
@@ -547,9 +559,9 @@ public class HTMLBuilder {
 
 		while (rs.next()) {
 			boardsListHTML += "<p><a href='/DistributedBoards/Boards?board=" + rs.getInt(1) + "'>" + rs.getString(2)
-					+ "</a></p>";
+							+ "</a></p>";
 		}
-		// Schlie�en der Datenbankverbindung
+		// Schliessen der Datenbankverbindung
 		Database.closeConnection();
 
 		return boardsListHTML;
