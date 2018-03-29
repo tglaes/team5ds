@@ -1,1 +1,1 @@
-Abschlussprojekt
+Das Projekt ist ein Eclipse Projekt, dass mit Gradle gebaut wird. Das Projekt benötigt den Tomcatserver und dessen Libaries sowie einige zusätzliche Libaries, die aber im Projektordner enthalten sind.
